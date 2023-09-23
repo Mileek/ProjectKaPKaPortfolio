@@ -51,65 +51,33 @@ export class SectionsComponent implements OnInit
 
     canvas.width = background.offsetWidth;
     canvas.height = background.offsetHeight;
-    var starArray: any[] = [];
-    window.addEventListener('resize', () =>
+    console.log(innerWidth, innerHeight);
+
+    if (ctx)
     {
-      const width = background.offsetWidth;
-      const height = background.offsetHeight;
-      if (ctx)
-      {
-        ctx.clearRect(0, 0, width, height);
-      }
-      for (let i = 0; i < 500; i++)
-      {
-        var longWidth = (Math.random() - 0.5) * 15;
-        var shortWidth = (Math.random() - 0.5) * 8;
-        var x = Math.random() * (width - longWidth * 2) + longWidth;
-        var y = Math.random() * (height - longWidth * 2) + longWidth;
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+    }
+    // for (let i = 0; i < 500; i++)
+    // {
+    //   var longWidth = (Math.random() - 0.5) * 15;
+    //   var shortWidth = (Math.random() - 0.5) * 8;
+    //   var x = Math.random() * (innerHeight - longWidth * 2) + longWidth;
+    //   var y = Math.random() * (innerWidth - longWidth * 2) + longWidth;
 
-        // Draw a star
-        if (ctx)
-        {
-          this.drawLines(ctx, x, y, longWidth, shortWidth, 8, "white");
-          //starArray.push(lines);
-        }
-      }
+    //   // Draw a star
+    //   if (ctx)
+    //   {
+    //     this.drawLines(ctx, x, y, longWidth, shortWidth, 8, "white");
+    //     //starArray.push(lines);
+    //   }
+    // }
 
-    });
+    // var starArray: any[] = [];
+    // window.addEventListener('resize', () =>
+    // {
+    //   const width = background.offsetWidth;
+    //   const height = background.offsetHeight;
+
+    // });
   }
 }
-
-// class StarDrawer{
-//   constructor(ctx: CanvasRenderingContext2D, centerX: number, centerY: number, longWidth: number, shortWidth: number, numLines: number, color: string)
-//   {
-//     ctx.beginPath();
-//     ctx.lineWidth = 0.5;
-//     //Main Lines
-//     for (let i = 1; i < 3; i++)
-//     {
-//       const x = Math.cos((Math.PI / i)) * longWidth;
-//       const y = Math.sin((Math.PI / i)) * longWidth;
-//       ctx.moveTo(centerX, centerY);
-//       ctx.lineTo(centerX + x, centerY + y);
-//       ctx.moveTo(centerX, centerY);
-//       ctx.lineTo(centerX - x, centerY - y);
-//     }
-
-//     //Cross lines
-//     const angle = Math.PI / numLines;
-//     for (let i = 1; i < numLines; i++)
-//     {
-//       const x = Math.cos(angle * i) * shortWidth;
-//       const y = Math.sin(angle * i) * shortWidth;
-//       ctx.moveTo(centerX, centerY);
-//       ctx.lineTo(centerX + x, centerY + y);
-//       ctx.moveTo(centerX, centerY);
-//       ctx.lineTo(centerX - x, centerY - y);
-//     }
-
-//     ctx.closePath();
-//     ctx.strokeStyle = color;
-//     ctx.stroke();
-
-//   }
-// }
