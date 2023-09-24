@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { DrawLines } from './DrawLines';
 
 @Component({
   selector: 'app-sections',
@@ -8,108 +9,66 @@ import { Component, OnInit } from '@angular/core';
 
 export class SectionsComponent implements OnInit
 {
+  private frameCounter = 0;
+
+  LinesArray: Array<DrawLines> = [];
+  background!: HTMLDivElement;
+  canvas!: HTMLCanvasElement;
+  numberOfStars: number = 750;
+
   constructor() { }
 
-  //Draw 5 lines crossing in the middle
-  drawLines(ctx: CanvasRenderingContext2D, centerX: number, centerY: number, longWidth: number, shortWidth: number, numLines: number, color: string): void
+  DrawTwinklingStars(numberOfStars: number): void
   {
-    ctx.beginPath();
-    ctx.lineWidth = 0.5;
-    //Main Lines
-    for (let i = 1; i < 3; i++)
-    {
-      const x = Math.cos((Math.PI / i)) * longWidth;
-      const y = Math.sin((Math.PI / i)) * longWidth;
-      ctx.moveTo(centerX, centerY);
-      ctx.lineTo(centerX + x, centerY + y);
-      ctx.moveTo(centerX, centerY);
-      ctx.lineTo(centerX - x, centerY - y);
-    }
+    //Szerokością i wysokością jest szerokośći wysokość div'a Background
+    var ctx = this.canvas.getContext('2d');
+    const width = this.background.offsetWidth;
+    const height = this.background.offsetHeight;
+    this.canvas.width = width;
+    this.canvas.height = height;
+    //Wyczyść tablicę przy ponownym rysowaniu gwiazd
+    this.LinesArray = [];
 
-    //Cross lines
-    const angle = Math.PI / numLines;
-    for (let i = 1; i < numLines; i++)
+    for (let i = 0; i < numberOfStars; i++)
     {
-      const x = Math.cos(angle * i) * shortWidth;
-      const y = Math.sin(angle * i) * shortWidth;
-      ctx.moveTo(centerX, centerY);
-      ctx.lineTo(centerX + x, centerY + y);
-      ctx.moveTo(centerX, centerY);
-      ctx.lineTo(centerX - x, centerY - y);
+      var longWidth = (Math.random() - 0.5) * 22;
+      var shortWidth = (Math.random() - 0.5) * 14;
+      var x = Math.random() * (width - longWidth * 2) + longWidth;
+      var y = Math.random() * (height - longWidth * 2) + longWidth;
+      let alpha = Math.random() * 0.6;
+      // Stwórz obiekt gwiazdy i dodaj go do tablicy, na której będą wykonywane "metody" akcji
+      if (ctx)
+      {
+        this.LinesArray.push(new DrawLines(ctx, x, y, longWidth, shortWidth, 10, alpha, "white"));
+      }
     }
-
-    ctx.closePath();
-    ctx.strokeStyle = color;
-    ctx.stroke();
   }
 
   ngOnInit(): void
   {
-    const canvas = document.getElementById('TwinklingStars') as HTMLCanvasElement;
-    const background = document.getElementById('Background') as HTMLDivElement;
-    const ctx = canvas.getContext('2d');
+    this.background = document.getElementById('Background') as HTMLDivElement;
+    this.canvas = document.getElementById('TwinklingStars') as HTMLCanvasElement;
 
-    canvas.width = background.offsetWidth;
-    canvas.height = background.offsetHeight;
-    var starArray: any[] = [];
-    window.addEventListener('resize', () =>
+    this.DrawTwinklingStars(this.numberOfStars);
+
+    this.AnimateTwinklingStars();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any): void
+  {
+    this.DrawTwinklingStars(this.numberOfStars);
+  }
+
+  private AnimateTwinklingStars()
+  {
+    requestAnimationFrame(() => this.AnimateTwinklingStars());
+
+    var ctx = this.canvas.getContext('2d');
+    ctx?.clearRect(0, 0, this.background.offsetWidth, this.background.offsetHeight);
+    for (let i = 0; i < this.LinesArray.length; i++)
     {
-      const width = background.offsetWidth;
-      const height = background.offsetHeight;
-      if (ctx)
-      {
-        ctx.clearRect(0, 0, width, height);
-      }
-      for (let i = 0; i < 500; i++)
-      {
-        var longWidth = (Math.random() - 0.5) * 15;
-        var shortWidth = (Math.random() - 0.5) * 8;
-        var x = Math.random() * (width - longWidth * 2) + longWidth;
-        var y = Math.random() * (height - longWidth * 2) + longWidth;
-
-        // Draw a star
-        if (ctx)
-        {
-          this.drawLines(ctx, x, y, longWidth, shortWidth, 8, "white");
-          //starArray.push(lines);
-        }
-      }
-
-    });
+      this.LinesArray[i].UpdateAlphaValue();
+    }
   }
 }
-
-// class StarDrawer{
-//   constructor(ctx: CanvasRenderingContext2D, centerX: number, centerY: number, longWidth: number, shortWidth: number, numLines: number, color: string)
-//   {
-//     ctx.beginPath();
-//     ctx.lineWidth = 0.5;
-//     //Main Lines
-//     for (let i = 1; i < 3; i++)
-//     {
-//       const x = Math.cos((Math.PI / i)) * longWidth;
-//       const y = Math.sin((Math.PI / i)) * longWidth;
-//       ctx.moveTo(centerX, centerY);
-//       ctx.lineTo(centerX + x, centerY + y);
-//       ctx.moveTo(centerX, centerY);
-//       ctx.lineTo(centerX - x, centerY - y);
-//     }
-
-//     //Cross lines
-//     const angle = Math.PI / numLines;
-//     for (let i = 1; i < numLines; i++)
-//     {
-//       const x = Math.cos(angle * i) * shortWidth;
-//       const y = Math.sin(angle * i) * shortWidth;
-//       ctx.moveTo(centerX, centerY);
-//       ctx.lineTo(centerX + x, centerY + y);
-//       ctx.moveTo(centerX, centerY);
-//       ctx.lineTo(centerX - x, centerY - y);
-//     }
-
-//     ctx.closePath();
-//     ctx.strokeStyle = color;
-//     ctx.stroke();
-
-//   }
-// }
