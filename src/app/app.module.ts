@@ -8,7 +8,7 @@ import { HomeComponent } from './home/home.component';
 import { AboutMeComponent } from './about-me/about-me.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { ContactMeComponent } from './contact-me/contact-me.component';
-import { SectionsComponent } from './sections/SectionsComponent';
+import { SectionsComponent } from './sections/sections.component';
 
 const routes: Routes = [
   {
