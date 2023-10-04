@@ -9,25 +9,54 @@ import { DrawLines } from './DrawLines';
 
 export class SectionsComponent implements OnInit
 {
-  private frameCounter = 0;
-
-  LinesArray: Array<DrawLines> = [];
+  FallingLinesArray: Array<DrawLines> = [];
+  TwinklingLinesArray: Array<DrawLines> = [];
   background!: HTMLDivElement;
-  canvas!: HTMLCanvasElement;
-  numberOfStars: number = 750;
+  canvasFalling!: HTMLCanvasElement;
+  canvasTwinkling!: HTMLCanvasElement;
+  numberOfFallingStars: number = 10;
+  numberOfTwinklingStars: number = 500;
 
   constructor() { }
+
+  DrawFallingStars(numberOfFallingStars: number)
+  {
+    //Szerokością i wysokością jest szerokośći wysokość div'a Background
+    var ctx = this.canvasFalling.getContext('2d');
+    const width = this.background.offsetWidth;
+    const height = this.background.offsetHeight;
+    this.canvasFalling.width = width;
+    this.canvasFalling.height = height;
+
+    this.FallingLinesArray = [];
+
+    for (let i = 0; i < numberOfFallingStars; i++)
+    {
+      var longWidth = Math.random() * 10;
+      var shortWidth = Math.random() * 6;
+      var x = Math.random() * (width - longWidth * 2) + longWidth;
+      var y = Math.random() * (height - longWidth * 2) + longWidth;
+      let alpha = Math.random() * 0.6;
+      let trailXSpeed = Math.random() * 3.5 + 0.1;
+      let trailYSpeed = Math.random() * 3.5 + 0.1;
+      // Stwórz obiekt gwiazdy i dodaj go do tablicy, na której będą wykonywane "metody" akcji
+      if (ctx)
+      {
+        this.FallingLinesArray.push(new DrawLines(ctx, x, y, longWidth, shortWidth, 10, alpha, "white", trailXSpeed, trailYSpeed));
+      }
+    }
+  }
 
   DrawTwinklingStars(numberOfStars: number): void
   {
     //Szerokością i wysokością jest szerokośći wysokość div'a Background
-    var ctx = this.canvas.getContext('2d');
+    var ctx = this.canvasTwinkling.getContext('2d');
     const width = this.background.offsetWidth;
     const height = this.background.offsetHeight;
-    this.canvas.width = width;
-    this.canvas.height = height;
+    this.canvasTwinkling.width = width;
+    this.canvasTwinkling.height = height;
     //Wyczyść tablicę przy ponownym rysowaniu gwiazd
-    this.LinesArray = [];
+    this.TwinklingLinesArray = [];
 
     for (let i = 0; i < numberOfStars; i++)
     {
@@ -39,7 +68,7 @@ export class SectionsComponent implements OnInit
       // Stwórz obiekt gwiazdy i dodaj go do tablicy, na której będą wykonywane "metody" akcji
       if (ctx)
       {
-        this.LinesArray.push(new DrawLines(ctx, x, y, longWidth, shortWidth, 10, alpha, "white"));
+        this.TwinklingLinesArray.push(new DrawLines(ctx, x, y, longWidth, shortWidth, 10, alpha, "white"));
       }
     }
   }
@@ -47,28 +76,45 @@ export class SectionsComponent implements OnInit
   ngOnInit(): void
   {
     this.background = document.getElementById('Background') as HTMLDivElement;
-    this.canvas = document.getElementById('TwinklingStars') as HTMLCanvasElement;
+    this.canvasTwinkling = document.getElementById('TwinklingStars') as HTMLCanvasElement;
+    this.canvasFalling = document.getElementById('FallingStars') as HTMLCanvasElement;
 
-    this.DrawTwinklingStars(this.numberOfStars);
+    this.DrawTwinklingStars(this.numberOfTwinklingStars);
+    this.DrawFallingStars(this.numberOfFallingStars);
 
     this.AnimateTwinklingStars();
+    this.AnimateFallingStars();
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any): void
   {
-    this.DrawTwinklingStars(this.numberOfStars);
+    this.DrawTwinklingStars(this.numberOfTwinklingStars);
+    this.DrawFallingStars(this.numberOfFallingStars);
+  }
+
+  private AnimateFallingStars()
+  {
+    requestAnimationFrame(() => this.AnimateFallingStars());
+
+    var ctx = this.canvasFalling.getContext('2d');
+    ctx?.clearRect(0, 0, this.background.offsetWidth, this.background.offsetHeight);
+    for (let i = 0; i < this.FallingLinesArray.length; i++)
+    {
+      this.FallingLinesArray[i].UpdatePosition();
+      this.FallingLinesArray[i].UpdateAlphaValue();
+    }
   }
 
   private AnimateTwinklingStars()
   {
     requestAnimationFrame(() => this.AnimateTwinklingStars());
 
-    var ctx = this.canvas.getContext('2d');
+    var ctx = this.canvasTwinkling.getContext('2d');
     ctx?.clearRect(0, 0, this.background.offsetWidth, this.background.offsetHeight);
-    for (let i = 0; i < this.LinesArray.length; i++)
+    for (let i = 0; i < this.TwinklingLinesArray.length; i++)
     {
-      this.LinesArray[i].UpdateAlphaValue();
+      this.TwinklingLinesArray[i].UpdateAlphaValue();
     }
   }
 }
