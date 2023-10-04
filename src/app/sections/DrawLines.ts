@@ -7,13 +7,28 @@ export class DrawLines
   private centerY: number;
   private color: string;
   private ctx: CanvasRenderingContext2D;
+  private fallingDirection: number = 3;
+  //3 undefined
   private longWidth: number;
   private maxAlpha: number = 0.7;
   private minAlpha: number = 0.1;
   private numLines: number;
+  private positions: { x: number, y: number }[] = [];
   private shortWidth: number;
+  private trailOutside: number = 100;
+  private trailXSpeed: number;
+  private trailYSpeed: number;
 
-  constructor(ctx: CanvasRenderingContext2D, centerX: number, centerY: number, longWidth: number, shortWidth: number, numLines: number, alpha: number, color: string)
+  constructor(ctx: CanvasRenderingContext2D,
+    centerX: number,
+    centerY: number,
+    longWidth: number,
+    shortWidth: number,
+    numLines: number,
+    alpha: number,
+    color: string,
+    trailXSpeed: number = 0,
+    trailYSpeed: number = 0)
   {
     this.ctx = ctx;
     this.centerX = centerX;
@@ -24,6 +39,8 @@ export class DrawLines
     this.alpha = alpha;
     this.color = color;
     this.alphaDirection = Math.floor(Math.random());
+    this.trailXSpeed = trailXSpeed;
+    this.trailYSpeed = trailYSpeed;
   }
 
   public UpdateAlphaValue(): void
@@ -48,10 +65,40 @@ export class DrawLines
       this.alpha -= this.alphaFactor;
     }
 
-    this.Draw();
+    this.DrawStar();
   }
 
-  private Draw(): void
+  public UpdatePosition(): void
+  {
+    //Zmiana pozycji gwiazdy
+    if (this.fallingDirection != 2 && this.centerX > this.ctx.canvas.width / 2 || this.fallingDirection == 1)
+    {
+      this.fallingDirection = 1;
+      this.centerX = this.centerX - this.trailXSpeed;
+      this.centerY = this.centerY + this.trailYSpeed;
+    }
+    else if (this.fallingDirection != 1 && this.centerX < this.ctx.canvas.width / 2 || this.fallingDirection == 2)
+    {
+      this.fallingDirection = 2;
+      this.centerX = this.centerX + this.trailXSpeed;
+      this.centerY = this.centerY + this.trailYSpeed;
+    }
+
+    if (this.centerX < -this.trailOutside
+      || this.centerX > this.ctx.canvas.width + this.trailOutside
+      || this.centerY < -this.trailOutside
+      || this.centerY > this.ctx.canvas.height + this.trailOutside)
+    {
+      this.fallingDirection = 3;
+      this.centerX = Math.random() * (this.ctx.canvas.width - this.longWidth * 2) + this.longWidth;
+      this.centerY = Math.random() * (this.ctx.canvas.height - this.longWidth * 2) + this.longWidth;
+      this.positions = [];
+    }
+
+    this.DrawStarWithTrail();
+  }
+
+  private DrawStar(): void
   {
     this.ctx.beginPath();
     this.ctx.lineWidth = 0.5;
@@ -81,6 +128,32 @@ export class DrawLines
     }
 
     this.ctx.closePath();
+    this.ctx.strokeStyle = this.color;
+    this.ctx.stroke();
+  }
+
+  private DrawStarWithTrail(): void
+  {
+    this.DrawStar();
+
+    // Dodanie aktualnej pozycji do tablicy
+    this.positions.push({ x: this.centerX, y: this.centerY });
+
+    // Po osiągnięciu 60 rekordów usuń najstarszy z tablicy
+    if (this.positions.length > 60)
+    {
+      this.positions.shift();
+    }
+
+    // Narysuj ścieżkę z ostatnich 60 pozycji, co za tym idzie jak jakaś gwiazda będzie się poruszać szybciej to ślad będzie dłuższy
+    const prevPos = this.positions[0];
+
+    this.ctx.beginPath();
+    this.ctx.moveTo(prevPos.x, prevPos.y);
+    this.ctx.lineTo(this.centerX, this.centerY);
+    this.ctx.closePath();
+
+    this.ctx.lineWidth = 2;
     this.ctx.strokeStyle = this.color;
     this.ctx.stroke();
   }

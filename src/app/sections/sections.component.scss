@@ -5,6 +5,7 @@
 // }
 
 #Background {
+  position: relative;
   height: 500vh;
   width: 100%; // vw nie zadziała, doda horizontal scrollbar
   background: linear-gradient(
@@ -20,11 +21,9 @@
     #0a0f25,
     #000000
   );
-  // var(--a)
   -webkit-animation: gradient 30s linear infinite;
   -moz-animation: gradient 30s linear infinite;
   animation: gradient 30s linear infinite;
-  // animation: bgrotate 10s ease infinite;
   background-size: 200% 200%;
 }
 
@@ -62,4 +61,11 @@
   100% {
     background-position: 0% 50%;
   }
+}
+
+#TwinklingStars,
+#FallingStars {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
