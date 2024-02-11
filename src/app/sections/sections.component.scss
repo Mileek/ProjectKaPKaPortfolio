@@ -1,54 +1,32 @@
-// @property --a {
-//   syntax: "<angle>";
-//   inherits: false;
-//   initial-value: 45deg;
-// }
+$blue: rgb(12, 57, 78);
+$purple: rgb(48, 12, 78);
+$green: rgb(9, 65, 16);
+$purple2: #4c203d;
 
-#Background {
+$background: linear-gradient(
+  75deg,
+  #000000,
+  #0a0f25,
+  #161b36,
+  #10224d,
+  #1e2835,
+  #001023,
+  #061d37,
+  #172329,
+  #0a0f25,
+  #000000
+);
+
+.Background {
   position: relative;
-  height: 500vh;
-  width: 100%; // vw nie zadziała, doda horizontal scrollbar
-  background: linear-gradient(
-    75deg,
-    #000000,
-    #0a0f25,
-    #161b36,
-    #1e2831,
-    #1e2835,
-    #001023,
-    #061d37,
-    #172329,
-    #0a0f25,
-    #000000
-  );
-  -webkit-animation: gradient 30s linear infinite;
-  -moz-animation: gradient 30s linear infinite;
+  width: 100%;
+  height: 800vh;
+  overflow: hidden;
+  background: $background;
+  background-repeat: no-repeat;
   animation: gradient 30s linear infinite;
   background-size: 200% 200%;
-}
-
-@-webkit-keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-@-moz-keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  z-index: 1;
 }
 
 @keyframes gradient {
@@ -63,9 +41,101 @@
   }
 }
 
+// LIGHTS ==========
+.lights {
+  height: 100%;
+  width: 100%;
+}
+
+@mixin sharedBorealis {
+  position: absolute;
+  width: 8%;
+  height: 100%;
+  bottom: 0;
+  filter: blur(40px);
+  background: linear-gradient($green 40%, transparent);
+  opacity: 0.2;
+}
+
+.borealis:nth-of-type(1) {
+  @include sharedBorealis;
+  left: 2%;
+  animation: grow 40s ease-in-out infinite;
+}
+
+.borealis:nth-of-type(2) {
+  @include sharedBorealis;
+  background: radial-gradient($purple 40%, transparent);
+  left: 20%;
+  animation: grow 35s 10s ease-in-out infinite;
+}
+
+.borealis:nth-of-type(3) {
+  @include sharedBorealis;
+  left: 34%;
+  animation: grow 40s ease-in-out infinite;
+}
+
+.borealis:nth-of-type(4) {
+  @include sharedBorealis;
+  background: radial-gradient($purple 40%, transparent);
+  left: 60%;
+  animation: grow 30s 3s ease-in-out infinite;
+}
+
+.borealis:nth-of-type(5) {
+  @include sharedBorealis;
+  background: radial-gradient($purple2 40%, transparent);
+  left: 92%;
+  animation: grow 30s 8s ease-in-out infinite;
+}
+
+// ANIMATIONS ==========
+@keyframes grow {
+  50% {
+    width: 2%;
+    opacity: 0.05;
+  }
+}
+
+//Animations etc.
 #TwinklingStars,
 #FallingStars {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 2;
 }
+
+#Aurora {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+#Blackhole {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+}
+#BlackholeSatellite {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 6;
+}
+
+// #PhotoBackground {
+//   position: absolute;
+//   bottom: 0;
+//   left: 0;
+//   background-image: url("/assets/media/Night.png");
+//   background-size: contain;
+//   background-repeat: no-repeat;
+//   background-position: bottom;
+//   height: 250vh;
+//   width: 100%;
+//   z-index: 3;
+// }
