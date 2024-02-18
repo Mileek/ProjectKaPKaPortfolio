@@ -1,3 +1,10 @@
+
+interface Point
+{
+  x: number;
+  y: number;
+}
+
 export class DrawLines
 {
   private alpha: number;
@@ -6,20 +13,20 @@ export class DrawLines
   private centerX: number;
   private centerY: number;
   private color: string;
-  private ctx: CanvasRenderingContext2D;
+  private ctx: CanvasRenderingContext2D | null;
   private fallingDirection: number = 3;
   //3 undefined
   private longWidth: number;
   private maxAlpha: number = 0.7;
   private minAlpha: number = 0.1;
   private numLines: number;
-  private positions: { x: number, y: number }[] = [];
+  private positions: Point[] = [];
   private shortWidth: number;
   private trailOutside: number = 100;
   private trailXSpeed: number;
   private trailYSpeed: number;
 
-  constructor(ctx: CanvasRenderingContext2D,
+constructor(ctx: CanvasRenderingContext2D | null,
     centerX: number,
     centerY: number,
     longWidth: number,
@@ -68,8 +75,12 @@ export class DrawLines
     this.DrawStar();
   }
 
-  public UpdatePosition(): void
+  public UpdateFallingPosition(): void
   {
+    if (this.ctx == null)
+    {
+      return;
+    }
     //Zmiana pozycji gwiazdy
     if (this.fallingDirection != 2 && this.centerX > this.ctx.canvas.width / 2 || this.fallingDirection == 1)
     {
@@ -98,8 +109,21 @@ export class DrawLines
     this.DrawStarWithTrail();
   }
 
+  public getCenter(): Point {
+    return {x: this.centerX, y: this.centerY};
+  }
+
+  public setCenter(center: Point): void {
+    this.centerX = center.x;
+    this.centerY = center.y;
+  }
+
   private DrawStar(): void
   {
+    if (this.ctx == null)
+    {
+      return;
+    }
     this.ctx.beginPath();
     this.ctx.lineWidth = 0.5;
     this.ctx.globalAlpha = this.alpha;
@@ -134,6 +158,10 @@ export class DrawLines
 
   private DrawStarWithTrail(): void
   {
+    if (this.ctx == null)
+    {
+      return;
+    }
     this.DrawStar();
 
     // Dodanie aktualnej pozycji do tablicy
