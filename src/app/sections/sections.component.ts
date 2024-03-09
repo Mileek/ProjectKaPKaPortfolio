@@ -2,6 +2,8 @@ import { DrawBlackhole } from './DrawBlackhole';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { DrawLines } from './DrawLines';
 import { InteractionManager } from './InteractionManager';
+import { ImagesDealer } from './ImagesDealer';
+import { DrawBorealis as DrawNebulas } from './DrawBorealis';
 
 @Component({
   selector: 'app-sections',
@@ -11,9 +13,10 @@ import { InteractionManager } from './InteractionManager';
 
 export class SectionsComponent implements OnInit
 {
-  private BlackHoleHeight: number = 200;
-  private BlackHoleWidth: number = 200;
+  private BlackHoleHeight: number = 250;
+  private BlackHoleWidth: number = 250;
   private increasing: boolean = true;
+  private resizeTimeout: any;
 
   BSInteraction!: InteractionManager;
   FallingLinesArray: Array<DrawLines> = [];
@@ -34,8 +37,9 @@ export class SectionsComponent implements OnInit
     "White",
     "Gray",
   ]
+  imgGalaxies!: HTMLCanvasElement;
   isMouseOverBlackhole!: boolean;
-  numberOfFallingStars: number = 25;
+  numberOfFallingStars: number = 10;
   numberOfTwinklingStars: number = 1500;
   photoBackground!: HTMLDivElement;
   slideAnimation!: Animation;
@@ -48,6 +52,20 @@ export class SectionsComponent implements OnInit
   BlackholeStarsInteraction()
   {
     this.BSInteraction = new InteractionManager(this.blackhole, this.TwinklingLinesArray);
+  }
+
+  DealStaticWithImages()
+  {
+    //Do zastanowienia czy w ogóle chcę coś takiego
+    var ctx = this.imgGalaxies.getContext('2d');
+    this.imgGalaxies.width = this.background.offsetWidth;
+    this.imgGalaxies.height = this.background.offsetHeight;
+    if (ctx)
+    {
+      let galaxiesDealer = new ImagesDealer(ctx, this.imgGalaxies.width, this.imgGalaxies.height);
+      galaxiesDealer.CreateStaticImages();
+      ctx.clearRect(0, 0, this.background.offsetWidth, this.background.offsetHeight);
+    }
   }
 
   DrawBlackhole(): void
@@ -93,6 +111,39 @@ export class SectionsComponent implements OnInit
     }
   }
 
+  DrawNebulas()
+  {
+    let canvasBlue = document.getElementById(`NebulaBlue`) as HTMLCanvasElement;
+    let ctxBlue = canvasBlue.getContext('2d');
+
+    let canvasGreen = document.getElementById(`NebulaGreen`) as HTMLCanvasElement;
+    let ctxGreen = canvasGreen.getContext('2d');
+
+    let canvasPurple = document.getElementById(`NebulaPurple`) as HTMLCanvasElement;
+    let ctxPurple = canvasPurple.getContext('2d');
+
+    let canvasRed = document.getElementById(`NebulaRed`) as HTMLCanvasElement;
+    let ctxRed = canvasRed.getContext('2d');
+
+    canvasBlue.width = this.background.offsetWidth;
+    canvasBlue.height = this.background.offsetHeight;
+
+    canvasGreen.width = this.background.offsetWidth;
+    canvasGreen.height = this.background.offsetHeight;
+
+    canvasPurple.width = this.background.offsetWidth;
+    canvasPurple.height = this.background.offsetHeight;
+
+    canvasRed.width = this.background.offsetWidth;
+    canvasRed.height = this.background.offsetHeight;
+
+    if (ctxBlue && ctxGreen && ctxPurple && ctxRed)
+    {
+      let nebula = new DrawNebulas(ctxBlue, ctxGreen, ctxPurple, ctxRed, this.background.offsetWidth, this.background.offsetHeight);
+      nebula.drawAllColors();
+    }
+  }
+
   DrawTwinklingStar(): DrawLines
   {
     //Szerokością i wysokością jest szerokośći wysokość div'a Background
@@ -109,11 +160,10 @@ export class SectionsComponent implements OnInit
     // Stwórz obiekt gwiazdy i dodaj go do tablicy, na której będą wykonywane "metody" akcji
     if (ctx)
     {
-      this.TwinklingLinesArray.push(new DrawLines(ctx, x, y, longWidth, shortWidth, 10, alpha, color));
       return new DrawLines(ctx, x, y, longWidth, shortWidth, 10, alpha, color);
     }
-    console.error('Failed to get rendering context for canvas');
-    return new DrawLines(null, 0, 0, 0, 0, 0, 0, '');
+    console.log('Failed to get rendering context for canvas');
+    return null as any;
   }
 
   DrawTwinklingStars(numberOfStars: number): void
@@ -121,7 +171,7 @@ export class SectionsComponent implements OnInit
     //Szerokością i wysokością jest szerokośći wysokość div'a Background
     var ctx = this.canvasTwinkling.getContext('2d');
     const width = this.background.offsetWidth;
-    const height = this.background.offsetHeight;
+    const height = this.background.offsetHeight + 1000;
     this.canvasTwinkling.width = width;
     this.canvasTwinkling.height = height;
     //Wyczyść tablicę przy ponownym rysowaniu gwiazd
@@ -154,21 +204,12 @@ export class SectionsComponent implements OnInit
     this.canvasBlackhole = document.getElementById('Blackhole') as HTMLCanvasElement;
     this.canvasTwinkling = document.getElementById('TwinklingStars') as HTMLCanvasElement;
     this.canvasFalling = document.getElementById('FallingStars') as HTMLCanvasElement;
-    this.canvasAurora = document.getElementById('Aurora') as HTMLCanvasElement;
-
-    this.slideAnimation = this.createSlideAnimation();
-    this.slideAnimationPosition = 0;
-
-    const position = localStorage.getItem('slideAnimationPosition');
-    if (position)
-    {
-      this.slideAnimationPosition = parseFloat(position);
-      this.slideAnimation.currentTime = this.slideAnimationPosition as number;
-    }
+    this.imgGalaxies = document.getElementById('Galaxies') as HTMLCanvasElement;
     //Draw
     this.DrawBlackhole();
     this.DrawTwinklingStars(this.numberOfTwinklingStars);
     this.DrawFallingStars(this.numberOfFallingStars);
+    this.DrawNebulas();
     //Create Interactions
     this.BlackholeStarsInteraction();
     //Animate
@@ -179,6 +220,8 @@ export class SectionsComponent implements OnInit
     //Intervals
     this.AngleInterval();
     this.SizeInterval();
+    //ImgDealer
+    this.DealStaticWithImages();
   }
 
   @HostListener('mousemove', ['$event'])
@@ -192,17 +235,16 @@ export class SectionsComponent implements OnInit
   @HostListener('window:resize', ['$event'])
   onResize(event: any): void
   {
-    this.DrawBlackhole();
-    this.DrawTwinklingStars(this.numberOfTwinklingStars);
-    this.DrawFallingStars(this.numberOfFallingStars);
-    this.BlackholeStarsInteraction();
-  }
+    clearTimeout(this.resizeTimeout);
 
-  @HostListener('window:beforeunload')
-  saveSlideAnimationPosition(): void
-  {
-    this.slideAnimationPosition = this.slideAnimation.currentTime as number;
-    localStorage.setItem('slideAnimationPosition', this.slideAnimationPosition.toString());
+    this.resizeTimeout = setTimeout(() =>
+    {
+      this.DrawBlackhole();
+      this.DrawTwinklingStars(this.numberOfTwinklingStars);
+      this.DrawFallingStars(this.numberOfFallingStars);
+      this.BlackholeStarsInteraction();
+      this.DrawNebulas();
+    }, 250); // Czas debouncingu
   }
 
   private AngleInterval(): void
@@ -304,15 +346,5 @@ export class SectionsComponent implements OnInit
         this.blackhole.ReturnToOrginalSize();
       }
     }, 200);
-  }
-
-  private createSlideAnimation(): Animation
-  {
-    const lights = document.getElementById('lights') as HTMLDivElement;
-    const slideAnimation = lights.animate(
-      { transform: ['translate(-2%)', 'translate(5%)', 'translate(-2%)'] },
-      { duration: 15000, easing: 'linear', iterations: Infinity }
-    );
-    return slideAnimation;
   }
 }

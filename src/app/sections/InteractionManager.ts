@@ -16,7 +16,6 @@ export class InteractionManager
 
   public MoveStarsToBlackhole()
   {
-    //let center = this.blackhole.GetBlackholeCenterPoint();
     let starsToRemove = [];
     for (let i = 0; i < this.drawLines.length; i++)
     {
@@ -62,14 +61,14 @@ export class InteractionManager
       if (this.blackhole.IsPointInEllipse(currentPosition.x, currentPosition.y))
       {
         this.ReGenerateStar++;
-        starsToRemove.push(i);
+        starsToRemove.unshift(i);
       }
     }
 
     // Usuń gwiazdy, które dotarły do środka
-    for (let i = starsToRemove.length - 1; i >= 0; i--)
+    for (let i of starsToRemove)
     {
-      this.drawLines.splice(starsToRemove[i], 1);
+      this.drawLines.splice(i, 1);
     }
   }
 
