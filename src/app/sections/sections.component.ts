@@ -4,6 +4,7 @@ import { DrawLines } from './DrawLines';
 import { InteractionManager } from './InteractionManager';
 import { ImagesDealer } from './ImagesDealer';
 import { DrawBorealis as DrawNebulas } from './DrawBorealis';
+import { SvgIconRegistryService } from 'angular-svg-icon';
 
 @Component({
   selector: 'app-sections',
@@ -27,6 +28,7 @@ export class SectionsComponent implements OnInit
   canvasAurora!: HTMLCanvasElement;
   canvasBlackhole!: HTMLCanvasElement;
   canvasFalling!: HTMLCanvasElement;
+  canvasFloatingObjects!: HTMLCanvasElement;
   canvasTwinkling!: HTMLCanvasElement;
   colorArray: string[] = [
     "White",
@@ -37,6 +39,7 @@ export class SectionsComponent implements OnInit
     "White",
     "Gray",
   ]
+  galaxiesDealer!: ImagesDealer;
   imgGalaxies!: HTMLCanvasElement;
   isMouseOverBlackhole!: boolean;
   numberOfFallingStars: number = 10;
@@ -45,8 +48,16 @@ export class SectionsComponent implements OnInit
   slideAnimation!: Animation;
   slideAnimationPosition!: number;
 
-  constructor()
+  constructor(private iconReg: SvgIconRegistryService)
   {
+  }
+
+  AnimateFloatingObjects()
+  {
+    requestAnimationFrame(() => this.AnimateFloatingObjects());
+    const width = this.background.offsetWidth;
+    const height = this.background.offsetHeight;
+    this.galaxiesDealer.Update(width, height);
   }
 
   BlackholeStarsInteraction()
@@ -57,15 +68,15 @@ export class SectionsComponent implements OnInit
   DealStaticWithImages()
   {
     //Do zastanowienia czy w ogóle chcę coś takiego
-    var ctx = this.imgGalaxies.getContext('2d');
-    this.imgGalaxies.width = this.background.offsetWidth;
-    this.imgGalaxies.height = this.background.offsetHeight;
-    if (ctx)
-    {
-      let galaxiesDealer = new ImagesDealer(ctx, this.imgGalaxies.width, this.imgGalaxies.height);
-      galaxiesDealer.CreateStaticImages();
-      ctx.clearRect(0, 0, this.background.offsetWidth, this.background.offsetHeight);
-    }
+    // var ctx = this.imgGalaxies.getContext('2d');
+    // this.imgGalaxies.width = this.background.offsetWidth;
+    // this.imgGalaxies.height = this.background.offsetHeight;
+    // if (ctx)
+    // {
+    //   let galaxiesDealer = new ImagesDealer(ctx, this.imgGalaxies.width, this.imgGalaxies.height);
+    //   galaxiesDealer.CreateStaticImages();
+    //   ctx.clearRect(0, 0, this.background.offsetWidth, this.background.offsetHeight);
+    // }
   }
 
   DrawBlackhole(): void
@@ -108,6 +119,21 @@ export class SectionsComponent implements OnInit
       {
         this.FallingLinesArray.push(new DrawLines(ctx, x, y, longWidth, shortWidth, 10, alpha, color, trailXSpeed, trailYSpeed));
       }
+    }
+  }
+
+  DrawFloatingObjects()
+  {
+    var ctx = this.canvasFloatingObjects.getContext('2d');
+    const width = this.background.offsetWidth;
+    const height = this.background.offsetHeight;
+    this.canvasFloatingObjects.width = width * 2;
+    this.canvasFloatingObjects.height = height * 2;
+
+    if (ctx)
+    {
+      this.galaxiesDealer = new ImagesDealer(ctx, this.canvasFloatingObjects.width, this.canvasFloatingObjects.height);
+      this.galaxiesDealer.DrawDynamicImages();
     }
   }
 
@@ -205,11 +231,14 @@ export class SectionsComponent implements OnInit
     this.canvasTwinkling = document.getElementById('TwinklingStars') as HTMLCanvasElement;
     this.canvasFalling = document.getElementById('FallingStars') as HTMLCanvasElement;
     this.imgGalaxies = document.getElementById('Galaxies') as HTMLCanvasElement;
+    this.canvasFloatingObjects = document.getElementById('FloatingObjects') as HTMLCanvasElement;
+
     //Draw
     this.DrawBlackhole();
     this.DrawTwinklingStars(this.numberOfTwinklingStars);
     this.DrawFallingStars(this.numberOfFallingStars);
     this.DrawNebulas();
+    this.DrawFloatingObjects();
     //Create Interactions
     this.BlackholeStarsInteraction();
     //Animate
@@ -217,6 +246,7 @@ export class SectionsComponent implements OnInit
     this.AnimateFallingStars();
     this.AnimateBlackhole();
     this.AnimateInteraction();
+    this.AnimateFloatingObjects();
     //Intervals
     this.AngleInterval();
     this.SizeInterval();

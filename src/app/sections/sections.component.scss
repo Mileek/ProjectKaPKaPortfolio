@@ -17,7 +17,7 @@ $background: linear-gradient(
   #000000
 );
 
-.Background {
+#Background {
   position: relative;
   width: 100%;
   height: 800vh;
@@ -40,69 +40,6 @@ $background: linear-gradient(
     background-position: 0% 50%;
   }
 }
-#NebulaBlue,
-#NebulaGreen,
-#NebulaPurple,
-#NebulaRed {
-  position: absolute;
-  z-index: 2;
-}
-// LIGHTS ==========
-// #lights {
-//   height: 100%;
-//   width: 100%;
-// }
-
-// @mixin sharedBorealis {
-//   position: absolute;
-//   width: 8%;
-//   height: 100%;
-//   bottom: 0;
-//   filter: blur(40px);
-//   background: linear-gradient($green 40%, transparent);
-//   opacity: 0.2;
-// }
-
-// .borealis:nth-of-type(1) {
-//   @include sharedBorealis;
-//   left: 2%;
-//   animation: grow 40s ease-in-out infinite;
-// }
-
-// .borealis:nth-of-type(2) {
-//   @include sharedBorealis;
-//   background: radial-gradient($purple 40%, transparent);
-//   left: 20%;
-//   animation: grow 35s 10s ease-in-out infinite;
-// }
-
-// .borealis:nth-of-type(3) {
-//   @include sharedBorealis;
-//   left: 34%;
-//   animation: grow 40s ease-in-out infinite;
-// }
-
-// .borealis:nth-of-type(4) {
-//   @include sharedBorealis;
-//   background: radial-gradient($purple 40%, transparent);
-//   left: 60%;
-//   animation: grow 30s 3s ease-in-out infinite;
-// }
-
-// .borealis:nth-of-type(5) {
-//   @include sharedBorealis;
-//   background: radial-gradient($purple2 40%, transparent);
-//   left: 92%;
-//   animation: grow 30s 8s ease-in-out infinite;
-// }
-
-// // ANIMATIONS ==========
-// @keyframes grow {
-//   50% {
-//     width: 2%;
-//     opacity: 0.05;
-//   }
-// }
 
 //Animations etc.
 #TwinklingStars,
@@ -130,7 +67,22 @@ $background: linear-gradient(
   z-index: 5;
 }
 
+#NebulaBlue,
+#NebulaGreen,
+#NebulaPurple,
+#NebulaRed {
+  position: absolute;
+  z-index: 2;
+}
+
+#FloatingObjects {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+}
+
 #Galaxies {
-  position: relative;
+  position: absolute;
   z-index: 2;
 }
