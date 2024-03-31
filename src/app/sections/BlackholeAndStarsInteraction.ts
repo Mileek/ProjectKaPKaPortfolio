@@ -1,7 +1,7 @@
 import { DrawBlackhole } from './DrawBlackhole';
 import { DrawLines } from './DrawLines';
 
-export class InteractionManager
+export class BlackholeAndStarsInteraction
 {
   private blackhole: DrawBlackhole;
   private drawLines: DrawLines[];

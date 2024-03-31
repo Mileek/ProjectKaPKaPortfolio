@@ -1,7 +1,7 @@
 import { DrawBlackhole } from './DrawBlackhole';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { DrawLines } from './DrawLines';
-import { InteractionManager } from './InteractionManager';
+import { BlackholeAndStarsInteraction } from './BlackholeAndStarsInteraction';
 import { ImagesDealer } from './ImagesDealer';
 import { DrawBorealis as DrawNebulas } from './DrawBorealis';
 import { SvgIconRegistryService } from 'angular-svg-icon';
@@ -19,7 +19,7 @@ export class SectionsComponent implements OnInit
   private increasing: boolean = true;
   private resizeTimeout: any;
 
-  BSInteraction!: InteractionManager;
+  BSInteraction!: BlackholeAndStarsInteraction;
   FallingLinesArray: Array<DrawLines> = [];
   TwinklingLinesArray: Array<DrawLines> = [];
   background!: HTMLDivElement;
@@ -39,10 +39,14 @@ export class SectionsComponent implements OnInit
     "White",
     "Gray",
   ]
+  fps: number = 0;
+  frameCount: number = 0;
   galaxiesDealer!: ImagesDealer;
   imgGalaxies!: HTMLCanvasElement;
   isMouseOverBlackhole!: boolean;
+  lastUpdateTime: number = 0;
   numberOfFallingStars: number = 10;
+  numberOfMeteors = 8;
   numberOfTwinklingStars: number = 1500;
   photoBackground!: HTMLDivElement;
   slideAnimation!: Animation;
@@ -62,21 +66,7 @@ export class SectionsComponent implements OnInit
 
   BlackholeStarsInteraction()
   {
-    this.BSInteraction = new InteractionManager(this.blackhole, this.TwinklingLinesArray);
-  }
-
-  DealStaticWithImages()
-  {
-    //Do zastanowienia czy w ogóle chcę coś takiego
-    // var ctx = this.imgGalaxies.getContext('2d');
-    // this.imgGalaxies.width = this.background.offsetWidth;
-    // this.imgGalaxies.height = this.background.offsetHeight;
-    // if (ctx)
-    // {
-    //   let galaxiesDealer = new ImagesDealer(ctx, this.imgGalaxies.width, this.imgGalaxies.height);
-    //   galaxiesDealer.CreateStaticImages();
-    //   ctx.clearRect(0, 0, this.background.offsetWidth, this.background.offsetHeight);
-    // }
+    this.BSInteraction = new BlackholeAndStarsInteraction(this.blackhole, this.TwinklingLinesArray);
   }
 
   DrawBlackhole(): void
@@ -91,6 +81,22 @@ export class SectionsComponent implements OnInit
     {
       this.blackhole = new DrawBlackhole(ctx, this.BlackHoleWidth, this.BlackHoleHeight, this.canvasBlackhole.width / 2, 400);
     }
+  }
+
+  DrawFPS()
+  {
+    const now = performance.now();
+    const delta = now - this.lastUpdateTime;
+
+    if (delta > 1000)
+    {
+      this.fps = this.frameCount;
+      this.frameCount = 0;
+      this.lastUpdateTime = now;
+    }
+
+    this.frameCount++;
+    requestAnimationFrame(() => this.DrawFPS());
   }
 
   DrawFallingStars(numberOfFallingStars: number)
@@ -132,7 +138,7 @@ export class SectionsComponent implements OnInit
 
     if (ctx)
     {
-      this.galaxiesDealer = new ImagesDealer(ctx, this.canvasFloatingObjects.width, this.canvasFloatingObjects.height);
+      this.galaxiesDealer = new ImagesDealer(ctx, this.canvasFloatingObjects.width, this.canvasFloatingObjects.height, this.numberOfMeteors);
       this.galaxiesDealer.DrawDynamicImages();
     }
   }
@@ -203,20 +209,27 @@ export class SectionsComponent implements OnInit
     //Wyczyść tablicę przy ponownym rysowaniu gwiazd
     this.TwinklingLinesArray = [];
 
-    for (let i = 0; i < numberOfStars; i++)
+    let i = 0;
+    const drawStar = () =>
     {
-      var color = this.colorArray[Math.floor(Math.random() * this.colorArray.length)];
-      var longWidth = (Math.random() - 0.5) * 22;
-      var shortWidth = (Math.random() - 0.5) * 14;
-      var x = Math.random() * (width - longWidth * 2) + longWidth;
-      var y = Math.random() * (height - longWidth * 2) + longWidth;
-      let alpha = Math.random() * 0.6;
-      // Stwórz obiekt gwiazdy i dodaj go do tablicy, na której będą wykonywane "metody" akcji
-      if (ctx)
+      if (i < numberOfStars)
       {
-        this.TwinklingLinesArray.push(new DrawLines(ctx, x, y, longWidth, shortWidth, 10, alpha, color));
+        var color = this.colorArray[Math.floor(Math.random() * this.colorArray.length)];
+        var longWidth = (Math.random() - 0.5) * 22;
+        var shortWidth = (Math.random() - 0.5) * 14;
+        var x = Math.random() * (width - longWidth * 2) + longWidth;
+        var y = Math.random() * (height - longWidth * 2) + longWidth;
+        let alpha = Math.random() * 0.6;
+        // Stwórz obiekt gwiazdy i dodaj go do tablicy, na której będą wykonywane "metody" akcji
+        if (ctx)
+        {
+          this.TwinklingLinesArray.push(new DrawLines(ctx, x, y, longWidth, shortWidth, 10, alpha, color));
+        }
+        i++;
+        setTimeout(drawStar, 10); // Wywołaj drawStar co 10 ms
       }
-    }
+    };
+    drawStar();
   }
 
   ngOnDestroy(): void
@@ -232,6 +245,9 @@ export class SectionsComponent implements OnInit
     this.canvasFalling = document.getElementById('FallingStars') as HTMLCanvasElement;
     this.imgGalaxies = document.getElementById('Galaxies') as HTMLCanvasElement;
     this.canvasFloatingObjects = document.getElementById('FloatingObjects') as HTMLCanvasElement;
+
+    //Draw FPS
+    this.DrawFPS();
 
     //Draw
     this.DrawBlackhole();
@@ -250,8 +266,14 @@ export class SectionsComponent implements OnInit
     //Intervals
     this.AngleInterval();
     this.SizeInterval();
-    //ImgDealer
-    this.DealStaticWithImages();
+  }
+
+  @HostListener('mousedown', ['$event'])
+  onMouseDown(event: MouseEvent): void
+  {
+    var mouseX = event.clientX - this.canvasBlackhole.getBoundingClientRect().left;
+    var mouseY = event.clientY - this.canvasBlackhole.getBoundingClientRect().top;
+    this.galaxiesDealer.MeteorInteractionMouseDown(mouseX, mouseY);
   }
 
   @HostListener('mousemove', ['$event'])
@@ -260,6 +282,15 @@ export class SectionsComponent implements OnInit
     var mouseX = event.clientX - this.canvasBlackhole.getBoundingClientRect().left;
     var mouseY = event.clientY - this.canvasBlackhole.getBoundingClientRect().top;
     this.isMouseOverBlackhole = this.blackhole.IsPointInEllipse(mouseX, mouseY);
+    this.galaxiesDealer.SetMousePosition(mouseX, mouseY);
+  }
+
+  @HostListener('mouseup', ['$event'])
+  onMouseUp(event: MouseEvent): void
+  {
+    var mouseX = event.clientX - this.canvasBlackhole.getBoundingClientRect().left;
+    var mouseY = event.clientY - this.canvasBlackhole.getBoundingClientRect().top;
+    this.galaxiesDealer.MeteorInteractionMouseUp(mouseX, mouseY);
   }
 
   @HostListener('window:resize', ['$event'])
