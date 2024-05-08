@@ -52,7 +52,7 @@ export class BlackholeAndStarsInteraction
       else
       {
         // Aktualizuj pozycję
-        let speedLinear = 0.5; // Ustaw na odpowiednią wartość
+        let speedLinear = 0.02;
         currentPosition.x += direction.x * speedLinear;
         currentPosition.y += direction.y * speedLinear;
       }

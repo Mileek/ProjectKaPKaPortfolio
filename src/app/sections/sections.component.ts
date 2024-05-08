@@ -47,7 +47,7 @@ export class SectionsComponent implements OnInit
   lastUpdateTime: number = 0;
   numberOfFallingStars: number = 10;
   numberOfMeteors = 8;
-  numberOfTwinklingStars: number = 1500;
+  numberOfTwinklingStars: number = 1300;
   photoBackground!: HTMLDivElement;
   slideAnimation!: Animation;
   slideAnimationPosition!: number;
@@ -261,7 +261,7 @@ export class SectionsComponent implements OnInit
     this.AnimateTwinklingStars();
     this.AnimateFallingStars();
     this.AnimateBlackhole();
-    this.AnimateInteraction();
+    this.AnimateBlackholeAndStarsInteraction();
     this.AnimateFloatingObjects();
     //Intervals
     this.AngleInterval();
@@ -338,6 +338,21 @@ export class SectionsComponent implements OnInit
     }
   }
 
+  private AnimateBlackholeAndStarsInteraction()
+  {
+    requestAnimationFrame(() => this.AnimateBlackholeAndStarsInteraction());
+
+    this.BSInteraction.MoveStarsToBlackhole();
+    if (this.BSInteraction.ReGenerateStar > 0)
+    {
+      for (let i = 0; i < this.BSInteraction.ReGenerateStar; i++)
+      {
+        this.BSInteraction.addStar(this.DrawTwinklingStar());
+      }
+      this.BSInteraction.ReGenerateStar = 0;
+    }
+  }
+
   private AnimateFallingStars()
   {
     requestAnimationFrame(() => this.AnimateFallingStars());
@@ -348,21 +363,6 @@ export class SectionsComponent implements OnInit
     {
       this.FallingLinesArray[i].UpdateFallingPosition();
       this.FallingLinesArray[i].UpdateAlphaValue();
-    }
-  }
-
-  private AnimateInteraction()
-  {
-    requestAnimationFrame(() => this.AnimateInteraction());
-
-    this.BSInteraction.MoveStarsToBlackhole();
-    if (this.BSInteraction.ReGenerateStar > 0)
-    {
-      for (let i = 0; i < this.BSInteraction.ReGenerateStar; i++)
-      {
-        this.BSInteraction.addStar(this.DrawTwinklingStar());
-      }
-      this.BSInteraction.ReGenerateStar = 0;
     }
   }
 
