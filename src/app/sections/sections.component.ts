@@ -386,16 +386,16 @@ export class SectionsComponent implements OnInit
       {
         if (this.increasing)
         {
-          this.blackhole.sizeIncrement += 0.02;
-          if (this.blackhole.sizeIncrement >= 0.2) // If reached the upper limit, switch direction
+          this.blackhole.mouseOnSizeIncrement += 0.02;
+          if (this.blackhole.mouseOnSizeIncrement >= 0.2) // If reached the upper limit, switch direction
           {
             this.increasing = false;
           }
         }
         else
         {
-          this.blackhole.sizeIncrement -= 0.02;
-          if (this.blackhole.sizeIncrement <= -0.2) // If reached the lower limit, switch direction
+          this.blackhole.mouseOnSizeIncrement -= 0.02;
+          if (this.blackhole.mouseOnSizeIncrement <= -0.2) // If reached the lower limit, switch direction
           {
             this.increasing = true;
           }
@@ -403,7 +403,7 @@ export class SectionsComponent implements OnInit
       }
       else
       {
-        this.blackhole.sizeIncrement = 0;
+        this.blackhole.mouseOnSizeIncrement = 0;
         this.blackhole.ReturnToOrginalSize();
       }
     }, 200);

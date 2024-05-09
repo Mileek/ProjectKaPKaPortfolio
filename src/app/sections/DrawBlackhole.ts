@@ -14,25 +14,34 @@ export class DrawBlackhole
   private centerOffsetX: number;
   private centerOffsetY: number;
   private height: number;
+  private isReachedHeight: boolean = false;
+  private isReachedWidth: boolean = false;
   private orginalHeight: number;
   private orginalWidth: number;
   private width: number;
 
   public angleIncrement: number;
+  public birthSizeIncrement: number = 2.2;
+  //pewnie default będzie 0.2 lub mniej
   ctx: CanvasRenderingContext2D;
-  public sizeIncrement: number;
+  defaultHeight: number;
+  defaultWidth: number;
+  public mouseOnSizeIncrement: number = 0;
 
-  constructor(ctx: CanvasRenderingContext2D, width: number, height: number, centerOffsetX: number, centerOffsetY: number, angleIncrement: number = 0.005, sizeIncrement: number = 0)
+  constructor(ctx: CanvasRenderingContext2D, width: number, height: number,
+    centerOffsetX: number, centerOffsetY: number,
+    angleIncrement: number = 0.005)
   {
     this.ctx = ctx;
-    this.width = width;
-    this.height = height;
+    this.defaultWidth = width;
+    this.width = 0;
+    this.defaultHeight = height;
+    this.height = 0;
     this.centerOffsetX = centerOffsetX;
     this.centerOffsetY = centerOffsetY;
     this.orginalWidth = width;
     this.orginalHeight = height;
     this.angleIncrement = angleIncrement;
-    this.sizeIncrement = sizeIncrement;
   }
 
   public AnimateBlackholeElements(): void
@@ -49,10 +58,31 @@ export class DrawBlackhole
     this.drawHalo();
     //Draw blurry effect
     this.drawBlurryEffect();
+
+    //test?:
+    this.drawSmallerRing();
+
     // Update the angle for the next frame
     this.angle += this.angleIncrement;
-    this.width += this.sizeIncrement;
-    this.height += this.sizeIncrement;
+    if (this.height < this.defaultHeight && !this.isReachedHeight)
+    {
+      this.height += this.birthSizeIncrement;
+    }
+    else
+    {
+      this.isReachedHeight = true;
+    }
+
+    if (this.width < this.defaultWidth && !this.isReachedWidth)
+    {
+      this.width += this.birthSizeIncrement;
+    }
+    else
+    {
+      this.isReachedWidth = true;
+    }
+    this.width += this.mouseOnSizeIncrement;
+    this.height += this.mouseOnSizeIncrement;
   }
 
   public GetBlackholeCenterPoint(): Point
@@ -221,6 +251,25 @@ export class DrawBlackhole
     this.ctx.fill();
     this.ctx.stroke();
 
+    this.resetContext();
+  }
+
+  private drawSmallerRing(): void
+  {
+    const posX = this.blackholeRadius * Math.cos(this.angle) + this.centerOffsetX;
+    const posY = this.blackholeRadius * Math.sin(this.angle) + this.centerOffsetY;
+
+    this.ctx.beginPath();
+    this.ctx.ellipse(posX, posY, 15, 15, 0, 0, 2 * Math.PI, false);
+    this.ctx.fillStyle = "transparent";
+    this.ctx.fill();
+    this.ctx.lineWidth = 5;
+    this.ctx.strokeStyle = '#FFFFFF';
+    this.ctx.lineCap = "round";
+    this.ctx.filter = "blur(5px)";
+    this.ctx.stroke();
+
+    // Reset the context settings to their defaults
     this.resetContext();
   }
 
