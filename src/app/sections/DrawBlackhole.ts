@@ -73,6 +73,8 @@ export class DrawBlackhole
     this.drawBlurryEffect();
     //Draw smaller Ring around blackhole
     this.drawSmallerRing();
+    //Bending Init
+    this.drawBending();
 
     // Update the angle for the next frame
     this.angle += this.angleIncrement;
@@ -95,7 +97,7 @@ export class DrawBlackhole
     }
     this.width += this.mouseOnSizeIncrement;
     this.height += this.mouseOnSizeIncrement;
-    this.gravitionalPull = (this.width / this.defaultWidth) * (this.height / this.defaultHeight) * this.maxGravitionalPull;  
+    this.gravitionalPull = (this.width / this.defaultWidth) * (this.height / this.defaultHeight) * this.maxGravitionalPull;
   }
 
   public GetBlackholeCenterPoint(): Point
@@ -159,6 +161,28 @@ export class DrawBlackhole
     return this.height - subtractCoeff < 0 || this.width - subtractCoeff < 0;
   }
 
+  private drawBending(): void
+  {
+    const posX = this.blackholeRadius + this.centerOffsetX;
+    const posY = this.blackholeRadius + this.centerOffsetY - 50;
+
+    // Create gradient
+    let gradient = this.ctx.createRadialGradient(posX, posY, 0, posX, posY, 40);
+    gradient.addColorStop(1, '#FF6D00');
+    gradient.addColorStop(0, '#FFFFFF');
+
+    // Draw the first satellite
+    this.ctx.beginPath();
+    this.ctx.ellipse(posX, posY, this.width * 1.6, 30, 0, 0, 2 * Math.PI, false);
+    this.ctx.fillStyle = gradient;
+    this.ctx.filter = "blur(8px)";
+    this.ctx.globalAlpha = 0.5;
+    this.ctx.fill();
+    this.ctx.stroke();
+
+    this.resetContext();
+  }
+
   private drawBlackhole(): void
   {
     const posX = this.blackholeRadius * Math.cos(this.angle) + this.centerOffsetX;
@@ -180,9 +204,9 @@ export class DrawBlackhole
 
     this.ctx.beginPath();
     this.ctx.ellipse(posX, posY, this.width + 100, this.height + 100, 0, 0, 2 * Math.PI, true);
-    this.ctx.fillStyle = '#FABE3A';
-    this.ctx.filter = "blur(10px)";
-    this.ctx.globalAlpha = 0.03;
+    this.ctx.fillStyle = '#0B3D91';
+    this.ctx.filter = "blur(5px)";
+    this.ctx.globalAlpha = 0.05;
     this.ctx.fill();
     this.ctx.stroke();
 
@@ -216,16 +240,17 @@ export class DrawBlackhole
     const posXHalo = this.width * Math.cos(1.6 * Math.PI) + this.centerOffsetX;
     const posYHalo = this.height * Math.sin(1.6 * Math.PI) + this.centerOffsetY;
 
-    let gradient = this.ctx.createRadialGradient(posXHalo, posYHalo, 0, posXHalo, posYHalo, 40);
-    gradient.addColorStop(1, '#FABE3A');
-    gradient.addColorStop(0, '#FFFFFF');
+    // let gradient = this.ctx.createRadialGradient(posXHalo, posYHalo, 0, posXHalo, posYHalo, 40);
+    // gradient.addColorStop(1, '#FABE3A');
+    // gradient.addColorStop(0, '#FFFFFF');
 
     // Draw Halo
     this.ctx.beginPath();
     this.ctx.arc(posXHalo, posYHalo, this.height * 0.8, 0, 3 * Math.PI, false); // Half the radius
-    this.ctx.fillStyle = gradient; // Use the same gradient or create a new one
-    this.ctx.filter = "blur(10px)"; // Half the blur
-    this.ctx.globalAlpha = 0.04;
+    //this.ctx.fillStyle = gradient; // Use the same gradient or create a new one
+    this.ctx.fillStyle = '#114B5F';
+    this.ctx.filter = "blur(6px)"; // Half the blur
+    this.ctx.globalAlpha = 0.1;
     this.ctx.globalCompositeOperation = "destination-over";
     this.ctx.fill();
     this.ctx.stroke();
@@ -242,10 +267,16 @@ export class DrawBlackhole
     this.ctx.ellipse(posX, posY, this.width, this.height, 0, 0, 2 * Math.PI, false);
     this.ctx.fillStyle = "transparent";
     this.ctx.fill();
+
+    // Create a linear gradient
+    let gradient = this.ctx.createLinearGradient(posX, posY - this.height, posX, posY + this.height);
+    gradient.addColorStop(0.5, '#A42A0B'); // Color at the top
+    gradient.addColorStop(1, '#CC5800'); // Slightly lighter color at the bottom
+
     this.ctx.lineWidth = 45;
-    this.ctx.strokeStyle = '#A42A0B';
+    this.ctx.strokeStyle = gradient; // Use the gradient as the stroke style
     this.ctx.lineCap = "round";
-    this.ctx.filter = "blur(20px)";
+    this.ctx.filter = "blur(12px)";
     this.ctx.stroke();
 
     // Reset the context settings to their defaults
@@ -275,7 +306,7 @@ export class DrawBlackhole
 
   private drawSmallerRing(): void
   {
-    const subtractCoeff = 40;
+    const subtractCoeff = 45;
     if (this.IsSmallerRingNegative(subtractCoeff))
     {
       return;
@@ -293,7 +324,7 @@ export class DrawBlackhole
     this.ctx.lineWidth = 5;
     this.ctx.strokeStyle = '#FFFFFF';
     this.ctx.lineCap = "round";
-    this.ctx.filter = "blur(12px)";
+    this.ctx.filter = "blur(8px)";
     this.ctx.stroke();
 
     // Reset the context settings to their defaults
