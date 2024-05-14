@@ -52,7 +52,7 @@ export class BlackholeAndStarsInteraction
       else
       {
         // Aktualizuj pozycję
-        let speedLinear = 0.02;
+        let speedLinear = this.blackhole.gravitionalPull;
         currentPosition.x += direction.x * speedLinear;
         currentPosition.y += direction.y * speedLinear;
       }

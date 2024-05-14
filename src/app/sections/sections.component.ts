@@ -200,36 +200,41 @@ export class SectionsComponent implements OnInit
 
   DrawTwinklingStars(numberOfStars: number): void
   {
-    //Szerokością i wysokością jest szerokośći wysokość div'a Background
     var ctx = this.canvasTwinkling.getContext('2d');
     const width = this.background.offsetWidth;
     const height = this.background.offsetHeight + 1000;
     this.canvasTwinkling.width = width;
     this.canvasTwinkling.height = height;
-    //Wyczyść tablicę przy ponownym rysowaniu gwiazd
     this.TwinklingLinesArray = [];
 
     let i = 0;
-    const drawStar = () =>
+    let lastTime = performance.now();
+    const delay = 10; // Opóźnienie w milisekundach
+
+    const drawStar = (currentTime: number) =>
     {
-      if (i < numberOfStars)
+      if (currentTime - lastTime >= delay) // Jeśli upłynęło wystarczająco dużo czasu od ostatniego rysowania
       {
-        var color = this.colorArray[Math.floor(Math.random() * this.colorArray.length)];
-        var longWidth = (Math.random() - 0.5) * 22;
-        var shortWidth = (Math.random() - 0.5) * 14;
-        var x = Math.random() * (width - longWidth * 2) + longWidth;
-        var y = Math.random() * (height - longWidth * 2) + longWidth;
-        let alpha = Math.random() * 0.6;
-        // Stwórz obiekt gwiazdy i dodaj go do tablicy, na której będą wykonywane "metody" akcji
-        if (ctx)
+        if (i < numberOfStars)
         {
-          this.TwinklingLinesArray.push(new DrawLines(ctx, x, y, longWidth, shortWidth, 10, alpha, color));
+          var color = this.colorArray[Math.floor(Math.random() * this.colorArray.length)];
+          var longWidth = (Math.random() - 0.5) * 22;
+          var shortWidth = (Math.random() - 0.5) * 14;
+          var x = Math.random() * (width - longWidth * 2) + longWidth;
+          var y = Math.random() * (height - longWidth * 2) + longWidth;
+          let alpha = Math.random() * 0.6;
+
+          if (ctx)
+          {
+            this.TwinklingLinesArray.push(new DrawLines(ctx, x, y, longWidth, shortWidth, 10, alpha, color));
+          }
+          i++;
+          lastTime = currentTime; // Zaktualizuj czas ostatniego rysowania
         }
-        i++;
-        setTimeout(drawStar, 10); // Wywołaj drawStar co 10 ms
       }
+      requestAnimationFrame(drawStar); // Zawsze wywołaj requestAnimationFrame, niezależnie od tego, czy rysujemy czy nie
     };
-    drawStar();
+    requestAnimationFrame(drawStar);
   }
 
   ngOnDestroy(): void
@@ -387,7 +392,7 @@ export class SectionsComponent implements OnInit
         if (this.increasing)
         {
           this.blackhole.mouseOnSizeIncrement += 0.02;
-          if (this.blackhole.mouseOnSizeIncrement >= 0.2) // If reached the upper limit, switch direction
+          if (this.blackhole.mouseOnSizeIncrement >= 0.3) // If reached the upper limit, switch direction
           {
             this.increasing = false;
           }
@@ -395,7 +400,7 @@ export class SectionsComponent implements OnInit
         else
         {
           this.blackhole.mouseOnSizeIncrement -= 0.02;
-          if (this.blackhole.mouseOnSizeIncrement <= -0.2) // If reached the lower limit, switch direction
+          if (this.blackhole.mouseOnSizeIncrement <= -0.3) // If reached the lower limit, switch direction
           {
             this.increasing = true;
           }

@@ -26,7 +26,7 @@ export class DrawLines
   private trailXSpeed: number;
   private trailYSpeed: number;
 
-constructor(ctx: CanvasRenderingContext2D | null,
+  constructor(ctx: CanvasRenderingContext2D | null,
     centerX: number,
     centerY: number,
     longWidth: number,
@@ -81,39 +81,46 @@ constructor(ctx: CanvasRenderingContext2D | null,
     {
       return;
     }
+
+    const canvasWidth = this.ctx.canvas.width;
+    const canvasHeight = this.ctx.canvas.height;
+    const halfCanvasWidth = canvasWidth / 2;
+
     //Zmiana pozycji gwiazdy
-    if (this.fallingDirection != 2 && this.centerX > this.ctx.canvas.width / 2 || this.fallingDirection == 1)
+    if (this.fallingDirection != 2 && this.centerX > halfCanvasWidth || this.fallingDirection == 1)
     {
       this.fallingDirection = 1;
-      this.centerX = this.centerX - this.trailXSpeed;
-      this.centerY = this.centerY + this.trailYSpeed;
+      this.centerX -= this.trailXSpeed;
+      this.centerY += this.trailYSpeed;
     }
-    else if (this.fallingDirection != 1 && this.centerX < this.ctx.canvas.width / 2 || this.fallingDirection == 2)
+    else if (this.fallingDirection != 1 && this.centerX < halfCanvasWidth || this.fallingDirection == 2)
     {
       this.fallingDirection = 2;
-      this.centerX = this.centerX + this.trailXSpeed;
-      this.centerY = this.centerY + this.trailYSpeed;
+      this.centerX += this.trailXSpeed;
+      this.centerY += this.trailYSpeed;
     }
 
     if (this.centerX < -this.trailOutside
-      || this.centerX > this.ctx.canvas.width + this.trailOutside
+      || this.centerX > canvasWidth + this.trailOutside
       || this.centerY < -this.trailOutside
-      || this.centerY > this.ctx.canvas.height + this.trailOutside)
+      || this.centerY > canvasHeight + this.trailOutside)
     {
       this.fallingDirection = 3;
-      this.centerX = Math.random() * (this.ctx.canvas.width - this.longWidth * 2) + this.longWidth;
-      this.centerY = Math.random() * (this.ctx.canvas.height - this.longWidth * 2) + this.longWidth;
+      this.centerX = Math.random() * (canvasWidth - this.longWidth * 2) + this.longWidth;
+      this.centerY = Math.random() * (canvasHeight - this.longWidth * 2) + this.longWidth;
       this.positions = [];
     }
 
     this.DrawStarWithTrail();
   }
 
-  public getCenter(): Point {
-    return {x: this.centerX, y: this.centerY};
+  public getCenter(): Point
+  {
+    return { x: this.centerX, y: this.centerY };
   }
 
-  public setCenter(center: Point): void {
+  public setCenter(center: Point): void
+  {
     this.centerX = center.x;
     this.centerY = center.y;
   }
@@ -131,11 +138,11 @@ constructor(ctx: CanvasRenderingContext2D | null,
     //Główne linie, nieustawialne
     for (let i = 1; i < 3; i++)
     {
-      const x = Math.cos((Math.PI / i)) * this.longWidth;
-      const y = Math.sin((Math.PI / i)) * this.longWidth;
+      const angle = Math.PI / i;
+      const x = Math.cos(angle) * this.longWidth;
+      const y = Math.sin(angle) * this.longWidth;
       this.ctx.moveTo(this.centerX, this.centerY);
       this.ctx.lineTo(this.centerX + x, this.centerY + y);
-      this.ctx.moveTo(this.centerX, this.centerY);
       this.ctx.lineTo(this.centerX - x, this.centerY - y);
     }
 
@@ -147,7 +154,6 @@ constructor(ctx: CanvasRenderingContext2D | null,
       const y = Math.sin(angle * i) * this.shortWidth;
       this.ctx.moveTo(this.centerX, this.centerY);
       this.ctx.lineTo(this.centerX + x, this.centerY + y);
-      this.ctx.moveTo(this.centerX, this.centerY);
       this.ctx.lineTo(this.centerX - x, this.centerY - y);
     }
 
