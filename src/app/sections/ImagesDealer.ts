@@ -1,4 +1,21 @@
 
+interface CustomImage
+{
+    angle: number;
+    centerX: number;
+    centerY: number;
+    dAngle: number;
+    dx: number;
+    dy: number;
+    img: HTMLImageElement;
+    orgDX: number;
+    orgDY: number;
+    radius: number;
+    wh: number;
+    x: number;
+    y: number;
+}
+
 interface Meteor
 {
     angle: number;
@@ -26,12 +43,13 @@ export class ImagesDealer
     private mouseY?: number;
 
     ctx: CanvasRenderingContext2D;
-    dynamicUrlArray: string[] = ["assets/images/dynamic/GrayBlueStone.png", "assets/images/dynamic/BlackStone.png",
+    public customImages: CustomImage[] = [];
+    dynamicCustomUrlArray: string[] = ["assets/images/custom/smallStation.png"];
+    dynamicMeteorUrlArray: string[] = ["assets/images/dynamic/GrayBlueStone.png", "assets/images/dynamic/BlackStone.png",
         "assets/images/dynamic/DiamondStone.png", "assets/images/dynamic/MulticoloredStone.png",];
     height: number;
-    public images: Meteor[] = [];
+    public meteorImages: Meteor[] = [];
     meteorsNumber: number;
-    staticUrlArray: string[] = ["assets/images/galaxy-Brown.png"];
     width: number;
 
     constructor(ctx: CanvasRenderingContext2D, width: number, height: number, meteorsNumber: number)
@@ -42,62 +60,23 @@ export class ImagesDealer
         this.meteorsNumber = meteorsNumber;
     }
 
-    public DrawDynamicImages(): void
+    public CreateDynamicImages(): void
     {
-        this.dynamicUrlArray.forEach((url) =>
-        {
-            for (let i = 0; i < this.meteorsNumber; i++)
-            {
-                let img = new Image();
-                img.src = url;
-                img.onload = () =>
-                {
-                    //Stwórz X i Y oraz ich wymiary, będą "kwadratowe"
-                    const x = Math.random() * (this.width - img.width);
-                    const y = Math.random() * (this.height - img.height);
-                    const wh = 25 + Math.random() * 10; // Zakres 25 - 35
-                    const radius = wh / 2;
-                    const centerX = x + radius;
-                    const centerY = y + radius;
-                    const angle = Math.random() * Math.PI * 2; // Losowy kąt początkowy
-                    const dAngle = 0.01 + Math.random() * 0.005; // Losowa zmiana kąta
-                    const speed = Math.random() * 0.3 + 0.2; // Losowa liczba w zakresie od 0.2 do 0.5
-                    const dx = (Math.random() < 0.5 ? -1 : 1) * speed; // Losowo zmień znak
-                    const dy = (Math.random() < 0.5 ? -1 : 1) * speed; // Losowo zmień znak
-
-                    this.images.push({
-                        img: img, x: x, y: y, wh: wh, radius: radius, centerX: centerX, centerY: centerY,
-                        dx: dx, dy: dy, angle: angle, dAngle: dAngle, orgDX: dx, orgDY: dy
-                    });
-                };
-            }
-        });
+        this.CreateMeteors();
+        this.CreateCustomImages();
     }
 
     public DrawImages(): void
     {
         this.ctx.clearRect(0, 0, this.width, this.height); // Wyczyść cały obszar
 
-        this.images.forEach(image =>
-        {
-            this.ctx.save(); // Zapisz aktualny stan kontekstu
-            this.ctx.translate(image.centerX, image.centerY); // Przesuń kontekst do środka obrazu
-            this.ctx.rotate(image.angle); // Obróć kontekst
-            this.ctx.drawImage(image.img, -image.wh / 2, -image.wh / 2, image.wh, image.wh); // Rysuj obraz z jego środkiem w (0, 0)
-
-            // Dodaj efekt ciemnienia
-            this.ctx.globalCompositeOperation = 'source-atop';
-            this.ctx.fillStyle = 'rgba(0, 0, 0, 0.3)'; // Dodaj półprzezroczystą czarną warstwę
-            this.ctx.fillRect(-image.wh / 2, -image.wh / 2, image.wh, image.wh);
-            this.ctx.globalCompositeOperation = 'source-over'; // Przywróć domyślny tryb
-
-            this.ctx.restore(); // Przywróć poprzedni stan kontekstu
-        });
+        this.DrawMeteors();
+        this.DrawCustomImages();
     }
 
     MeteorInteractionMouseDown(mouseX: number, mouseY: number)
     {
-        this.images.forEach(image =>
+        this.meteorImages.forEach(image =>
         {
             const isMouseOver = this.isMouseOverImage(image, mouseX, mouseY);
 
@@ -113,7 +92,7 @@ export class ImagesDealer
 
     MeteorInteractionMouseUp(mouseX: number, mouseY: number)
     {
-        this.images.forEach(image =>
+        this.meteorImages.forEach(image =>
         {
             if (image.isBeingDragged)
             {
@@ -143,7 +122,7 @@ export class ImagesDealer
 
     public Update(width: number, height: number): void
     {
-        this.images.forEach((image, i) =>
+        this.meteorImages.forEach((image, i) =>
         {
             this.BorderCollision(image, width, height);
 
@@ -187,11 +166,110 @@ export class ImagesDealer
         }
     }
 
+    private CreateCustomImages()
+    {
+        this.dynamicCustomUrlArray.forEach((url) =>
+        {
+            let img = new Image();
+            img.src = url;
+            img.onload = () =>
+            {
+                //Stwórz X i Y oraz ich wymiary, będą "kwadratowe"
+                const x = Math.random() * (this.width - img.width);
+                const y = Math.random() * (this.height - img.height);
+                const wh = 25 + Math.random() * 10; // Zakres 25 - 35
+                const radius = wh / 2;
+                const centerX = x + radius;
+                const centerY = y + radius;
+                const angle = Math.random() * Math.PI * 2; // Losowy kąt początkowy
+                const dAngle = 0.01 + Math.random() * 0.005; // Losowa zmiana kąta
+                const speed = Math.random() * 0.3 + 0.2; // Losowa liczba w zakresie od 0.2 do 0.5
+                const dx = (Math.random() < 0.5 ? -1 : 1) * speed; // Losowo zmień znak
+                const dy = (Math.random() < 0.5 ? -1 : 1) * speed; // Losowo zmień znak
+
+                this.customImages.push({
+                    img: img, x: x, y: y, wh: wh, radius: radius, centerX: centerX, centerY: centerY,
+                    dx: dx, dy: dy, angle: angle, dAngle: dAngle, orgDX: dx, orgDY: dy
+                });
+            };
+        });
+    }
+
+    private CreateMeteors()
+    {
+        this.dynamicMeteorUrlArray.forEach((url) =>
+        {
+            for (let i = 0; i < this.meteorsNumber; i++)
+            {
+                let img = new Image();
+                img.src = url;
+                img.onload = () =>
+                {
+                    //Stwórz X i Y oraz ich wymiary, będą "kwadratowe"
+                    const x = Math.random() * (this.width - img.width);
+                    const y = Math.random() * (this.height - img.height);
+                    const wh = 25 + Math.random() * 10; // Zakres 25 - 35
+                    const radius = wh / 2;
+                    const centerX = x + radius;
+                    const centerY = y + radius;
+                    const angle = Math.random() * Math.PI * 2; // Losowy kąt początkowy
+                    const dAngle = 0.01 + Math.random() * 0.005; // Losowa zmiana kąta
+                    const speed = Math.random() * 0.3 + 0.2; // Losowa liczba w zakresie od 0.2 do 0.5
+                    const dx = (Math.random() < 0.5 ? -1 : 1) * speed; // Losowo zmień znak
+                    const dy = (Math.random() < 0.5 ? -1 : 1) * speed; // Losowo zmień znak
+
+                    this.meteorImages.push({
+                        img: img, x: x, y: y, wh: wh, radius: radius, centerX: centerX, centerY: centerY,
+                        dx: dx, dy: dy, angle: angle, dAngle: dAngle, orgDX: dx, orgDY: dy
+                    });
+                };
+            }
+        });
+    }
+
+    private DrawCustomImages()
+    {
+        this.customImages.forEach(image =>
+        {
+            this.ctx.save(); // Zapisz aktualny stan kontekstu
+            this.ctx.translate(image.centerX, image.centerY); // Przesuń kontekst do środka obrazu
+            this.ctx.rotate(image.angle); // Obróć kontekst
+            this.ctx.drawImage(image.img, -image.wh / 2, -image.wh / 2, image.wh, image.wh); // Rysuj obraz z jego środkiem w (0, 0)
+
+            // Dodaj efekt ciemnienia
+            this.ctx.globalCompositeOperation = 'source-atop';
+            this.ctx.fillStyle = 'rgba(0, 0, 0, 0.3)'; // Dodaj półprzezroczystą czarną warstwę
+            this.ctx.fillRect(-image.wh / 2, -image.wh / 2, image.wh, image.wh);
+            this.ctx.globalCompositeOperation = 'source-over'; // Przywróć domyślny tryb
+
+            this.ctx.restore();
+        });
+    }
+
+    private DrawMeteors()
+    {
+        this.meteorImages.forEach(image =>
+        {
+            this.ctx.save(); // Zapisz aktualny stan kontekstu
+            this.ctx.translate(image.centerX, image.centerY); // Przesuń kontekst do środka obrazu
+            this.ctx.rotate(image.angle); // Obróć kontekst
+            this.ctx.drawImage(image.img, -image.wh / 2, -image.wh / 2, image.wh, image.wh); // Rysuj obraz z jego środkiem w (0, 0)
+
+            // Dodaj efekt ciemnienia
+            this.ctx.globalCompositeOperation = 'source-atop';
+            this.ctx.fillStyle = 'rgba(0, 0, 0, 0.3)'; // Dodaj półprzezroczystą czarną warstwę
+            this.ctx.fillRect(-image.wh / 2, -image.wh / 2, image.wh, image.wh);
+            this.ctx.globalCompositeOperation = 'source-over'; // Przywróć domyślny tryb
+
+            this.ctx.restore();
+        });
+    }
+
     private ImageCollision(i: number, image: Meteor)
     {
-        for (let j = i + 1; j < this.images.length; j++)
+        for (let j = i + 1; j < this.meteorImages.length; j++)
         {
-            const other = this.images[j];
+            const other = this.meteorImages[j];
             const dx = other.centerX - image.centerX;
             const dy = other.centerY - image.centerY;
             const distance = Math.sqrt(dx * dx + dy * dy);

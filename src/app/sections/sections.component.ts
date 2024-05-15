@@ -139,7 +139,7 @@ export class SectionsComponent implements OnInit
     if (ctx)
     {
       this.galaxiesDealer = new ImagesDealer(ctx, this.canvasFloatingObjects.width, this.canvasFloatingObjects.height, this.numberOfMeteors);
-      this.galaxiesDealer.DrawDynamicImages();
+      this.galaxiesDealer.CreateDynamicImages();
     }
   }
 
