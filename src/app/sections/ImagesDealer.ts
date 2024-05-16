@@ -1,41 +1,6 @@
-
-interface CustomImage
-{
-    angle: number;
-    centerX: number;
-    centerY: number;
-    dAngle: number;
-    dx: number;
-    dy: number;
-    img: HTMLImageElement;
-    orgDX: number;
-    orgDY: number;
-    radius: number;
-    wh: number;
-    x: number;
-    y: number;
-}
-
-interface Meteor
-{
-    angle: number;
-    centerX: number;
-    centerY: number;
-    dAngle: number;
-    dx: number;
-    dy: number;
-    img: HTMLImageElement;
-    isBeingDragged?: boolean;
-    mouseDownTime?: number;
-    mouseDownX?: number;
-    mouseDownY?: number;
-    orgDX: number;
-    orgDY: number;
-    radius: number;
-    wh: number;
-    x: number;
-    y: number;
-}
+import { ICustomImage } from "./ICustomImage";
+import { IMeteor } from "./IMeteor";
+import { MathHelper } from "../Helpers/MathHelper";
 
 export class ImagesDealer
 {
@@ -43,12 +8,13 @@ export class ImagesDealer
     private mouseY?: number;
 
     ctx: CanvasRenderingContext2D;
-    public customImages: CustomImage[] = [];
+    public customImages: ICustomImage[] = [];
     dynamicCustomUrlArray: string[] = ["assets/images/custom/smallStation.png"];
     dynamicMeteorUrlArray: string[] = ["assets/images/dynamic/GrayBlueStone.png", "assets/images/dynamic/BlackStone.png",
         "assets/images/dynamic/DiamondStone.png", "assets/images/dynamic/MulticoloredStone.png",];
     height: number;
-    public meteorImages: Meteor[] = [];
+    mathHelper: MathHelper;
+    public meteorImages: IMeteor[] = [];
     meteorsNumber: number;
     width: number;
 
@@ -58,6 +24,7 @@ export class ImagesDealer
         this.width = width;
         this.height = height;
         this.meteorsNumber = meteorsNumber;
+        this.mathHelper = new MathHelper();
     }
 
     public CreateDynamicImages(): void
@@ -122,35 +89,12 @@ export class ImagesDealer
 
     public Update(width: number, height: number): void
     {
-        this.meteorImages.forEach((image, i) =>
-        {
-            this.BorderCollision(image, width, height);
-
-            image.angle += image.dAngle; // Zaktualizuj kąt
-            if (image.isBeingDragged && this.mouseX !== undefined && this.mouseY !== undefined)
-            {
-                image.x = this.mouseX - image.radius; // Przesuń obraz wraz z myszą
-                image.y = this.mouseY - image.radius;
-            }
-            else
-            {
-                image.dx += (image.orgDX - image.dx) * 0.001; // Powoli wracaj do oryginalnej prędkości
-                image.dy += (image.orgDY - image.dy) * 0.001;
-                image.x += image.dx;
-                image.y += image.dy;
-            }
-
-            // Aktualizuj centerX i centerY
-            image.centerX = image.x + image.radius;
-            image.centerY = image.y + image.radius;
-
-            // Sprawdź kolizje z innymi obrazami
-            this.ImageCollision(i, image);
-        });
+        this.UpdateMeteors(width, height);
+        this.UpdateCustomImages(width, height);
         this.DrawImages();
     }
 
-    private BorderCollision(image: Meteor, width: number, height: number)
+    private BorderCollision(image: IMeteor, width: number, height: number)
     {
         if (image.centerX + image.radius > width || image.centerX - image.radius < 0)
         {
@@ -175,10 +119,10 @@ export class ImagesDealer
             img.onload = () =>
             {
                 //Stwórz X i Y oraz ich wymiary, będą "kwadratowe"
-                const x = Math.random() * (this.width - img.width);
-                const y = Math.random() * (this.height - img.height);
-                const wh = 25 + Math.random() * 10; // Zakres 25 - 35
+                const wh = this.mathHelper.RandomInRange(80, 140)
                 const radius = wh / 2;
+                const x = Math.random() * (this.width - wh);
+                const y = Math.random() * (this.height - wh);
                 const centerX = x + radius;
                 const centerY = y + radius;
                 const angle = Math.random() * Math.PI * 2; // Losowy kąt początkowy
@@ -201,15 +145,16 @@ export class ImagesDealer
         {
             for (let i = 0; i < this.meteorsNumber; i++)
             {
+                console.log("Creating meteor: " + i);
                 let img = new Image();
                 img.src = url;
                 img.onload = () =>
                 {
                     //Stwórz X i Y oraz ich wymiary, będą "kwadratowe"
-                    const x = Math.random() * (this.width - img.width);
-                    const y = Math.random() * (this.height - img.height);
-                    const wh = 25 + Math.random() * 10; // Zakres 25 - 35
+                    const wh = this.mathHelper.RandomInRange(20, 50);
                     const radius = wh / 2;
+                    const x = Math.random() * (this.width - wh);
+                    const y = Math.random() * (this.height - wh);
                     const centerX = x + radius;
                     const centerY = y + radius;
                     const angle = Math.random() * Math.PI * 2; // Losowy kąt początkowy
@@ -265,7 +210,7 @@ export class ImagesDealer
         });
     }
 
-    private ImageCollision(i: number, image: Meteor)
+    private ImageCollision(i: number, image: IMeteor)
     {
         for (let j = i + 1; j < this.meteorImages.length; j++)
         {
@@ -313,15 +258,67 @@ export class ImagesDealer
         }
     }
 
-    private isMouseOverImage(image: Meteor, mouseX: number, mouseY: number): boolean {
+    private UpdateCustomImages(width: number, height: number)
+    {
+        this.customImages.forEach((image, i) =>
+        {
+            this.BorderCollision(image, width, height);
+
+            image.angle += image.dAngle; // Zaktualizuj kąt
+
+            image.x += image.dx;
+            image.y += image.dy;
+
+            // Aktualizuj centerX i centerY
+            image.centerX = image.x + image.radius;
+            image.centerY = image.y + image.radius;
+
+            // Sprawdź kolizje z innymi obrazami
+            this.ImageCollision(i, image);
+        });
+    }
+
+    private UpdateMeteors(width: number, height: number)
+    {
+        this.meteorImages.forEach((image, i) =>
+        {
+            this.BorderCollision(image, width, height);
+
+            image.angle += image.dAngle; // Zaktualizuj kąt
+            if (image.isBeingDragged && this.mouseX !== undefined && this.mouseY !== undefined)
+            {
+                image.x = this.mouseX - image.radius; // Przesuń obraz wraz z myszą
+                image.y = this.mouseY - image.radius;
+            }
+            else
+            {
+                image.dx += (image.orgDX - image.dx) * 0.001; // Powoli wracaj do oryginalnej prędkości
+                image.dy += (image.orgDY - image.dy) * 0.001;
+                image.x += image.dx;
+                image.y += image.dy;
+            }
+
+            // Aktualizuj centerX i centerY
+            image.centerX = image.x + image.radius;
+            image.centerY = image.y + image.radius;
+
+            // Sprawdź kolizje z innymi obrazami
+            this.ImageCollision(i, image);
+        });
+    }
+
+    private isMouseOverImage(image: IMeteor, mouseX: number, mouseY: number): boolean
+    {
         return this.isMouseOverImageX(image, mouseX) && this.isMouseOverImageY(image, mouseY);
     }
 
-    private isMouseOverImageX(image: Meteor, mouseX: number): boolean {
+    private isMouseOverImageX(image: IMeteor, mouseX: number): boolean
+    {
         return mouseX >= image.x && mouseX <= image.x + image.wh;
     }
 
-    private isMouseOverImageY(image: Meteor, mouseY: number): boolean {
+    private isMouseOverImageY(image: IMeteor, mouseY: number): boolean
+    {
         return mouseY >= image.y && mouseY <= image.y + image.wh;
     }
 }

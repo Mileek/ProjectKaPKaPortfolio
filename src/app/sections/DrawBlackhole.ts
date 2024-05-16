@@ -98,7 +98,6 @@ export class DrawBlackhole
     this.width += this.mouseOnSizeIncrement;
     this.height += this.mouseOnSizeIncrement;
     this.gravitionalPull = (this.width / this.defaultWidth) * (this.height / this.defaultHeight) * this.maxGravitionalPull;
-    console.log(this.gravitionalPull);
   }
 
   public GetBlackholeCenterPoint(): Point

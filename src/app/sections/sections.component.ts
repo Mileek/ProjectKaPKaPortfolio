@@ -133,8 +133,8 @@ export class SectionsComponent implements OnInit
     var ctx = this.canvasFloatingObjects.getContext('2d');
     const width = this.background.offsetWidth;
     const height = this.background.offsetHeight;
-    this.canvasFloatingObjects.width = width * 2;
-    this.canvasFloatingObjects.height = height * 2;
+    this.canvasFloatingObjects.width = width;
+    this.canvasFloatingObjects.height = height;
 
     if (ctx)
     {
@@ -305,6 +305,7 @@ export class SectionsComponent implements OnInit
 
     this.resizeTimeout = setTimeout(() =>
     {
+      this.DrawFloatingObjects();
       this.DrawBlackhole();
       this.DrawTwinklingStars(this.numberOfTwinklingStars);
       this.DrawFallingStars(this.numberOfFallingStars);
