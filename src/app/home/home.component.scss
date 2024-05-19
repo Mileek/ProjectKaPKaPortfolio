@@ -6,8 +6,17 @@ body {
 
 body,
 html {
+  position: relative;
   height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
+}
+
+.WelcomeQuote {
+  font-size: 30px;
+  font-weight: bold;
+  color: #fff;
+  position: absolute;
+  bottom: 10px;
 }

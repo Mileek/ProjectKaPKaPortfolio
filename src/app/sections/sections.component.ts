@@ -24,8 +24,6 @@ export class SectionsComponent implements OnInit
   TwinklingLinesArray: Array<DrawLines> = [];
   background!: HTMLDivElement;
   blackhole!: DrawBlackhole;
-  bottomPictureHeight: number = 0;
-  canvasAurora!: HTMLCanvasElement;
   canvasBlackhole!: HTMLCanvasElement;
   canvasFalling!: HTMLCanvasElement;
   canvasFloatingObjects!: HTMLCanvasElement;
@@ -46,7 +44,7 @@ export class SectionsComponent implements OnInit
   isMouseOverBlackhole!: boolean;
   lastUpdateTime: number = 0;
   numberOfFallingStars: number = 10;
-  numberOfMeteors = 8;
+  numberOfMeteors = 6;
   numberOfTwinklingStars: number = 1300;
   photoBackground!: HTMLDivElement;
   slideAnimation!: Animation;

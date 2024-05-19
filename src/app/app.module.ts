@@ -16,6 +16,11 @@ const routes: Routes = [
   {
     path: '', component: SectionsComponent, children: [
       { path: '', redirectTo: 'all', pathMatch: 'full' },
+      { path: 'home', component: HomeComponent },
+      { path: 'about-me', component: AboutMeComponent },
+      { path: 'projects', component: ProjectsComponent },
+      { path: 'contact-me', component: ContactMeComponent },
+
       //{ path: ':side', component: ListComponent }
     ]
   },

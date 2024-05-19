@@ -9,7 +9,9 @@ export class ImagesDealer
 
     ctx: CanvasRenderingContext2D;
     public customImages: ICustomImage[] = [];
-    dynamicCustomUrlArray: string[] = ["assets/images/custom/smallStation.png"];
+    dynamicCustomUrlArray: string[] = ["assets/images/custom/smallStation.png", "assets/images/custom/astronaut.png",
+        "assets/images/custom/deathStar.png", "assets/images/custom/satellite.png"
+    ];
     dynamicMeteorUrlArray: string[] = ["assets/images/dynamic/GrayBlueStone.png", "assets/images/dynamic/BlackStone.png",
         "assets/images/dynamic/DiamondStone.png", "assets/images/dynamic/MulticoloredStone.png",];
     height: number;
