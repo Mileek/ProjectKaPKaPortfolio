@@ -1,4 +1,4 @@
-<nav id="navbar-example2" class="navbar bg-dark px-3 mb-3 sticky-top">
+<nav id="navbar-example2" class="navbar bg-dark px-0 mb-0 sticky-top">
   <a class="navbar-brand" href="#">Navbar</a>
   <ul class="nav nav-pills">
     <li class="nav-item">
@@ -13,8 +13,35 @@
 
   </ul>
 </nav>
-
+<div class="fps-counter">
+  FPS: {{fps}}
+</div>
+<!--Just some background elements, nothing special here-->
 <div id="Background">
+  <!--Floating images-->
+  <canvas id="Galaxies"></canvas>
+  <canvas id="FloatingObjects"></canvas>
+  <!-- Nobulas -->
+  <canvas id="NebulaBlue"></canvas>
+  <canvas id="NebulaGreen"></canvas>
+  <canvas id="NebulaPurple"></canvas>
+  <canvas id="NebulaRed"></canvas>
+
+  <!--Animated canvas-->
   <canvas id="TwinklingStars"></canvas>
   <canvas id="FallingStars"></canvas>
+  <canvas id="Blackhole"></canvas>
+
+  <div id="home">
+    <app-home></app-home>
+  </div>
+  <div id="about-me" style="height: 100vh;">
+    <app-about-me></app-about-me>
+  </div>
+  <div id="projects" style="height: 100vh;">
+    <app-projects></app-projects>
+  </div>
+  <div id="contact-me" style="height: 100vh;">
+    <app-contact-me></app-contact-me>
+  </div>
 </div>

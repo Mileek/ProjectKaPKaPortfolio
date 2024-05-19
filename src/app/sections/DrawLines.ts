@@ -1,3 +1,10 @@
+
+interface Point
+{
+  x: number;
+  y: number;
+}
+
 export class DrawLines
 {
   private alpha: number;
@@ -6,20 +13,20 @@ export class DrawLines
   private centerX: number;
   private centerY: number;
   private color: string;
-  private ctx: CanvasRenderingContext2D;
+  private ctx: CanvasRenderingContext2D | null;
   private fallingDirection: number = 3;
   //3 undefined
   private longWidth: number;
   private maxAlpha: number = 0.7;
   private minAlpha: number = 0.1;
   private numLines: number;
-  private positions: { x: number, y: number }[] = [];
+  private positions: Point[] = [];
   private shortWidth: number;
   private trailOutside: number = 100;
   private trailXSpeed: number;
   private trailYSpeed: number;
 
-  constructor(ctx: CanvasRenderingContext2D,
+  constructor(ctx: CanvasRenderingContext2D | null,
     centerX: number,
     centerY: number,
     longWidth: number,
@@ -68,38 +75,62 @@ export class DrawLines
     this.DrawStar();
   }
 
-  public UpdatePosition(): void
+  public UpdateFallingPosition(): void
   {
+    if (this.ctx == null)
+    {
+      return;
+    }
+
+    const canvasWidth = this.ctx.canvas.width;
+    const canvasHeight = this.ctx.canvas.height;
+    const halfCanvasWidth = canvasWidth / 2;
+
     //Zmiana pozycji gwiazdy
-    if (this.fallingDirection != 2 && this.centerX > this.ctx.canvas.width / 2 || this.fallingDirection == 1)
+    if (this.fallingDirection != 2 && this.centerX > halfCanvasWidth || this.fallingDirection == 1)
     {
       this.fallingDirection = 1;
-      this.centerX = this.centerX - this.trailXSpeed;
-      this.centerY = this.centerY + this.trailYSpeed;
+      this.centerX -= this.trailXSpeed;
+      this.centerY += this.trailYSpeed;
     }
-    else if (this.fallingDirection != 1 && this.centerX < this.ctx.canvas.width / 2 || this.fallingDirection == 2)
+    else if (this.fallingDirection != 1 && this.centerX < halfCanvasWidth || this.fallingDirection == 2)
     {
       this.fallingDirection = 2;
-      this.centerX = this.centerX + this.trailXSpeed;
-      this.centerY = this.centerY + this.trailYSpeed;
+      this.centerX += this.trailXSpeed;
+      this.centerY += this.trailYSpeed;
     }
 
     if (this.centerX < -this.trailOutside
-      || this.centerX > this.ctx.canvas.width + this.trailOutside
+      || this.centerX > canvasWidth + this.trailOutside
       || this.centerY < -this.trailOutside
-      || this.centerY > this.ctx.canvas.height + this.trailOutside)
+      || this.centerY > canvasHeight + this.trailOutside)
     {
       this.fallingDirection = 3;
-      this.centerX = Math.random() * (this.ctx.canvas.width - this.longWidth * 2) + this.longWidth;
-      this.centerY = Math.random() * (this.ctx.canvas.height - this.longWidth * 2) + this.longWidth;
+      this.centerX = Math.random() * (canvasWidth - this.longWidth * 2) + this.longWidth;
+      this.centerY = Math.random() * (canvasHeight - this.longWidth * 2) + this.longWidth;
       this.positions = [];
     }
 
     this.DrawStarWithTrail();
   }
 
+  public getCenter(): Point
+  {
+    return { x: this.centerX, y: this.centerY };
+  }
+
+  public setCenter(center: Point): void
+  {
+    this.centerX = center.x;
+    this.centerY = center.y;
+  }
+
   private DrawStar(): void
   {
+    if (this.ctx == null)
+    {
+      return;
+    }
     this.ctx.beginPath();
     this.ctx.lineWidth = 0.5;
     this.ctx.globalAlpha = this.alpha;
@@ -107,11 +138,11 @@ export class DrawLines
     //Główne linie, nieustawialne
     for (let i = 1; i < 3; i++)
     {
-      const x = Math.cos((Math.PI / i)) * this.longWidth;
-      const y = Math.sin((Math.PI / i)) * this.longWidth;
+      const angle = Math.PI / i;
+      const x = Math.cos(angle) * this.longWidth;
+      const y = Math.sin(angle) * this.longWidth;
       this.ctx.moveTo(this.centerX, this.centerY);
       this.ctx.lineTo(this.centerX + x, this.centerY + y);
-      this.ctx.moveTo(this.centerX, this.centerY);
       this.ctx.lineTo(this.centerX - x, this.centerY - y);
     }
 
@@ -123,7 +154,6 @@ export class DrawLines
       const y = Math.sin(angle * i) * this.shortWidth;
       this.ctx.moveTo(this.centerX, this.centerY);
       this.ctx.lineTo(this.centerX + x, this.centerY + y);
-      this.ctx.moveTo(this.centerX, this.centerY);
       this.ctx.lineTo(this.centerX - x, this.centerY - y);
     }
 
@@ -134,6 +164,10 @@ export class DrawLines
 
   private DrawStarWithTrail(): void
   {
+    if (this.ctx == null)
+    {
+      return;
+    }
     this.DrawStar();
 
     // Dodanie aktualnej pozycji do tablicy

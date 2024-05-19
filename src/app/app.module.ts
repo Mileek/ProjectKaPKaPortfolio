@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { AppComponent } from './app.component';
 import { CommonModule } from '@angular/common';
@@ -14,6 +16,11 @@ const routes: Routes = [
   {
     path: '', component: SectionsComponent, children: [
       { path: '', redirectTo: 'all', pathMatch: 'full' },
+      { path: 'home', component: HomeComponent },
+      { path: 'about-me', component: AboutMeComponent },
+      { path: 'projects', component: ProjectsComponent },
+      { path: 'contact-me', component: ContactMeComponent },
+
       //{ path: ':side', component: ListComponent }
     ]
   },
@@ -44,7 +51,9 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     CommonModule,
-    RouterModule.forRoot(routes, { anchorScrolling: 'enabled' })
+    RouterModule.forRoot(routes, { anchorScrolling: 'enabled' }),
+    HttpClientModule,
+    AngularSvgIconModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
