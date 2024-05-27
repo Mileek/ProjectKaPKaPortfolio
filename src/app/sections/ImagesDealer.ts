@@ -147,7 +147,6 @@ export class ImagesDealer
         {
             for (let i = 0; i < this.meteorsNumber; i++)
             {
-                console.log("Creating meteor: " + i);
                 let img = new Image();
                 img.src = url;
                 img.onload = () =>

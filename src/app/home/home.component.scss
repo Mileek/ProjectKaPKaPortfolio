@@ -1,15 +1,9 @@
-body {
+app-home {
+  margin: 0;
+  padding: 0;
   background-color: #fff;
   overflow: hidden;
   text-align: center;
-}
-
-body,
-html {
-  height: 100vh;
-  width: 100%;
-  margin: 0;
-  padding: 0;
 }
 
 .WelcomeDiv {
@@ -25,7 +19,7 @@ html {
   left: 0;
   margin-left: auto;
   margin-right: auto;
-  bottom: 6vh;
+  bottom: 0;
 }
 
 .WelcomeQuote {
@@ -43,12 +37,24 @@ html {
 
 .Line {
   flex-grow: 1;
-  border-top: 6px solid #fff;
+  border-top: 1px solid #fff;
 }
 
 .AngleDown {
+  cursor: pointer;
   margin-top: -4vh;
   color: #fff;
-  font-size: 60px;
-  padding: 0 15px;
+  font-size: 35px;
+  padding: 0 25px;
+  animation: UpDown 4s infinite;
+}
+
+@keyframes UpDown {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
