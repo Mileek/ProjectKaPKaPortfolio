@@ -312,6 +312,25 @@ export class SectionsComponent implements OnInit
     }, 250); // Czas debouncingu
   }
 
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll()
+  {
+    const angleUp = document.getElementById('navUp') as HTMLElement;
+    const anglesUp = document.getElementById('navDoubleUp') as HTMLElement;;
+
+    if (!angleUp || !anglesUp) return;
+
+    if (window.scrollY > 0)
+    {
+      angleUp.style.opacity = '1';
+      anglesUp.style.opacity = '1';
+    } else
+    {
+      angleUp.style.opacity = '0';
+      anglesUp.style.opacity = '0';
+    }
+  }
+
   private AngleInterval(): void
   {
     setInterval(() =>

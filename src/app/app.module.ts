@@ -12,7 +12,7 @@ import { ProjectsComponent } from './projects/projects.component';
 import { ContactMeComponent } from './contact-me/contact-me.component';
 import { SectionsComponent } from './sections/sections.component';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleUp, faAnglesUp } from '@fortawesome/free-solid-svg-icons';
 
 const routes: Routes = [
   {
@@ -65,6 +65,6 @@ export class AppModule
 {
   constructor(private library: FaIconLibrary)
   {
-    library.addIcons(faAngleDown);
+    library.addIcons(faAngleDown, faAngleUp, faAnglesUp);
   }
 }

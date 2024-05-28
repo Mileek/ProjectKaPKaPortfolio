@@ -102,3 +102,52 @@ $background: linear-gradient(
   width: 100%;
   height: calc(100vh - 50px);
 }
+
+//naw right bottom
+.StickyUpNav {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  bottom: 5px;
+  right: 5px;
+  z-index: 10;
+}
+
+.AngleUp {
+  // display: none;
+  cursor: pointer;
+  // margin-bottom: -2vh;
+  color: #fff;
+  font-size: 35px;
+  padding: 0 25px;
+}
+
+.AnglesUp {
+  // display: none;
+  cursor: pointer;
+  // margin-bottom: -2vh;
+  color: #fff;
+  font-size: 35px;
+  padding: 0 25px;
+}
+
+.AnglesUp:hover,
+.AngleUp:hover {
+  animation: UpDown 2s infinite;
+}
+
+#navUp,
+#navDoubleUp {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+@keyframes UpDown {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
