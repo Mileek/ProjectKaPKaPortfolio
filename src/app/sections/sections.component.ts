@@ -45,7 +45,7 @@ export class SectionsComponent implements OnInit
   lastUpdateTime: number = 0;
   numberOfFallingStars: number = 10;
   numberOfMeteors = 6;
-  numberOfTwinklingStars: number = 1300;
+  numberOfTwinklingStars: number = 1100;
   photoBackground!: HTMLDivElement;
   slideAnimation!: Animation;
   slideAnimationPosition!: number;
@@ -174,24 +174,20 @@ export class SectionsComponent implements OnInit
     }
   }
 
-  DrawTwinklingStar(): DrawLines
+  DrawTwinklingStar(color: string, width: number, height: number): DrawLines
   {
-    //Szerokością i wysokością jest szerokośći wysokość div'a Background
-    var ctx = this.canvasTwinkling.getContext('2d');
-    const width = this.background.offsetWidth;
-    const height = this.background.offsetHeight;
+    const ctx = this.canvasTwinkling.getContext('2d');
+    const longWidth = (Math.random() - 0.5) * 22;
+    const shortWidth = (Math.random() - 0.5) * 14;
+    const x = Math.random() * (width - longWidth * 2) + longWidth;
+    const y = Math.random() * (height - longWidth * 2) + longWidth;
+    const alpha = Math.random() * 0.6;
 
-    var color = this.colorArray[Math.floor(Math.random() * this.colorArray.length)];
-    var longWidth = (Math.random() - 0.5) * 22;
-    var shortWidth = (Math.random() - 0.5) * 14;
-    var x = Math.random() * (width - longWidth * 2) + longWidth;
-    var y = Math.random() * (height - longWidth * 2) + longWidth;
-    let alpha = Math.random() * 0.6;
-    // Stwórz obiekt gwiazdy i dodaj go do tablicy, na której będą wykonywane "metody" akcji
     if (ctx)
     {
       return new DrawLines(ctx, x, y, longWidth, shortWidth, 10, alpha, color);
     }
+
     console.log('Failed to get rendering context for canvas');
     return null as any;
   }
@@ -200,7 +196,7 @@ export class SectionsComponent implements OnInit
   {
     var ctx = this.canvasTwinkling.getContext('2d');
     const width = this.background.offsetWidth;
-    const height = this.background.offsetHeight + 1000;
+    const height = this.background.offsetHeight + 1500;
     this.canvasTwinkling.width = width;
     this.canvasTwinkling.height = height;
     this.TwinklingLinesArray = [];
@@ -368,9 +364,13 @@ export class SectionsComponent implements OnInit
     this.BSInteraction.MoveStarsToBlackhole();
     if (this.BSInteraction.ReGenerateStar > 0)
     {
+      const color = this.colorArray[Math.floor(Math.random() * this.colorArray.length)];
+      const width = this.background.offsetWidth;
+      const height = this.background.offsetHeight;
+
       for (let i = 0; i < this.BSInteraction.ReGenerateStar; i++)
       {
-        this.BSInteraction.addStar(this.DrawTwinklingStar());
+        this.BSInteraction.addStar(this.DrawTwinklingStar(color, width, height));
       }
       this.BSInteraction.ReGenerateStar = 0;
     }
