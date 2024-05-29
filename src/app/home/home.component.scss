@@ -1,22 +1,60 @@
-body {
+app-home {
+  margin: 0;
+  padding: 0;
   background-color: #fff;
   overflow: hidden;
   text-align: center;
 }
 
-body,
-html {
-  position: relative;
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
+.WelcomeDiv {
+  position: absolute;
+  bottom: 12vh;
+  right: 2vw;
+}
+
+.DividerDiv {
+  position: absolute;
+  width: 80%;
+  right: 0;
+  left: 0;
+  margin-left: auto;
+  margin-right: auto;
+  bottom: 0;
 }
 
 .WelcomeQuote {
-  font-size: 30px;
-  font-weight: bold;
+  font-size: 26px;
+  text-align: center;
+  font-style: italic;
   color: #fff;
-  position: absolute;
-  bottom: 10px;
+}
+
+.Divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Line {
+  flex-grow: 1;
+  border-top: 1px solid #fff;
+}
+
+.AngleDown {
+  cursor: pointer;
+  margin-top: -4vh;
+  color: #fff;
+  font-size: 35px;
+  padding: 0 25px;
+  animation: UpDown 4s infinite;
+}
+
+@keyframes UpDown {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }

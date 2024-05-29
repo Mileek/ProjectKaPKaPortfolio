@@ -11,6 +11,8 @@ import { AboutMeComponent } from './about-me/about-me.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { ContactMeComponent } from './contact-me/contact-me.component';
 import { SectionsComponent } from './sections/sections.component';
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { faAngleDown, faAngleUp, faAnglesUp } from '@fortawesome/free-solid-svg-icons';
 
 const routes: Routes = [
   {
@@ -53,9 +55,16 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forRoot(routes, { anchorScrolling: 'enabled' }),
     HttpClientModule,
-    AngularSvgIconModule.forRoot()
+    AngularSvgIconModule.forRoot(),
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule
+{
+  constructor(private library: FaIconLibrary)
+  {
+    library.addIcons(faAngleDown, faAngleUp, faAnglesUp);
+  }
+}
