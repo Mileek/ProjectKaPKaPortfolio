@@ -33,7 +33,14 @@ export class DrawBorealis
         const minRadius = 75; // minimalny promień elipsy
         const maxRadius = 375; // maksymalny promień elipsy
 
-        // Blue ellipses
+        this.drawEllipses(this.ctxBlue, `rgba(0, 0, 255, 0.05)`, ellipseCount, minRadius, maxRadius);
+        this.drawEllipses(this.ctxGreen, `rgba(0, 255, 0, 0.05)`, ellipseCount, minRadius, maxRadius);
+        this.drawEllipses(this.ctxPurple, `rgba(161, 63, 252, 0.05)`, ellipseCount, minRadius, maxRadius);
+        this.drawEllipses(this.ctxRed, `rgba(255, 0, 0, 0.05)`, ellipseCount, minRadius, maxRadius);
+    }
+
+    private drawEllipses(ctx: CanvasRenderingContext2D, color: string, ellipseCount: number, minRadius: number, maxRadius: number)
+    {
         for (let i = 0; i < ellipseCount; i++)
         {
             const x = Math.random() * this.width;
@@ -44,68 +51,11 @@ export class DrawBorealis
             const startAngle = 0;
             const endAngle = 2 * Math.PI;
 
-            this.ctxBlue.fillStyle = `rgba(0, 0, 255, 0.05)`;
-            this.ctxBlue.beginPath();
-            this.ctxBlue.ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle);
-            this.ctxBlue.filter = "blur(30px)";
-            this.ctxBlue.fill();
-            this.resetContext();
-        }
-
-        // Green ellipses
-        for (let i = 0; i < ellipseCount; i++)
-        {
-            const x = Math.random() * this.width;
-            const y = Math.random() * this.height;
-            const radiusX = minRadius + Math.random() * (maxRadius - minRadius);
-            const radiusY = minRadius + Math.random() * (maxRadius - minRadius);
-            const rotation = Math.random() * 2 * Math.PI;
-            const startAngle = 0;
-            const endAngle = 2 * Math.PI;
-
-            this.ctxGreen.fillStyle = `rgba(0, 255, 0, 0.05)`;
-            this.ctxGreen.beginPath();
-            this.ctxGreen.ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle);
-            this.ctxGreen.filter = "blur(30px)";
-            this.ctxGreen.fill();
-            this.resetContext();
-        }
-
-        // Purple ellipses
-        for (let i = 0; i < ellipseCount; i++)
-        {
-            const x = Math.random() * this.width;
-            const y = Math.random() * this.height;
-            const radiusX = minRadius + Math.random() * (maxRadius - minRadius);
-            const radiusY = minRadius + Math.random() * (maxRadius - minRadius);
-            const rotation = Math.random() * 2 * Math.PI;
-            const startAngle = 0;
-            const endAngle = 2 * Math.PI;
-
-            this.ctxPurple.fillStyle = `rgba(161, 63, 252, 0.05)`;
-            this.ctxPurple.beginPath();
-            this.ctxPurple.ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle);
-            this.ctxPurple.filter = "blur(30px)";
-            this.ctxPurple.fill();
-            this.resetContext();
-        }
-
-        // Red ellipses
-        for (let i = 0; i < ellipseCount; i++)
-        {
-            const x = Math.random() * this.width;
-            const y = Math.random() * this.height;
-            const radiusX = minRadius + Math.random() * (maxRadius - minRadius);
-            const radiusY = minRadius + Math.random() * (maxRadius - minRadius);
-            const rotation = Math.random() * 2 * Math.PI;
-            const startAngle = 0;
-            const endAngle = 2 * Math.PI;
-
-            this.ctxRed.fillStyle = `rgba(255, 0, 0, 0.05)`;
-            this.ctxRed.beginPath();
-            this.ctxRed.ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle);
-            this.ctxRed.filter = "blur(30px)";
-            this.ctxRed.fill();
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle);
+            ctx.filter = "blur(30px)";
+            ctx.fill();
             this.resetContext();
         }
     }
