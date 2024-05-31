@@ -16,7 +16,12 @@ export class AboutMeComponent implements OnInit
     "Looking Ahead\nMy goal is to continuously grow and take on exciting projects. I am always looking for new challenges and opportunities to advance in the tech industry.",
     "Let's Connect\nI invite you to explore my portfolio to see my work and projects. I'm open to collaborating on interesting and innovative projects."
   ];
-  canvasIntroduction!: HTMLCanvasElement;
+  canvasPaths!: HTMLCanvasElement;
+  divIntroduction!: HTMLDivElement;
+  svgWaypoint2!: HTMLObjectElement;
+  svgWaypoint3!: HTMLObjectElement;
+  svgWaypoint4!: HTMLObjectElement;
+  svgWaypoint5!: HTMLObjectElement;
   text1!: HTMLParagraphElement;
   text2!: HTMLParagraphElement;
   text3!: HTMLParagraphElement;
@@ -25,15 +30,19 @@ export class AboutMeComponent implements OnInit
 
   DrawPaths()
   {
-    if (this.canvasIntroduction)
+    if (this.canvasPaths)
     {
-      const ctx = this.canvasIntroduction.getContext('2d');
+      const ctx = this.canvasPaths.getContext('2d');
 
-      this.canvasIntroduction.width = this.canvasIntroduction.offsetWidth;
-      this.canvasIntroduction.height = this.canvasIntroduction.offsetHeight;
+      this.canvasPaths.width = this.divIntroduction.offsetWidth;
+      this.canvasPaths.height = this.divIntroduction.offsetHeight;
       if (ctx)
       {
         let paths = new DrawPaths(ctx);
+        paths.DrawPath(this.text1, this.svgWaypoint2);
+        paths.DrawPath(this.text2, this.svgWaypoint3, true);
+        paths.DrawPath(this.text3, this.svgWaypoint4);
+        paths.DrawPath(this.text4, this.svgWaypoint5, true);
       }
     }
   }
@@ -49,14 +58,19 @@ export class AboutMeComponent implements OnInit
 
   ngOnInit(): void
   {
-    //this.canvasIntroduction = document.getElementById('Introduction') as HTMLCanvasElement;
+    this.divIntroduction = document.getElementById('Introduction') as HTMLDivElement;
+    this.canvasPaths = document.getElementById('paths') as HTMLCanvasElement;
     this.text1 = document.getElementById('text1') as HTMLParagraphElement;
     this.text2 = document.getElementById('text2') as HTMLParagraphElement;
     this.text3 = document.getElementById('text3') as HTMLParagraphElement;
     this.text4 = document.getElementById('text4') as HTMLParagraphElement;
     this.text5 = document.getElementById('text5') as HTMLParagraphElement;
-    // this.DrawPaths();
+    this.svgWaypoint2 = document.getElementById('svgIcon2') as HTMLObjectElement;
+    this.svgWaypoint3 = document.getElementById('svgIcon3') as HTMLObjectElement;
+    this.svgWaypoint4 = document.getElementById('svgIcon4') as HTMLObjectElement;
+    this.svgWaypoint5 = document.getElementById('svgIcon5') as HTMLObjectElement;
 
     this.WriteIntroductions();
+    this.DrawPaths();
   }
 }
