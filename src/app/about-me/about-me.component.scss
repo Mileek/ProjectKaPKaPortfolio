@@ -1,0 +1,78 @@
+#Introduction {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+#divText1,
+#divText2,
+#divText3,
+#divText4,
+#divText5 {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#text1,
+#text2,
+#text3,
+#text4,
+#text5 {
+    position: absolute;
+    width: 40vw;
+    color: white;
+    font-size: 16px;
+    text-wrap: wrap;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: rgb(17, 124, 106) 1px dashed;
+    border-radius: 25px;
+}
+#text1 {
+    top: 2vh;
+    left: 2vw;
+}
+#text2 {
+    top: 20vh;
+    left: 50vw; // Zmieniono z "right: 10vw;" na "left: 90vw;"
+}
+#text3 {
+    top: 40vh;
+    left: 10vw;
+}
+#text4 {
+    top: 65vh;
+    left: 55vw; // Zmieniono z "right: 5vw;" na "left: 95vw;"
+}
+#text5 {
+    width: 60vw;
+    top: 80vh;
+    left: 5vw;
+}
+#svgIcon2,
+#svgIcon3,
+#svgIcon4,
+#svgIcon5 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 7vw;
+    height: 7vh;
+}
+#svgIcon2 {
+    top: 12vh;
+    left: 70vw;
+}
+#svgIcon3 {
+    top: 32vh;
+    left: 20vw;
+}
+#svgIcon4 {
+    top: 57vh;
+    left: 80vw;
+}
+#svgIcon5 {
+    top: 72vh;
+    left: 5vw;
+}
