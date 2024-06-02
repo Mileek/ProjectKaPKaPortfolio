@@ -12,21 +12,28 @@ export class DrawPaths
         // Reset context
         this.resetContext();
         this.ctx.beginPath();
-        const lineWidth = 5;
+        const lineWidth = 3;
 
         // Calculate start and end points
         let startX: number = 0;
         if (side)
         {
-            startX = paragraph.offsetLeft;
+            startX = paragraph.getBoundingClientRect().x;
         }
         else
         {
             startX = paragraph.offsetLeft + paragraph.offsetWidth;
         }
         const startY = paragraph.offsetTop + lineWidth;
-
-        let endX = waypoint.offsetLeft + waypoint.offsetWidth / 2;
+        let endX = 0;
+        if (side)
+        {
+            endX = waypoint.getBoundingClientRect().x + waypoint.getBoundingClientRect().width / 2;
+        }
+        else
+        {
+            endX = waypoint.getBoundingClientRect().x + waypoint.getBoundingClientRect().width / 2;
+        }
         const endY = waypoint.offsetTop + waypoint.offsetHeight / 2;
 
         // Style arrowhead

@@ -7,13 +7,13 @@ interface Point
 
 export class DrawLines
 {
+  private _ctx: CanvasRenderingContext2D | null;
   private alpha: number;
   private alphaDirection: number;
   private alphaFactor: number = 0.003;
   private centerX: number;
   private centerY: number;
   private color: string;
-  private ctx: CanvasRenderingContext2D | null;
   private fallingDirection: number = 3;
   //3 undefined
   private longWidth: number;
@@ -37,7 +37,7 @@ export class DrawLines
     trailXSpeed: number = 0,
     trailYSpeed: number = 0)
   {
-    this.ctx = ctx;
+    this._ctx = ctx;
     this.centerX = centerX;
     this.centerY = centerY;
     this.longWidth = longWidth;
@@ -48,6 +48,16 @@ export class DrawLines
     this.alphaDirection = Math.floor(Math.random());
     this.trailXSpeed = trailXSpeed;
     this.trailYSpeed = trailYSpeed;
+  }
+
+  public get ctx(): CanvasRenderingContext2D | null
+  {
+    return this._ctx;
+  }
+
+  private set ctx(value: CanvasRenderingContext2D | null)
+  {
+    this._ctx = value;
   }
 
   public UpdateAlphaValue(): void

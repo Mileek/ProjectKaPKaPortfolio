@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DrawPaths } from './DrawPaths';
-import { text } from '@fortawesome/fontawesome-svg-core';
+import { DrawLines } from '../sections/DrawLines';
+import { AppStatics } from '../services/AppStatics';
 
 @Component({
   selector: 'app-about-me',
@@ -9,15 +10,15 @@ import { text } from '@fortawesome/fontawesome-svg-core';
 })
 export class AboutMeComponent implements OnInit
 {
-  Texts: string[] = [
-    "Education\nI graduated from the Silesian University of Technology with a Bachelor's degree in Mechatronics. This field allowed me to blend my interests in technology and engineering, providing a solid foundation for my career.",
-    "Professional Experience\nAfter finishing my studies, I started working at Allcomp Polska as a .NET Developer. This role gave me hands-on experience in software development and helped me hone my skills in various technologies.",
-    "Continued Growth\nFeeling the need to push myself further, I decided to pursue a Master's degree in Computer Science at the University of Silesia. This advanced education is helping me deepen my knowledge and expand my expertise in the field.",
-    "Looking Ahead\nMy goal is to continuously grow and take on exciting projects. I am always looking for new challenges and opportunities to advance in the tech industry.",
-    "Let's Connect\nI invite you to explore my portfolio to see my work and projects. I'm open to collaborating on interesting and innovative projects."
-  ];
+  TwinklingLinesArray: Array<DrawLines> = [];
+  canvasArray: Array<HTMLCanvasElement> = [];
   canvasPaths!: HTMLCanvasElement;
   divIntroduction!: HTMLDivElement;
+  starryCanvas1!: HTMLCanvasElement;
+  starryCanvas2!: HTMLCanvasElement;
+  starryCanvas3!: HTMLCanvasElement;
+  starryCanvas4!: HTMLCanvasElement;
+  starryCanvas5!: HTMLCanvasElement;
   svgWaypoint2!: HTMLObjectElement;
   svgWaypoint3!: HTMLObjectElement;
   svgWaypoint4!: HTMLObjectElement;
@@ -27,6 +28,8 @@ export class AboutMeComponent implements OnInit
   text3!: HTMLParagraphElement;
   text4!: HTMLParagraphElement;
   text5!: HTMLParagraphElement;
+
+  constructor(private appStatics: AppStatics) { }
 
   DrawPaths()
   {
@@ -47,30 +50,135 @@ export class AboutMeComponent implements OnInit
     }
   }
 
+  DrawTwinklingStar(selectedCanva: HTMLCanvasElement, color: string, alpha: number): void
+  {
+    const ctx = selectedCanva.getContext('2d');
+    const width = selectedCanva.width;
+    const height = selectedCanva.height;
+    const longWidth = 4;
+    const shortWidth = 1;
+    var x = Math.random() * (width - longWidth * 2) + longWidth;
+    var y = Math.random() * (height - longWidth * 2) + longWidth;
+
+    if (ctx)
+    {
+      this.TwinklingLinesArray.push(new DrawLines(ctx, x, y, longWidth, shortWidth, 10, alpha, color));
+    } else
+    {
+      console.log('Failed to get rendering context for canvas');
+    }
+  }
+
+  OverWriteCanvasSize()
+  {
+    if (this.starryCanvas1 && this.text1)
+    {
+      this.starryCanvas1.width = this.text1.offsetWidth;
+      this.starryCanvas1.height = this.text1.offsetHeight;
+    }
+    if (this.starryCanvas2 && this.text2)
+    {
+      this.starryCanvas2.width = this.text2.offsetWidth;
+      this.starryCanvas2.height = this.text2.offsetHeight;
+    }
+    if (this.starryCanvas3 && this.text3)
+    {
+      this.starryCanvas3.width = this.text3.offsetWidth;
+      this.starryCanvas3.height = this.text3.offsetHeight;
+    }
+    if (this.starryCanvas4 && this.text4)
+    {
+      this.starryCanvas4.width = this.text4.offsetWidth;
+      this.starryCanvas4.height = this.text4.offsetHeight;
+    }
+    if (this.starryCanvas5 && this.text5)
+    {
+      this.starryCanvas5.width = this.text5.offsetWidth;
+      this.starryCanvas5.height = this.text5.offsetHeight;
+    }
+  }
+
   WriteIntroductions(): void
   {
-    this.text1.innerText = this.Texts[0];
-    this.text2.innerText = this.Texts[1];
-    this.text3.innerText = this.Texts[2];
-    this.text4.innerText = this.Texts[3];
-    this.text5.innerText = this.Texts[4];
+    this.text1.innerText = this.appStatics.texts[0];
+    this.text2.innerText = this.appStatics.texts[1];
+    this.text3.innerText = this.appStatics.texts[2];
+    this.text4.innerText = this.appStatics.texts[3];
+    this.text5.innerText = this.appStatics.texts[4];
+  }
+
+  animateStars(): void
+  {
+    this.canvasArray.forEach(canvas =>
+    {
+      const ctx = canvas.getContext('2d');
+
+      if (ctx)
+      {
+        ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
+
+        this.TwinklingLinesArray.forEach(star =>
+        {
+          star.UpdateAlphaValue();
+        });
+      }
+    });
+
+    requestAnimationFrame(() => this.animateStars());
   }
 
   ngOnInit(): void
   {
     this.divIntroduction = document.getElementById('Introduction') as HTMLDivElement;
     this.canvasPaths = document.getElementById('paths') as HTMLCanvasElement;
+    this.InitializeParagraphs();
+    this.InitializeSVGWaypoints();
+    this.InitializeCanvas();
+
+    this.WriteIntroductions();
+
+    // Opóźnienie wykonania kodu do momentu, gdy przeglądarka jest gotowa do wykonania kolejnej klatki animacji
+    requestAnimationFrame(() =>
+    {
+      this.OverWriteCanvasSize();
+      this.canvasArray.push(this.starryCanvas1, this.starryCanvas2, this.starryCanvas3, this.starryCanvas4, this.starryCanvas5);
+      console.log(this.canvasArray)
+      this.DrawPaths();
+      this.canvasArray.forEach(canvas =>
+      {
+        for (let i = 0; i < 8; i++)
+        {
+          this.DrawTwinklingStar(canvas, this.appStatics.colorArray[Math.floor(Math.random() * this.appStatics.colorArray.length)], Math.random() * 0.8);
+        }
+      });
+
+      this.animateStars();
+    });
+  }
+
+  private InitializeCanvas()
+  {
+    this.starryCanvas1 = document.getElementById('starryCanvas1') as HTMLCanvasElement;
+    this.starryCanvas2 = document.getElementById('starryCanvas2') as HTMLCanvasElement;
+    this.starryCanvas3 = document.getElementById('starryCanvas3') as HTMLCanvasElement;
+    this.starryCanvas4 = document.getElementById('starryCanvas4') as HTMLCanvasElement;
+    this.starryCanvas5 = document.getElementById('starryCanvas5') as HTMLCanvasElement;
+  }
+
+  private InitializeParagraphs()
+  {
     this.text1 = document.getElementById('text1') as HTMLParagraphElement;
     this.text2 = document.getElementById('text2') as HTMLParagraphElement;
     this.text3 = document.getElementById('text3') as HTMLParagraphElement;
     this.text4 = document.getElementById('text4') as HTMLParagraphElement;
     this.text5 = document.getElementById('text5') as HTMLParagraphElement;
+  }
+
+  private InitializeSVGWaypoints()
+  {
     this.svgWaypoint2 = document.getElementById('svgIcon2') as HTMLObjectElement;
     this.svgWaypoint3 = document.getElementById('svgIcon3') as HTMLObjectElement;
     this.svgWaypoint4 = document.getElementById('svgIcon4') as HTMLObjectElement;
     this.svgWaypoint5 = document.getElementById('svgIcon5') as HTMLObjectElement;
-
-    this.WriteIntroductions();
-    this.DrawPaths();
   }
 }

@@ -4,7 +4,7 @@ import { DrawLines } from './DrawLines';
 import { BlackholeAndStarsInteraction } from './BlackholeAndStarsInteraction';
 import { ImagesDealer } from './ImagesDealer';
 import { DrawBorealis as DrawNebulas } from './DrawBorealis';
-import { SvgIconRegistryService } from 'angular-svg-icon';
+import { AppStatics } from '../services/AppStatics';
 
 @Component({
   selector: 'app-sections',
@@ -28,15 +28,6 @@ export class SectionsComponent implements OnInit
   canvasFalling!: HTMLCanvasElement;
   canvasFloatingObjects!: HTMLCanvasElement;
   canvasTwinkling!: HTMLCanvasElement;
-  colorArray: string[] = [
-    "White",
-    "Orange",
-    "Green",
-    "Blue",
-    "Cyan",
-    "White",
-    "Gray",
-  ]
   fps: number = 0;
   frameCount: number = 0;
   galaxiesDealer!: ImagesDealer;
@@ -50,7 +41,7 @@ export class SectionsComponent implements OnInit
   slideAnimation!: Animation;
   slideAnimationPosition!: number;
 
-  constructor(private iconReg: SvgIconRegistryService)
+  constructor(private appStatics: AppStatics)
   {
   }
 
@@ -110,7 +101,7 @@ export class SectionsComponent implements OnInit
 
     for (let i = 0; i < numberOfFallingStars; i++)
     {
-      var color = this.colorArray[Math.floor(Math.random() * this.colorArray.length)];
+      var color = this.appStatics.colorArray[Math.floor(Math.random() * this.appStatics.colorArray.length)];
       var longWidth = Math.random() * 10;
       var shortWidth = Math.random() * 6;
       var x = Math.random() * (width - longWidth * 2) + longWidth;
@@ -211,7 +202,7 @@ export class SectionsComponent implements OnInit
       {
         if (i < numberOfStars)
         {
-          var color = this.colorArray[Math.floor(Math.random() * this.colorArray.length)];
+          var color = this.appStatics.colorArray[Math.floor(Math.random() * this.appStatics.colorArray.length)];
           var longWidth = (Math.random() - 0.5) * 22;
           var shortWidth = (Math.random() - 0.5) * 14;
           var x = Math.random() * (width - longWidth * 2) + longWidth;
@@ -364,7 +355,7 @@ export class SectionsComponent implements OnInit
     this.BSInteraction.MoveStarsToBlackhole();
     if (this.BSInteraction.ReGenerateStar > 0)
     {
-      const color = this.colorArray[Math.floor(Math.random() * this.colorArray.length)];
+      const color = this.appStatics.colorArray[Math.floor(Math.random() * this.appStatics.colorArray.length)];
       const width = this.background.offsetWidth;
       const height = this.background.offsetHeight;
 

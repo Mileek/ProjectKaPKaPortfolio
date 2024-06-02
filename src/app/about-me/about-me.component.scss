@@ -5,54 +5,86 @@
 }
 
 #divText1,
-#divText2,
 #divText3,
-#divText4,
 #divText5 {
     position: absolute;
     top: 0;
     left: 0;
+    width: 40vw;
+}
+
+#divText2,
+#divText4 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40vw;
+}
+
+#starryCanvas1,
+#starryCanvas2,
+#starryCanvas3,
+#starryCanvas4,
+#starryCanvas5 {
+    background-color: transparent !important;
 }
 
 #text1,
 #text2,
 #text3,
 #text4,
-#text5 {
+#text5,
+#starryCanvas1,
+#starryCanvas2,
+#starryCanvas3,
+#starryCanvas4,
+#starryCanvas5 {
     position: absolute;
-    width: 40vw;
     color: white;
     font-size: 16px;
     text-wrap: wrap;
-    padding: 15px;
-    background-color: rgba(255, 255, 255, 0.08);
-    border: rgb(17, 124, 106) 1px dashed;
-    border-radius: 25px;
+    text-align: justify;
+    border-radius: 20px;
+    z-index: 1;
 }
-#text1 {
+#text1,
+#starryCanvas1 {
     top: 2vh;
-    left: 2vw;
+    left: 1vw;
+    background-color: rgba(0, 0, 255, 0.05);
+    border-left: 1vw solid rgba(0, 0, 255, 0.5);
 }
-#text2 {
+#text2,
+#starryCanvas2 {
     top: 20vh;
-    left: 50vw; // Zmieniono z "right: 10vw;" na "left: 90vw;"
+    right: 2vw;
+    background-color: rgba(0, 255, 0, 0.05);
+    border-right: 1vw solid rgba(0, 255, 0, 0.5);
 }
-#text3 {
+#text3,
+#starryCanvas3 {
     top: 40vh;
     left: 10vw;
+    background-color: rgba(161, 63, 252, 0.05);
+    border-left: 1vw solid rgba(161, 63, 252, 0.5);
 }
-#text4 {
+#text4,
+#starryCanvas4 {
     top: 65vh;
-    left: 55vw; // Zmieniono z "right: 5vw;" na "left: 95vw;"
+    right: 10vw;
+    background-color: rgba(255, 0, 0, 0.05);
+    border-right: 1vw solid rgba(255, 0, 0, 0.5);
 }
-#text5 {
+#text5,
+#starryCanvas5 {
     width: 60vw;
-    top: 80vh;
-    left: 5vw;
+    top: 86vh;
+    left: 2vw;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-left: 1vw solid rgba(255, 255, 255, 0.5);
 }
-#svgIcon2,
+
 #svgIcon3,
-#svgIcon4,
 #svgIcon5 {
     position: absolute;
     padding: 0;
@@ -62,9 +94,19 @@
     width: 5vw;
     height: 7vh;
 }
+#svgIcon2,
+#svgIcon4 {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    top: 0;
+    right: 0;
+    width: 5vw;
+    height: 7vh;
+}
 #svgIcon2 {
     top: 12vh;
-    left: 70vw;
+    left: 10vw;
 }
 #svgIcon3 {
     top: 32vh;
@@ -72,9 +114,9 @@
 }
 #svgIcon4 {
     top: 57vh;
-    left: 80vw;
+    left: 20vw;
 }
 #svgIcon5 {
-    top: 72vh;
+    top: 78vh;
     left: 5vw;
 }
