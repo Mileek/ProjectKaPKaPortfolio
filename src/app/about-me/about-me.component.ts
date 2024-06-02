@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { DrawPaths } from './DrawPaths';
 import { DrawLines } from '../sections/DrawLines';
 import { AppStatics } from '../services/AppStatics';
@@ -134,7 +134,6 @@ export class AboutMeComponent implements OnInit
     this.InitializeParagraphs();
     this.InitializeSVGWaypoints();
     this.InitializeCanvas();
-
     this.WriteIntroductions();
 
     // Opóźnienie wykonania kodu do momentu, gdy przeglądarka jest gotowa do wykonania kolejnej klatki animacji
@@ -144,15 +143,76 @@ export class AboutMeComponent implements OnInit
       this.canvasArray.push(this.starryCanvas1, this.starryCanvas2, this.starryCanvas3, this.starryCanvas4, this.starryCanvas5);
       console.log(this.canvasArray)
       this.DrawPaths();
-      this.canvasArray.forEach(canvas =>
-      {
-        for (let i = 0; i < 8; i++)
-        {
-          this.DrawTwinklingStar(canvas, this.appStatics.colorArray[Math.floor(Math.random() * this.appStatics.colorArray.length)], Math.random() * 0.8);
-        }
-      });
+      this.DrawTwinklingForEachCanva();
 
       this.animateStars();
+    });
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll(event: Event): void
+  {
+    this.scrollEffectUpDown(this.text1, this.text1, this.starryCanvas1, 'left');
+    this.scrollEffectUpDown(this.text1, this.text2, this.starryCanvas2, 'right');
+    this.scrollEffectUpDown(this.text1, this.text3, this.starryCanvas3, 'left');
+    this.scrollEffectUpDown(this.text1, this.text4, this.starryCanvas4, 'right');
+    this.scrollEffectUpDown(this.text1, this.text5, this.starryCanvas5, 'left');
+  }
+
+  scrollEffectUpDown(boundingElement: HTMLElement, textElement: HTMLElement, canvasElement: HTMLElement, direction: 'left' | 'right'): void
+  {
+    if (!textElement || !boundingElement) return;
+
+    const rect = boundingElement.getBoundingClientRect();
+    const isInViewport = rect.top <= window.innerHeight && rect.bottom >= 0;
+
+    if (isInViewport)
+    {
+      const viewportHeight = window.innerHeight;
+      const elementHeight = rect.height;
+      const elementTop = rect.top;
+
+      // Calculate the scroll ratio based on the element's position in the viewport
+      const scrollRatio = Math.max(0, Math.min(1, (viewportHeight - elementTop) / (viewportHeight + elementHeight))) * 2;
+
+      // Calculate the translate value based on the scroll ratio
+      let translateValue = (1 - scrollRatio) * -100; // Adjust the range as needed
+
+      // Limit the translate value to 0%
+      if (translateValue > 0)
+      {
+        translateValue = 0;
+      }
+
+      // Apply the translate value in the correct direction
+      if (direction === 'left')
+      {
+        textElement.style.transform = `translateX(${translateValue}vw)`;
+        canvasElement.style.transform = `translateX(${translateValue}vw)`;
+      } else
+      {
+        textElement.style.transform = `translateX(${-translateValue}vw)`;
+        canvasElement.style.transform = `translateX(${-translateValue}vw)`;
+      }
+
+      // Calculate the opacity based on the scroll ratio
+      textElement.style.opacity = `${scrollRatio}`; // This will fade in the element as it enters the viewport
+      canvasElement.style.opacity = `${scrollRatio}`; // This will fade in the element as it enters the viewport
+    } else
+    {
+      // textElement.style.transform = direction === 'left' ? 'translateX(-100vw)' : 'translateX(100vw)'; // Keep it off-screen initially
+      // textElement.style.opacity = '0'; // Keep it hidden initially
+    }
+  }
+
+  private DrawTwinklingForEachCanva()
+  {
+    this.canvasArray.forEach(canvas =>
+    {
+      for (let i = 0; i < 8; i++)
+      {
+        this.DrawTwinklingStar(canvas, this.appStatics.colorArray[Math.floor(Math.random() * this.appStatics.colorArray.length)], Math.random() * 0.8);
+      }
     });
   }
 
