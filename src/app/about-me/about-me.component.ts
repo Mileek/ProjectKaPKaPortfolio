@@ -10,6 +10,8 @@ import { AppStatics } from '../services/AppStatics';
 })
 export class AboutMeComponent implements OnInit
 {
+  private cancellationToken = { isCancellationRequested: false };
+
   TwinklingLinesArray: Array<DrawLines> = [];
   canvasArray: Array<HTMLCanvasElement> = [];
   canvasPath1!: HTMLCanvasElement;
@@ -18,6 +20,11 @@ export class AboutMeComponent implements OnInit
   canvasPath4!: HTMLCanvasElement;
   canvasPaths!: HTMLCanvasElement;
   divIntroduction!: HTMLDivElement;
+  paths1?: DrawPaths;
+  paths2?: DrawPaths;
+  paths3?: DrawPaths;
+  paths4?: DrawPaths;
+  pathsDrawn: boolean = false;
   starryCanvas1!: HTMLCanvasElement;
   starryCanvas2!: HTMLCanvasElement;
   starryCanvas3!: HTMLCanvasElement;
@@ -35,7 +42,7 @@ export class AboutMeComponent implements OnInit
 
   constructor(private appStatics: AppStatics) { }
 
-  public async DrawPaths()
+  public async DrawPaths(cancellationToken: { isCancellationRequested: boolean })
   {
     if (this.canvasPath1)
     {
@@ -44,8 +51,14 @@ export class AboutMeComponent implements OnInit
       this.canvasPath1.height = this.divIntroduction.offsetHeight;
       if (ctx1)
       {
-        let paths1 = new DrawPaths(ctx1);
-        await paths1.DrawPath(this.text1, this.svgWaypoint2);
+        if (cancellationToken.isCancellationRequested)
+        {
+          ctx1.clearRect(0, 0, this.canvasPath1.width, this.canvasPath1.height);
+        }
+        this.paths1 = new DrawPaths(ctx1);
+        await this.paths1.DrawPath(this.text1, this.svgWaypoint2, false, cancellationToken);
+        this.paths1.animateWaypoint(this.svgWaypoint2, cancellationToken);
+        this.paths1.animatePath(cancellationToken);
       }
     }
 
@@ -56,8 +69,14 @@ export class AboutMeComponent implements OnInit
       this.canvasPath2.height = this.divIntroduction.offsetHeight;
       if (ctx2)
       {
-        let paths2 = new DrawPaths(ctx2);
-        await paths2.DrawPath(this.text2, this.svgWaypoint3, true);
+        if (cancellationToken.isCancellationRequested)
+        {
+          ctx2.clearRect(0, 0, this.canvasPath2.width, this.canvasPath2.height);
+        }
+        this.paths2 = new DrawPaths(ctx2);
+        await this.paths2.DrawPath(this.text2, this.svgWaypoint3, true, cancellationToken);
+        this.paths2.animateWaypoint(this.svgWaypoint3, cancellationToken);
+        this.paths2.animatePath(cancellationToken);
       }
     }
 
@@ -68,8 +87,14 @@ export class AboutMeComponent implements OnInit
       this.canvasPath3.height = this.divIntroduction.offsetHeight;
       if (ctx3)
       {
-        let paths3 = new DrawPaths(ctx3);
-        await paths3.DrawPath(this.text3, this.svgWaypoint4);
+        if (cancellationToken.isCancellationRequested)
+        {
+          ctx3.clearRect(0, 0, this.canvasPath3.width, this.canvasPath3.height);
+        }
+        this.paths3 = new DrawPaths(ctx3);
+        await this.paths3.DrawPath(this.text3, this.svgWaypoint4, false, cancellationToken);
+        this.paths3.animateWaypoint(this.svgWaypoint4, cancellationToken);
+        this.paths3.animatePath(cancellationToken);
       }
     }
 
@@ -80,8 +105,14 @@ export class AboutMeComponent implements OnInit
       this.canvasPath4.height = this.divIntroduction.offsetHeight;
       if (ctx4)
       {
-        let paths4 = new DrawPaths(ctx4);
-        await paths4.DrawPath(this.text4, this.svgWaypoint5, true);
+        if (cancellationToken.isCancellationRequested)
+        {
+          ctx4.clearRect(0, 0, this.canvasPath4.width, this.canvasPath4.height);
+        }
+        this.paths4 = new DrawPaths(ctx4);
+        await this.paths4.DrawPath(this.text4, this.svgWaypoint5, true, cancellationToken);
+        this.paths4.animateWaypoint(this.svgWaypoint5, cancellationToken);
+        this.paths4.animatePath(cancellationToken);
       }
     }
   }
@@ -181,7 +212,6 @@ export class AboutMeComponent implements OnInit
       this.OverWriteCanvasSize();
       this.canvasArray.push(this.starryCanvas1, this.starryCanvas2, this.starryCanvas3, this.starryCanvas4, this.starryCanvas5);
       console.log(this.canvasArray)
-      this.DrawPaths();
       this.DrawTwinklingForEachCanva();
 
       this.animateStars();
@@ -235,8 +265,20 @@ export class AboutMeComponent implements OnInit
       }
 
       // Calculate the opacity based on the scroll ratio
-      textElement.style.opacity = `${scrollRatio}`; // This will fade in the element as it enters the viewport
-      canvasElement.style.opacity = `${scrollRatio}`; // This will fade in the element as it enters the viewport
+      textElement.style.opacity = `${scrollRatio}`;
+      canvasElement.style.opacity = `${scrollRatio}`;
+      if (scrollRatio > 0.95 && !this.pathsDrawn)
+      {
+        this.pathsDrawn = true;
+        this.cancellationToken.isCancellationRequested = false; // Reset the cancellation token
+        this.DrawPaths(this.cancellationToken);
+      }
+      else if (scrollRatio < 0.95 && this.pathsDrawn)
+      {
+        this.pathsDrawn = false;
+        this.cancellationToken.isCancellationRequested = true; // Request cancellation
+        this.DrawPaths(this.cancellationToken);
+      }
     } else
     {
       // textElement.style.transform = direction === 'left' ? 'translateX(-100vw)' : 'translateX(100vw)'; // Keep it off-screen initially
