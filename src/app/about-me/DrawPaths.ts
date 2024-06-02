@@ -7,7 +7,7 @@ export class DrawPaths
         this.ctx = ctx
     }
 
-    public DrawPath(paragraph: HTMLParagraphElement, waypoint: HTMLObjectElement, side: boolean = false)
+    public async DrawPath(paragraph: HTMLParagraphElement, waypoint: HTMLObjectElement, side: boolean = false)
     {
         // Reset context
         this.resetContext();
@@ -19,8 +19,7 @@ export class DrawPaths
         if (side)
         {
             startX = paragraph.getBoundingClientRect().x;
-        }
-        else
+        } else
         {
             startX = paragraph.offsetLeft + paragraph.offsetWidth;
         }
@@ -29,8 +28,7 @@ export class DrawPaths
         if (side)
         {
             endX = waypoint.getBoundingClientRect().x + waypoint.getBoundingClientRect().width / 2;
-        }
-        else
+        } else
         {
             endX = waypoint.getBoundingClientRect().x + waypoint.getBoundingClientRect().width / 2;
         }
@@ -43,14 +41,38 @@ export class DrawPaths
         this.ctx.lineCap = "round";
         this.ctx.strokeStyle = '#FFFFFF';
 
-        // Draw path with a single Bezier curve
-        this.ctx.moveTo(startX, startY);
-
-        this.ctx.quadraticCurveTo((startX + endX) / 2, startY, endX, endY);
-
         // Style the line
         this.ctx.setLineDash([20, 15]);
-        this.ctx.stroke();
+
+        // Draw path with a single Bezier curve
+        let controlX = startX;
+        const controlY = startY;
+
+        // Animate line to startX, startY
+        let t = 0;
+        return new Promise<void>(resolve =>
+        {
+            const draw = () =>
+            {
+                t += 0.01;
+                if (t > 1)
+                {
+                    resolve();
+                    return;
+                }
+                controlX = startX + t * (endX - startX) / 2;
+
+                const x = (1 - t) * (1 - t) * startX + 2 * (1 - t) * t * controlX + t * t * endX;
+                const y = (1 - t) * (1 - t) * startY + 2 * (1 - t) * t * controlY + t * t * endY;
+                this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+                this.ctx.beginPath();
+                this.ctx.moveTo(startX, startY);
+                this.ctx.quadraticCurveTo(controlX, controlY, x, y);
+                this.ctx.stroke();
+                requestAnimationFrame(draw);
+            };
+            draw();
+        });
     }
 
     private resetContext()

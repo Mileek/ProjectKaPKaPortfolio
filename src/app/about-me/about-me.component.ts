@@ -12,6 +12,10 @@ export class AboutMeComponent implements OnInit
 {
   TwinklingLinesArray: Array<DrawLines> = [];
   canvasArray: Array<HTMLCanvasElement> = [];
+  canvasPath1!: HTMLCanvasElement;
+  canvasPath2!: HTMLCanvasElement;
+  canvasPath3!: HTMLCanvasElement;
+  canvasPath4!: HTMLCanvasElement;
   canvasPaths!: HTMLCanvasElement;
   divIntroduction!: HTMLDivElement;
   starryCanvas1!: HTMLCanvasElement;
@@ -31,21 +35,53 @@ export class AboutMeComponent implements OnInit
 
   constructor(private appStatics: AppStatics) { }
 
-  DrawPaths()
+  public async DrawPaths()
   {
-    if (this.canvasPaths)
+    if (this.canvasPath1)
     {
-      const ctx = this.canvasPaths.getContext('2d');
-
-      this.canvasPaths.width = this.divIntroduction.offsetWidth;
-      this.canvasPaths.height = this.divIntroduction.offsetHeight;
-      if (ctx)
+      const ctx1 = this.canvasPath1.getContext('2d');
+      this.canvasPath1.width = this.divIntroduction.offsetWidth;
+      this.canvasPath1.height = this.divIntroduction.offsetHeight;
+      if (ctx1)
       {
-        let paths = new DrawPaths(ctx);
-        paths.DrawPath(this.text1, this.svgWaypoint2);
-        paths.DrawPath(this.text2, this.svgWaypoint3, true);
-        paths.DrawPath(this.text3, this.svgWaypoint4);
-        paths.DrawPath(this.text4, this.svgWaypoint5, true);
+        let paths1 = new DrawPaths(ctx1);
+        await paths1.DrawPath(this.text1, this.svgWaypoint2);
+      }
+    }
+
+    if (this.canvasPath2)
+    {
+      const ctx2 = this.canvasPath2.getContext('2d');
+      this.canvasPath2.width = this.divIntroduction.offsetWidth;
+      this.canvasPath2.height = this.divIntroduction.offsetHeight;
+      if (ctx2)
+      {
+        let paths2 = new DrawPaths(ctx2);
+        await paths2.DrawPath(this.text2, this.svgWaypoint3, true);
+      }
+    }
+
+    if (this.canvasPath3)
+    {
+      const ctx3 = this.canvasPath3.getContext('2d');
+      this.canvasPath3.width = this.divIntroduction.offsetWidth;
+      this.canvasPath3.height = this.divIntroduction.offsetHeight;
+      if (ctx3)
+      {
+        let paths3 = new DrawPaths(ctx3);
+        await paths3.DrawPath(this.text3, this.svgWaypoint4);
+      }
+    }
+
+    if (this.canvasPath4)
+    {
+      const ctx4 = this.canvasPath4.getContext('2d');
+      this.canvasPath4.width = this.divIntroduction.offsetWidth;
+      this.canvasPath4.height = this.divIntroduction.offsetHeight;
+      if (ctx4)
+      {
+        let paths4 = new DrawPaths(ctx4);
+        await paths4.DrawPath(this.text4, this.svgWaypoint5, true);
       }
     }
   }
@@ -130,7 +166,10 @@ export class AboutMeComponent implements OnInit
   ngOnInit(): void
   {
     this.divIntroduction = document.getElementById('Introduction') as HTMLDivElement;
-    this.canvasPaths = document.getElementById('paths') as HTMLCanvasElement;
+    this.canvasPath1 = document.getElementById('path1') as HTMLCanvasElement;
+    this.canvasPath2 = document.getElementById('path2') as HTMLCanvasElement;
+    this.canvasPath3 = document.getElementById('path3') as HTMLCanvasElement;
+    this.canvasPath4 = document.getElementById('path4') as HTMLCanvasElement;
     this.InitializeParagraphs();
     this.InitializeSVGWaypoints();
     this.InitializeCanvas();

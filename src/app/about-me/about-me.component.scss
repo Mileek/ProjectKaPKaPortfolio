@@ -3,6 +3,14 @@
     height: 100vh;
     position: relative;
 }
+#path1,
+#path2,
+#path3,
+#path4 {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 
 #divText1,
 #divText3,
