@@ -5,6 +5,8 @@ import { BlackholeAndStarsInteraction } from './BlackholeAndStarsInteraction';
 import { ImagesDealer } from './ImagesDealer';
 import { DrawBorealis as DrawNebulas } from './DrawBorealis';
 import { AppStatics } from '../services/AppStatics';
+import { ViewportScroller } from '@angular/common';
+import * as smoothscroll from 'smoothscroll-polyfill';
 
 @Component({
   selector: 'app-sections',
@@ -41,8 +43,9 @@ export class SectionsComponent implements OnInit
   slideAnimation!: Animation;
   slideAnimationPosition!: number;
 
-  constructor(private appStatics: AppStatics)
+  constructor(private viewportScroller: ViewportScroller, private appStatics: AppStatics)
   {
+    smoothscroll.polyfill();
   }
 
   AnimateFloatingObjects()
@@ -316,6 +319,28 @@ export class SectionsComponent implements OnInit
       angleUp.style.opacity = '0';
       anglesUp.style.opacity = '0';
     }
+  }
+
+  scrollTop()
+  {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  scrollUp()
+  {
+    const sections = ['home', 'about-me', 'projects', 'contact-me'];
+    const currentY = Math.round(window.scrollY);
+    let position = 0;
+    for (let i = 0; i < sections.length; i++)
+    {
+      const element = document.querySelector(`#${sections[i]}`) as HTMLElement;
+
+      if (element && currentY > element.offsetTop && position <= element.offsetTop)
+      {
+        position = element.offsetTop;
+      }
+    }
+    window.scrollTo({ top: position, behavior: 'smooth' });
   }
 
   private AngleInterval(): void

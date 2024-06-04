@@ -29,6 +29,7 @@
     "orbit-controls": "^1.2.4",
     "rxjs": "~7.8.1",
     "simplex-noise": "^4.0.1",
+    "smoothscroll-polyfill": "^0.4.4",
     "three": "^0.164.1",
     "tslib": "^2.6.2",
     "zone.js": "^0.14.6"
@@ -39,6 +40,7 @@
     "@angular/compiler-cli": "^17.3.9",
     "@types/jasmine": "~5.1.4",
     "@types/matter-js": "^0.19.6",
+    "@types/smoothscroll-polyfill": "^0.3.4",
     "@types/three": "^0.164.0",
     "jasmine-core": "~5.1.2",
     "karma": "~6.4.3",
