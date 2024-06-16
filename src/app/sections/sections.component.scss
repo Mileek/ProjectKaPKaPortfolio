@@ -109,6 +109,13 @@ $background: linear-gradient(
   height: 100vh;
 }
 
+#projects {
+  z-index: 10;
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 50px);
+}
+
 //naw right bottom
 .StickyUpNav {
   position: fixed;

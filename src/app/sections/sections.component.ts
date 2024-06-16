@@ -321,12 +321,12 @@ export class SectionsComponent implements OnInit
     }
   }
 
-  scrollTop()
+  scrollTop(): void
   {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  scrollUp()
+  scrollUp(): void
   {
     const sections = ['home', 'about-me', 'projects', 'contact-me'];
     const currentY = Math.round(window.scrollY);
