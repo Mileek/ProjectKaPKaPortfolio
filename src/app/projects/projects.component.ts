@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-projects',
@@ -8,49 +8,87 @@ import { Component, OnInit } from '@angular/core';
 export class ProjectsComponent implements OnInit
 {
   private slider!: HTMLElement | null;
-  private sliderItems!: NodeListOf<Element> | undefined;
+  private sliderItems!: Element[];
 
-  constructor() { }
+  current_index: number = 0;
 
-  ngOnInit(): void
+  constructor()
   {
-    this.slider = document.querySelector('.slider');
-    this.updateSliderItems();
+    this.sliderItems = [];
   }
 
-  private updateSliderItems(): void
+  hideAndShowDots(): void
   {
-    this.sliderItems = this.slider?.querySelectorAll('.item');
+    const dots = document.querySelectorAll('.dots .dot');
+    dots.forEach((dot: Element) =>
+    {
+      if (dot instanceof HTMLElement)
+      {
+        dot.classList.remove('show');
+        dot.classList.add('hide');
+      }
+    });
+    setTimeout(() =>
+    {
+      dots.forEach((dot: Element) =>
+      {
+        if (dot instanceof HTMLElement)
+        {
+          dot.classList.remove('hide');
+          dot.classList.add('show');
+        }
+      });
+    }, 1000);
   }
 
   next(): void
   {
-    if (this.sliderItems && this.sliderItems.length > 0)
+    if (this.sliderItems.length > 0)
     {
-      this.slider?.append(this.sliderItems[0]);
-      this.updateSliderItems();
+      const firstItem = this.sliderItems.shift();
+      if (firstItem && this.slider)
+      {
+        this.slider.append(firstItem);
+        this.sliderItems.push(firstItem);
+        this.current_index = (this.current_index + 1) % 6; // Zakładam, że masz 6 obrazków
+      }
+    }
+    this.hideAndShowDots();
+  }
+
+  ngOnInit(): void
+  {
+    this.slider = document.querySelector('.slider');
+    const items = this.slider?.querySelectorAll('.item');
+    if (items)
+    {
+      this.sliderItems = Array.from(items);
     }
   }
 
   prev(): void
   {
-    if (this.sliderItems && this.sliderItems.length > 0)
+    if (this.sliderItems.length > 0)
     {
-      this.slider?.prepend(this.sliderItems[this.sliderItems.length - 1]);
-      this.updateSliderItems();
+      const lastItem = this.sliderItems.pop();
+      if (lastItem && this.slider)
+      {
+        this.slider.prepend(lastItem);
+        this.sliderItems.unshift(lastItem);
+      }
     }
+    this.hideAndShowDots();
   }
 
   select(index: number): void
   {
-    if (this.sliderItems && this.sliderItems.length > 0)
+    // Oblicz, ile razy musimy wywołać "next" aby dotrzeć do wybranego indeksu
+    const timesToCallNext = (index - this.current_index + 6) % 6; // Dodajemy 6 i bierzemy resztę z dzielenia przez 6, aby uniknąć ujemnych wartości
+
+    // Wywołaj "next" odpowiednią ilość razy
+    for (let i = 0; i < timesToCallNext; i++)
     {
-      const selectedItem = this.sliderItems[index];
-      if (this.slider && selectedItem)
-      {
-        this.slider.insertBefore(selectedItem, this.slider.firstChild);  // Przenieś wybrany element na początek
-        this.updateSliderItems();
-      }
+      this.next();
     }
   }
 }
