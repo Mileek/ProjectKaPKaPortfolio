@@ -35,7 +35,7 @@
   <div id="home">
     <app-home></app-home>
   </div>
-  <div id="about-me" style="height: 100vh;">
+  <div id="about-me">
     <app-about-me></app-about-me>
   </div>
   <div id="projects" style="height: 100vh;">
@@ -45,7 +45,7 @@
     <app-contact-me></app-contact-me>
   </div>
   <div class="StickyUpNav">
-    <fa-icon [icon]="['fas', 'angles-up']" id="navDoubleUp" class="AnglesUp"></fa-icon>
-    <fa-icon [icon]="['fas', 'angle-up']" id="navUp" class="AngleUp"></fa-icon>
+    <fa-icon (click)="scrollTop()" [icon]="['fas', 'angles-up']" id="navDoubleUp" class="AnglesUp"></fa-icon>
+    <fa-icon (click)="scrollUp()" [icon]="['fas', 'angle-up']" id="navUp" class="AngleUp"></fa-icon>
   </div>
 </div>

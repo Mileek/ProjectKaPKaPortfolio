@@ -1,0 +1,154 @@
+#Introduction {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+#path1,
+#path2,
+#path3,
+#path4 {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#divText1,
+#divText3,
+#divText5 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40vw;
+}
+
+#divText2,
+#divText4 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40vw;
+}
+
+#starryCanvas1,
+#starryCanvas2,
+#starryCanvas3,
+#starryCanvas4,
+#starryCanvas5 {
+    background-color: transparent !important;
+    border-left: transparent !important;
+    border-right: transparent !important;
+}
+
+#text1,
+#text2,
+#text3,
+#text4,
+#text5,
+#starryCanvas1,
+#starryCanvas2,
+#starryCanvas3,
+#starryCanvas4,
+#starryCanvas5 {
+    position: absolute;
+    color: white;
+    font-size: 16px;
+    text-wrap: wrap;
+    text-align: justify;
+    border-radius: 20px;
+    z-index: 1;
+}
+#text1,
+#starryCanvas1 {
+    top: 2vh;
+    left: 1vw;
+    background-color: rgba(0, 0, 255, 0.05);
+    border-left: 1vw solid rgba(0, 0, 255, 0.5);
+    opacity: 0; /* Initially hidden */
+    transition:
+        transform 1s ease-out,
+        opacity 1s ease-out; /* Smooth transition */
+}
+#text2,
+#starryCanvas2 {
+    top: 20vh;
+    right: 2vw;
+    background-color: rgba(0, 255, 0, 0.05);
+    border-right: 1vw solid rgba(0, 255, 0, 0.5);
+    opacity: 0; /* Initially hidden */
+    transition:
+        transform 1s ease-out,
+        opacity 1s ease-out; /* Smooth transition */
+}
+#text3,
+#starryCanvas3 {
+    top: 40vh;
+    left: 8vw;
+    background-color: rgba(161, 63, 252, 0.05);
+    border-left: 1vw solid rgba(161, 63, 252, 0.5);
+    opacity: 0; /* Initially hidden */
+    transition:
+        transform 1s ease-out,
+        opacity 1s ease-out; /* Smooth transition */
+}
+#text4,
+#starryCanvas4 {
+    top: 65vh;
+    right: 10vw;
+    background-color: rgba(255, 0, 0, 0.05);
+    border-right: 1vw solid rgba(255, 0, 0, 0.5);
+    opacity: 0; /* Initially hidden */
+    transition:
+        transform 1s ease-out,
+        opacity 1s ease-out; /* Smooth transition */
+}
+#text5,
+#starryCanvas5 {
+    width: 60vw;
+    top: 86vh;
+    left: 2vw;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-left: 1vw solid rgba(255, 255, 255, 0.5);
+    opacity: 0; /* Initially hidden */
+    transition:
+        transform 1s ease-out,
+        opacity 1s ease-out; /* Smooth transition */
+}
+
+#svgIcon3,
+#svgIcon5 {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    top: 0;
+    left: 0;
+    width: 5vw;
+    height: 7vh;
+    opacity: 0;
+}
+#svgIcon2,
+#svgIcon4 {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    top: 0;
+    right: 0;
+    width: 5vw;
+    height: 7vh;
+    opacity: 0;
+}
+#svgIcon2 {
+    top: 12vh;
+    left: 10vw;
+}
+#svgIcon3 {
+    top: 32vh;
+    left: 20vw;
+}
+#svgIcon4 {
+    top: 57vh;
+    left: 20vw;
+}
+#svgIcon5 {
+    top: 78vh;
+    left: 5vw;
+}

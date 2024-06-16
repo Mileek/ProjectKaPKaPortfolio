@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewportScroller } from '@angular/common';
+import * as smoothscroll from 'smoothscroll-polyfill';
 
 @Component({
   selector: 'app-home',
@@ -18,6 +19,7 @@ export class HomeComponent implements OnInit
 
   constructor(private viewportScroller: ViewportScroller)
   {
+    smoothscroll.polyfill();
   }
 
   public ngOnInit(): void
@@ -33,7 +35,7 @@ export class HomeComponent implements OnInit
     if (element)
     {
       const position = element.offsetTop - this.navbarHeight;
-      this.viewportScroller.scrollToPosition([0, position]);
+      window.scrollTo({ top: position, behavior: 'smooth' });
     }
   }
 
