@@ -5,6 +5,7 @@
 <div class="sliderContainer">
     <ul class="slider">
         <li (click)="select(5)" id="imageLast" class='item'>
+            <div class="caption">Ostatni Projekt</div>
             <div class='content'>
                 <h2 class='title'>"Lossless Youths"</h2>
                 <p class='description'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore fuga
@@ -14,8 +15,9 @@
             </div>
         </li>
         <li (click)="select(0)" id="image0" class='item'>
+            <div class="caption">Allcomp cutter HMI</div>
             <div class='content'>
-                <h2 class='title'>"Work Project"</h2>
+                <h2 class='title'>"WPF Work Project"</h2>
                 <div class='description'>
                     <p>
                         At Allcomp Polska, I specialize in developing advanced HMI applications for industrial cutting
@@ -45,24 +47,71 @@
             </div>
         </li>
         <li (click)="select(1)" id="image1" class='item'>
+            <div class="caption">Multiagent Queue Simulation</div>
             <div class='content'>
-                <h2 class='title'>"The Gate Keeper"</h2>
-                <p class='description'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore fuga
-                    voluptatum,
-                    iure corporis inventore praesentium nisi. Id laboriosam ipsam enim.</p>
+                <h2 class='title'>Unity Project</h2>
+                <div class='description'>
+                    <p>
+                        This project showcases my exploration of multi-agent simulation and the Unity engine to model
+                        realistic ticket queue scenarios. It highlights my passion for problem-solving and innovative
+                        thinking.
+                    </p>
+                    <p>
+                        The simulation examines how people behave in ticket queues and how the number and type of queues
+                        affect throughput. It includes both traditional and self-service ticket queues to optimize
+                        efficiency and comfort.
+                    </p>
+                    <p>
+                        Created using the Unity engine and coded in C#.
+                    </p>
+                    <h3>Key Features</h3>
+                    <ul>
+                        <li>Simulates traditional and self-service ticket queues.</li>
+                        <li>Adjustable parameters: number of queues, guests, and service times.</li>
+                        <li>Self-service queues are 30% faster.</li>
+                        <li>Up to 40% of guests use self-service if the queue is shorter.</li>
+                    </ul>
+                    <p>
+                        The project can be expanded to include factors like different age groups, service costs, and
+                        customer satisfaction.
+                    </p>
+                </div>
                 <button>Github <fa-icon [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
             </div>
         </li>
         <li (click)="select(2)" id="image2" class='item'>
+            <div class="caption">Real Estate Web Application</div>
             <div class='content'>
-                <h2 class='title'>"Last Trace Of Us"</h2>
-                <p class='description'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore fuga
-                    voluptatum,
-                    iure corporis inventore praesentium nisi. Id laboriosam ipsam enim.</p>
+                <h2 class='title'>Angular Project</h2>
+                <div class='description'>
+                    <p>
+                        I developed a web application enabling users to post and browse real estate ads, facilitating
+                        communication between buyers and sellers. This project showcases my skills in dynamic web
+                        development and security.
+                    </p>
+                    <h3>
+                        Key features include:
+                    </h3>
+                    <ul>
+                        <li>Data binding using Angular for dynamic interfaces.</li>
+                        <li>Image handling with Cloudinary for optimized delivery.</li>
+                        <li>Deployment readiness on Azure with secure settings via Azure Key Vault.</li>
+                        <li>Authorization and authentication using IdentityServer4.</li>
+                        <li>Exception handling and middleware in ASP.NET Core.</li>
+                        <li>Automapper for data mapping and updating.</li>
+                        <li>UnitOfWork and Repository patterns for efficient data access.</li>
+                        <li>API and EntityFramework for robust data storage.</li>
+                        <li>Sorting and filtering functionality for ads.</li>
+                        <li>Resolver and property-detail page for detailed ad displays.</li>
+                        <li>Reactive forms and validation for user input.</li>
+                        <li>HTML form with Angular additions for user registration.</li>
+                    </ul>
+                </div>
                 <button>Github <fa-icon [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
             </div>
         </li>
         <li (click)="select(3)" id="image3" class='item'>
+            <div class="caption">Projekt 3</div>
             <div class='content'>
                 <h2 class='title'>"Urban Decay"</h2>
                 <p class='description'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore fuga
@@ -72,6 +121,7 @@
             </div>
         </li>
         <li (click)="select(4)" id="image4" class='item'>
+            <div class="caption">Projekt 4</div>
             <div class='content'>
                 <h2 class='title'>"The Migration"</h2>
                 <p class='description'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore fuga
