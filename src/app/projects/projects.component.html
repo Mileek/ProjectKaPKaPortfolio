@@ -4,7 +4,7 @@
 </nav>
 <div class="sliderContainer">
     <ul class="slider">
-        <li (click)="select(5)" id="imageLast" class='item'>
+        <li (click)="select(8)" id="imageLast" class='item'>
             <div class="caption">Ostatni Projekt</div>
             <div class='content'>
                 <h2 class='title'>"Lossless Youths"</h2>
@@ -107,21 +107,74 @@
                         <li>HTML form with Angular additions for user registration.</li>
                     </ul>
                 </div>
-                <button>Github <fa-icon [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
+                <button (click)="openLink('https://github.com/Mileek/Angular-Real-Estate-Website')">Github <fa-icon
+                        [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
             </div>
         </li>
         <li (click)="select(3)" id="image3" class='item'>
-            <div class="caption">Projekt 3</div>
+            <div class="caption">ReSCat: Simple ERP Application</div>
             <div class='content'>
-                <h2 class='title'>"Urban Decay"</h2>
+                <h2 class='title'>ReSCat WPF Project</h2>
+                <div class='description'>
+                    <p>
+                        ReSCat is my first project, marking the beginning of my programming journey. It is a basic ERP
+                        system developed using WPF, designed to help companies manage and report their manufacturing
+                        processes. This project highlights my learning experience in WPF, C#, XAML, SQL, and Entity
+                        Framework.
+                    </p>
+                    <h3>
+                        Key features include:
+                    </h3>
+                    <ul>
+                        <li>Creation and management of a database for company records.</li>
+                        <li>CRUD operations (Create, Read, Update, Delete) for database entries.</li>
+                        <li>Data display using DataGrid with search functionality.</li>
+                        <li>XML file handling for exporting and importing data.</li>
+                        <li>Integrated calendar for production scheduling.</li>
+                        <li>Built-in calculator and notepad for quick calculations and notes.</li>
+                        <li>Navigation menu for easy access to different sections.</li>
+                        <li>Charting and logging capabilities for data visualization and tracking.</li>
+                        <li>Exception handling and middleware for robust operations.</li>
+                        <li>Responsive UI with custom themes.</li>
+                        <li>Data binding and validation using WPF and XAML.</li>
+                    </ul>
+                </div>
+                <button (click)="openLink('https://github.com/Mileek/ReSCat')">Github <fa-icon
+                        [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
+            </div>
+        </li>
+        <li (click)="select(4)" id="image4" class='item'>
+            <div class="caption">Projekt 4</div>
+            <div class='content'>
+                <h2 class='title'>"The Migration"</h2>
                 <p class='description'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore fuga
                     voluptatum,
                     iure corporis inventore praesentium nisi. Id laboriosam ipsam enim.</p>
                 <button>Github <fa-icon [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
             </div>
         </li>
-        <li (click)="select(4)" id="image4" class='item'>
-            <div class="caption">Projekt 4</div>
+        <li (click)="select(5)" id="image5" class='item'>
+            <div class="caption">Projekt 5</div>
+            <div class='content'>
+                <h2 class='title'>"The Migration"</h2>
+                <p class='description'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore fuga
+                    voluptatum,
+                    iure corporis inventore praesentium nisi. Id laboriosam ipsam enim.</p>
+                <button>Github <fa-icon [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
+            </div>
+        </li>
+        <li (click)="select(6)" id="image6" class='item'>
+            <div class="caption">Projekt 6</div>
+            <div class='content'>
+                <h2 class='title'>"The Migration"</h2>
+                <p class='description'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore fuga
+                    voluptatum,
+                    iure corporis inventore praesentium nisi. Id laboriosam ipsam enim.</p>
+                <button>Github <fa-icon [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
+            </div>
+        </li>
+        <li (click)="select(7)" id="image7" class='item'>
+            <div class="caption">Projekt 7</div>
             <div class='content'>
                 <h2 class='title'>"The Migration"</h2>
                 <p class='description'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore fuga

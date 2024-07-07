@@ -66,6 +66,11 @@ export class ProjectsComponent implements OnInit
     }
   }
 
+  openLink(link: string)
+  {
+    window.open(link, '_blank');
+  }
+
   prev(): void
   {
     if (this.sliderItems.length > 0)

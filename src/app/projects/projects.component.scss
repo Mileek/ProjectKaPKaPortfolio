@@ -94,6 +94,27 @@ body {
         cursor: pointer;
         opacity: 0;
     }
+
+    &:nth-child(7) {
+        left: calc(50% + #{$cardsDistance * 4});
+        cursor: pointer;
+        opacity: 0;
+    }
+    &:nth-child(8) {
+        left: calc(50% + #{$cardsDistance * 5});
+        cursor: pointer;
+        opacity: 0;
+    }
+    &:nth-child(9) {
+        left: calc(50% + #{$cardsDistance * 6});
+        cursor: pointer;
+        opacity: 0;
+    }
+    &:nth-child(10) {
+        left: calc(50% + #{$cardsDistance * 7});
+        cursor: pointer;
+        opacity: 0;
+    }
 }
 
 .content {
@@ -207,6 +228,15 @@ body {
 #image4 {
     background-image: url("/assets/images/projects/CyberpunkImage6.jpg");
 }
+#image5 {
+    background-image: url("/assets/images/projects/CyberpunkImage7.jpg");
+}
+#image6 {
+    background-image: url("/assets/images/projects/CyberpunkImage8.jpg");
+}
+#image7 {
+    background-image: url("/assets/images/projects/CyberpunkImage9.jpg");
+}
 
 .sliderContainer {
     display: flex;
@@ -292,6 +322,26 @@ body {
             cursor: pointer;
             opacity: 0;
         }
+        &:nth-child(7) {
+            left: calc(50% + #{$mediumCardsDistance * 4});
+            cursor: pointer;
+            opacity: 0;
+        }
+        &:nth-child(8) {
+            left: calc(50% + #{$mediumCardsDistance * 5});
+            cursor: pointer;
+            opacity: 0;
+        }
+        &:nth-child(9) {
+            left: calc(50% + #{$mediumCardsDistance * 6});
+            cursor: pointer;
+            opacity: 0;
+        }
+        &:nth-child(10) {
+            left: calc(50% + #{$mediumCardsDistance * 7});
+            cursor: pointer;
+            opacity: 0;
+        }
     }
     .dots .dot {
         opacity: 0;
@@ -328,6 +378,26 @@ body {
         }
         &:nth-child(6) {
             left: calc(40% + #{$smallCardsDistance * 3});
+            cursor: pointer;
+            opacity: 0;
+        }
+        &:nth-child(7) {
+            left: calc(40% + #{$smallCardsDistance * 4});
+            cursor: pointer;
+            opacity: 0;
+        }
+        &:nth-child(8) {
+            left: calc(40% + #{$smallCardsDistance * 5});
+            cursor: pointer;
+            opacity: 0;
+        }
+        &:nth-child(9) {
+            left: calc(40% + #{$smallCardsDistance * 6});
+            cursor: pointer;
+            opacity: 0;
+        }
+        &:nth-child(10) {
+            left: calc(40% + #{$smallCardsDistance * 7});
             cursor: pointer;
             opacity: 0;
         }
