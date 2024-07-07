@@ -87,6 +87,10 @@ export class ProjectsComponent implements OnInit
 
   select(index: number): void
   {
+    if (index === this.current_index)
+    {
+      return;
+    }
     // Oblicz, ile razy musimy wywołać "next" aby dotrzeć do wybranego indeksu
     const timesToCallNext = (index - this.current_index + 6) % 6; // Dodajemy 6 i bierzemy resztę z dzielenia przez 6, aby uniknąć ujemnych wartości
 
