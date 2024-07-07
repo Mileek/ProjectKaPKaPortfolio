@@ -76,7 +76,8 @@
                         customer satisfaction.
                     </p>
                 </div>
-                <button>Github <fa-icon [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
+                <button (click)="openLink('https://github.com/Mileek/Multiagent-Queue-Simulation')">Github <fa-icon
+                        [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
             </div>
         </li>
         <li (click)="select(2)" id="image2" class='item'>
@@ -144,43 +145,133 @@
             </div>
         </li>
         <li (click)="select(4)" id="image4" class='item'>
-            <div class="caption">Projekt 4</div>
+            <div class="caption">NotesApplication Kotlin Project</div>
             <div class='content'>
-                <h2 class='title'>"The Migration"</h2>
-                <p class='description'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore fuga
-                    voluptatum,
-                    iure corporis inventore praesentium nisi. Id laboriosam ipsam enim.</p>
-                <button>Github <fa-icon [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
+                <h2 class='title'>NotesApplication Ktolin App</h2>
+                <div class='description'>
+                    <p>
+                        NotesApplication is a robust, user-friendly note-taking app developed in Kotlin using Android
+                        Studio. It combines simplicity with functionality to provide a comprehensive solution for
+                        managing personal notes.
+                    </p>
+                    <h3>
+                        Key features include:
+                    </h3>
+                    <ul>
+                        <li>Create, read, update, and delete notes.</li>
+                        <li>Intuitive user interface for easy navigation.</li>
+                        <li>Data persistence using SQLite for offline access.</li>
+                        <li>Responsive design for phones and tablets.</li>
+                        <li>Implementation of MVVM (Model-View-ViewModel) architecture.</li>
+                    </ul>
+                    <p>
+                        Designed for users who need a reliable way to organize thoughts, tasks, and ideas,
+                        NotesApplication ensures quick note-taking and easy access. It showcases practical Android
+                        development principles, including UI/UX design, data persistence, and lifecycle management.
+                    </p>
+                    <p>
+                        The application is built to be scalable and maintainable, following best practices in Android
+                        development. With secure data storage and a responsive design, it meets the everyday needs of
+                        its users effectively.
+                    </p>
+                </div>
+                <button (click)="openLink('https://github.com/Mileek/NotesApplication')">Github <fa-icon
+                        [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
             </div>
         </li>
         <li (click)="select(5)" id="image5" class='item'>
-            <div class="caption">Projekt 5</div>
+            <div class="caption">FTP Server</div>
             <div class='content'>
-                <h2 class='title'>"The Migration"</h2>
-                <p class='description'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore fuga
-                    voluptatum,
-                    iure corporis inventore praesentium nisi. Id laboriosam ipsam enim.</p>
-                <button>Github <fa-icon [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
+                <h2 class='title'>FTP Server using .NET Sockets</h2>
+                <div class='description'>
+                    <p>
+                        SimpleServerFTP is a lightweight, C#-based FTP server application designed to support basic file
+                        transfer operations. Built on .NET Sockets, it efficiently handles user authentication, file
+                        uploads, downloads, directory listings, and other standard FTP commands.
+                    </p>
+                    <h3>
+                        Key features include:
+                    </h3>
+                    <ul>
+                        <li>Support for both anonymous and authenticated users.</li>
+                        <li>Handling of basic FTP commands like USER, PASS, PWD, CWD, MKD, RMD, PASV, LIST, STOR, RETR,
+                            and DELE.</li>
+                        <li>Passive mode for data transfers.</li>
+                        <li>Configuration via a JSON file.</li>
+                    </ul>
+                    <p>
+                        The server is configurable through a JSON file, allowing customization of IP address, port
+                        number, user authentication, and directory settings.
+                    </p>
+                    <p>
+                        SimpleServerFTP demonstrates my proficiency in C# and .NET Core, and my ability to create
+                        functional and configurable server applications.
+                    </p>
+                </div>
+                <button (click)="openLink('https://github.com/Mileek/SimpleServerFTP')">Github <fa-icon
+                        [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
             </div>
         </li>
         <li (click)="select(6)" id="image6" class='item'>
-            <div class="caption">Projekt 6</div>
+            <div class="caption">FTP Client</div>
             <div class='content'>
-                <h2 class='title'>"The Migration"</h2>
-                <p class='description'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore fuga
-                    voluptatum,
-                    iure corporis inventore praesentium nisi. Id laboriosam ipsam enim.</p>
-                <button>Github <fa-icon [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
+                <h2 class='title'>FTP Client using .NET Sockets</h2>
+                <div class='description'>
+                    <p>
+                        SimpleClientFTP is a lightweight FTP client implemented in C#. It facilitates basic FTP
+                        operations such as directory listing, file uploads, downloads, directory creation, deletion,
+                        and passive mode support. The client leverages .NET sockets for efficient network
+                        communication, ensuring reliable data transfers.
+                    </p>
+                    <h3>
+                        Key features include:
+                    </h3>
+                    <ul>
+                        <li>Supports connection to FTP servers with authentication.</li>
+                        <li>Allows listing directories and files.</li>
+                        <li>Enables file uploading and downloading.</li>
+                        <li>Facilitates directory creation and deletion.</li>
+                        <li>Includes passive mode support for data transfers.</li>
+                        <li>Can be used as a batch or console application for automation tasks.</li>
+                    </ul>
+                    <p>
+                        SimpleClientFTP utilizes the ClientFTP class to manage connection setup, command execution,
+                        and data transfer operations. It is designed for use in batch files and scripting
+                        scenarios, enhancing its versatility for automated tasks.
+                    </p>
+                </div>
+                <button (click)="openLink('https://github.com/Mileek/SimpleClientFTP')">Github <fa-icon
+                        [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
             </div>
         </li>
         <li (click)="select(7)" id="image7" class='item'>
             <div class="caption">Projekt 7</div>
             <div class='content'>
                 <h2 class='title'>"The Migration"</h2>
-                <p class='description'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore fuga
-                    voluptatum,
-                    iure corporis inventore praesentium nisi. Id laboriosam ipsam enim.</p>
-                <button>Github <fa-icon [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
+                <div class='description'>
+                    <p>
+                        WebOrganizer is a TODO App developed in PHP using the Amelia framework. It offers comprehensive
+                        functionality for managing tasks, leveraging Bootstrap 5 for responsive design and Font Awesome
+                        icons for visual enhancements.
+                    </p>
+                    <h3>Key Features</h3>
+                    <ul>
+                        <li><strong>LoginView:</strong> Allows users to authenticate and access the application
+                            securely.</li>
+                        <li><strong>RegisterView:</strong> Facilitates new user registration without requiring
+                            administrative permissions.</li>
+                        <li><strong>ToDoView:</strong> Supports creating, editing, and deleting tasks, with options to
+                            mark tasks as complete or pending.</li>
+                        <li><strong>ImagesView:</strong> Manages image URLs, enabling users to add, view, and remove
+                            images conveniently.</li>
+                    </ul>
+                    <p>
+                        The application features a user-friendly sidebar menu for seamless navigation between views and
+                        includes a logout option to end the current user session securely.
+                    </p>
+                </div>
+                <button (click)="openLink('https://github.com/Mileek/WebOrganizer')">Github <fa-icon
+                        [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
             </div>
         </li>
     </ul>
