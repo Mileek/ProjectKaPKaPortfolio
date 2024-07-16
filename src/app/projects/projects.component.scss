@@ -63,14 +63,22 @@ body {
 
         & .caption {
             position: absolute;
-            text-align: justify;
+            text-align: center;
             padding: 0.2rem;
             color: white;
             font-size: 1.4rem;
             text-wrap: wrap;
-            bottom: 10%;
+            top: 10%;
             text-shadow: 0 3px 12px rgba(0, 0, 0, 0.7);
             letter-spacing: 0.1rem;
+        }
+
+        & .shields {
+            position: absolute;
+            text-align: justify;
+            padding: 0.2rem;
+            bottom: 5%;
+            left: 5%;
         }
 
         &:hover {
@@ -236,6 +244,18 @@ body {
 }
 #image7 {
     background-image: url("/assets/images/projects/CyberpunkImage9.jpg");
+}
+
+.cSharp {
+    background-image: url("/assets/svgs/icons/c-sharp.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 2;
+    width: 75px;
+    height: 75px;
+}
+
+.sql {
 }
 
 .sliderContainer {
