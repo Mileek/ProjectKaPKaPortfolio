@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit
 
   private currentLength = 0;
   private intervalId: any;
-  private quote: string = "\"Somewhere, something incredible is waiting to be known.\" - Carl Sagan";
+  private quote: string = "We were born to inherit the stars … our destiny is to reach for them.";
 
   Quote!: HTMLElement;
 
@@ -51,6 +51,6 @@ export class HomeComponent implements OnInit
       {
         clearInterval(this.intervalId);
       }
-    }, 150);
+    }, 100);
   }
 }

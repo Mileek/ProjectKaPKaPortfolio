@@ -36,9 +36,9 @@ export class SectionsComponent implements OnInit
   imgGalaxies!: HTMLCanvasElement;
   isMouseOverBlackhole!: boolean;
   lastUpdateTime: number = 0;
-  numberOfFallingStars: number = 10;
+  numberOfFallingStars: number = 6;
   numberOfMeteors = 6;
-  numberOfTwinklingStars: number = 1100;
+  numberOfTwinklingStars: number = 600;
   photoBackground!: HTMLDivElement;
   slideAnimation!: Animation;
   slideAnimationPosition!: number;
@@ -321,12 +321,12 @@ export class SectionsComponent implements OnInit
     }
   }
 
-  scrollTop()
+  scrollTop(): void
   {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  scrollUp()
+  scrollUp(): void
   {
     const sections = ['home', 'about-me', 'projects', 'contact-me'];
     const currentY = Math.round(window.scrollY);
