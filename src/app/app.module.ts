@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { CommonModule } from '@angular/common';
@@ -56,7 +57,8 @@ const routes: Routes = [
     RouterModule.forRoot(routes, { anchorScrolling: 'enabled' }),
     HttpClientModule,
     AngularSvgIconModule.forRoot(),
-    FontAwesomeModule
+    FontAwesomeModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -115,6 +115,12 @@ $background: linear-gradient(
   width: 100%;
   height: calc(100vh - 50px);
 }
+#contact-me {
+  z-index: 10;
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 50px);
+}
 
 //naw right bottom
 .StickyUpNav {
