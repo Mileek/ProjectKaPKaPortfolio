@@ -1,61 +1,116 @@
-// Helpers
-@mixin clearfix {
-    &:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
-}
+@import url(https://fonts.googleapis.com/css?family=Wire+One);
 
-.align-center {
-    text-align: center;
-}
-
-// Basics
-// html {
-//     height: 100%;
-// }
-// body {
-//     height: 100%;
-//     position: relative;
-// }
-// Grid
-.row {
-    @include clearfix;
-    margin: -20px 0;
-    .col {
-        padding: 0 20px;
-        float: left;
-        box-sizing: border-box;
-        &.x-50 {
-            width: 50%;
-        }
-        &.x-100 {
-            width: 100%;
-        }
-    }
-}
-
-.content-wrapper {
-    min-height: 100%;
+.contact-me-border {
+    height: auto;
+    margin: 0 auto;
+    width: 80vw;
+    background: rgba(0, 0, 0, 0.5);
     position: relative;
+    top: 25%;
+    transform: translateY(-25%);
+    position: relative;
+    border-radius: 25px;
+    border-left: 3px solid rgb(172, 72, 172);
+    border-right: 3px solid rgb(172, 72, 172);
+    border-bottom: 3px solid rgb(172, 72, 172);
+    border-top: 1px solid rgb(172, 72, 172);
+    padding: 20px;
+    animation: neonGlowPurple 2.2s linear infinite alternate;
+}
+
+@keyframes neonGlowPurple {
+    from {
+        box-shadow:
+            0 0 10px rgba(172, 72, 172, 0.8),
+            0 0 20px rgba(172, 72, 172, 0.6),
+            0 0 30px rgba(172, 72, 172, 0.4),
+            0 0 80px rgba(172, 72, 172, 0.2),
+            inset 0 0 5px rgba(172, 72, 172, 0.6),
+            inset 0 0 10px rgba(172, 72, 172, 0.4);
+        border-color: rgba(172, 72, 172, 0.8);
+    }
+    to {
+        box-shadow:
+            0 0 20px rgba(172, 72, 172, 1),
+            0 0 30px rgba(172, 72, 172, 0.8),
+            0 0 40px rgba(172, 72, 172, 0.6),
+            0 0 100px rgba(172, 72, 172, 0.4),
+            inset 0 0 10px rgba(172, 72, 172, 1),
+            inset 0 0 20px rgba(172, 72, 172, 0.8);
+        border-color: rgba(172, 72, 172, 1);
+    }
+}
+
+.arrow-symbol {
+    color: #fff;
+    z-index: 1;
+    font-size: 200px;
+    position: absolute;
+    bottom: 2%;
+    right: 10%;
+    animation: titleNeonGlow 2.2s linear infinite alternate;
 }
 
 .get-in-touch {
-    max-width: 650px;
+    width: 75vw;
     margin: 0 auto;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-
     .title {
         text-align: center;
-        font-family: sans-serif;
-        text-transform: uppercase;
+        font-family: "Wire One", Helvetica, Arial, sans-serif;
         letter-spacing: 3px;
-        font-size: 36px;
+        font-size: 72px;
         line-height: 48px;
         padding-bottom: 48px;
+        font-weight: 400;
+        color: transparent; /* Wnętrze tekstu przezroczyste */
+        -webkit-text-stroke: 2px white; /* Obramówka tekstu */
+        text-shadow:
+            0 0 10px #ff6666,
+            0 0 15px #ff6666,
+            0 0 30px #ff3333,
+            0 0 30px #ff3333,
+            0 0 30px #ff3333,
+            0 0 40px #ff3333,
+            0 0 50px #ff3333,
+            0 0 60px #ff3333,
+            0 0 70px #ff3333,
+            0 0 80px #ff3333,
+            0 0 90px #ff3333,
+            0 0 100px #ff1a1a;
+        animation: titleNeonGlow 2.2s linear infinite alternate;
+    }
+}
+
+@keyframes titleNeonGlow {
+    from {
+        text-shadow:
+            0 0 10px #ff6666,
+            0 0 15px #ff6666,
+            0 0 30px #ff3333,
+            0 0 30px #ff3333,
+            0 0 30px #ff3333,
+            0 0 40px #ff3333,
+            0 0 50px #ff3333,
+            0 0 60px #ff3333,
+            0 0 70px #ff3333,
+            0 0 80px #ff3333,
+            0 0 90px #ff3333,
+            0 0 100px #ff1a1a;
+    }
+    to {
+        text-shadow:
+            0 0 20px #ff9999,
+            0 0 30px #ff9999,
+            0 0 40px #ff6666,
+            0 0 40px #ff6666,
+            0 0 40px #ff6666,
+            0 0 50px #ff6666,
+            0 0 60px #ff6666,
+            0 0 70px #ff6666,
+            0 0 80px #ff6666,
+            0 0 90px #ff6666,
+            0 0 100px #ff4d4d,
+            0 0 120px #ff1a1a;
     }
 }
 
@@ -82,21 +137,39 @@
         &:focus,
         &.not-empty {
             + .label {
-                transform: translateY(-24px);
+                transform: translateY(-34px) scale(1.2);
+                color: white;
             }
         }
     }
     .label {
         position: absolute;
+        top: 0;
+        z-index: 6;
         left: 20px;
         bottom: 11px;
-        font-family: Lusitana, serif;
-        font-size: 18px;
+        font-family: "Wire One", Helvetica, Arial, sans-serif;
+        font-size: 48px;
+        letter-spacing: 2px;
         line-height: 26px;
         font-weight: 400;
-        color: #888;
+        color: black; /* Kolor wnętrza tekstu */
         cursor: text;
         transition: transform 0.2s ease-in-out;
+        text-shadow:
+            0 0 10px #87ceeb,
+            0 0 15px #87ceeb,
+            0 0 30px #00bfff,
+            0 0 30px #00bfff,
+            0 0 30px #00bfff,
+            0 0 40px #00bfff,
+            0 0 50px #00bfff,
+            0 0 60px #00bfff,
+            0 0 70px #00bfff,
+            0 0 80px #00bfff,
+            0 0 90px #00bfff,
+            0 0 100px #1e90ff;
+        animation: labelNeonGlow 2.2s linear infinite alternate;
     }
 
     .submit-btn {
@@ -114,21 +187,47 @@
     }
 }
 
-.note {
-    position: absolute;
-    left: 0;
-    bottom: 10px;
-    width: 100%;
-    text-align: center;
-    font-family: serif;
-    font-size: 16px;
-    line-height: 21px;
-
-    .link {
-        color: #888;
-        text-decoration: none;
-        &:hover {
-            text-decoration: underline;
-        }
+@keyframes labelNeonGlow {
+    from {
+        text-shadow:
+            0 0 10px #87ceeb,
+            0 0 15px #87ceeb,
+            0 0 30px #00bfff,
+            0 0 30px #00bfff,
+            0 0 30px #00bfff,
+            0 0 40px #00bfff,
+            0 0 50px #00bfff,
+            0 0 60px #00bfff,
+            0 0 70px #00bfff,
+            0 0 80px #00bfff,
+            0 0 90px #00bfff,
+            0 0 100px #1e90ff;
     }
+    to {
+        text-shadow:
+            0 0 20px #add8e6,
+            0 0 30px #add8e6,
+            0 0 40px #87ceeb,
+            0 0 40px #87ceeb,
+            0 0 40px #87ceeb,
+            0 0 50px #87ceeb,
+            0 0 60px #87ceeb,
+            0 0 70px #87ceeb,
+            0 0 80px #87ceeb,
+            0 0 90px #87ceeb,
+            0 0 100px #87ceeb;
+    }
+}
+
+.input-message {
+    position: relative;
+    width: 100%;
+    z-index: 5;
+    min-height: 350px;
+    max-height: 450px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: Arial, sans-serif;
+    resize: vertical;
 }

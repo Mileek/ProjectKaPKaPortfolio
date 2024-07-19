@@ -1,49 +1,31 @@
-<section class="get-in-touch">
-    <h1 class="title">Get in touch</h1>
-    <form class="contact-form row" (ngSubmit)="sendEmail()">
-        <div class="form-field col x-50">
-            <input id="name" [(ngModel)]="contactForm.name" class="input-text" type="text" name="name" required>
-            <label class="label" for="name">Name</label>
-        </div>
-        <div class="form-field col x-50">
-            <input id="email" [(ngModel)]="contactForm.email" class="input-text" type="email" name="email" required>
-            <label class="label" for="email">E-mail</label>
-        </div>
-        <div class="form-field col x-75">
-            <input id="subject" [(ngModel)]="contactForm.subject" class="input-text" type="text" name="subject"
-                required>
-            <label class="label" for="subject">Subject</label>
-        </div>
-        <div class="form-field col x-100">
-            <input id="message" [(ngModel)]="contactForm.message" class="input-text" type="text" name="message"
-                required>
-            <label class="label" for="message">Message</label>
-        </div>
-        <div class="form-field col x-100 align-center">
-            <input class="submit-btn" type="submit" value="Submit">
-        </div>
-    </form>
+<section class="contact-me-border">
+    <div class="get-in-touch">
+        <h1 class="title">Get in touch</h1>
+        <form class="contact-form row" (ngSubmit)="sendEmail()">
+            <div class="form-field col-4">
+                <input id="name" [(ngModel)]="contactForm.name" class="input-text" type="text" name="name" required>
+                <label class="label" for="name">Name</label>
+            </div>
+            <div class="form-field col-4">
+                <input id="email" [(ngModel)]="contactForm.email" class="input-text" type="email" name="email" required>
+                <label class="label" for="email">E-mail</label>
+            </div>
+            <div class="form-field col-9">
+                <input id="subject" [(ngModel)]="contactForm.subject" class="input-text" type="text" name="subject"
+                    required>
+                <label class="label" for="subject">Subject</label>
+            </div>
+            <div class="form-field col-12">
+                <textarea id="message" [(ngModel)]="contactForm.message" class="input-text input-message" name="message"
+                    required></textarea>
+                <label class="label" for="message">Message</label>
+            </div>
+            <div class="form-field col-12 text-center">
+                <input class="submit-btn" type="submit" value="Submit">
+            </div>
+            <div class="col-12 text-center">
+                <h1 class="arrow-symbol">⤁</h1>
+            </div>
+        </form>
+    </div>
 </section>
-
-
-
-
-<!-- <form (ngSubmit)="sendEmail()">
-        <div>
-            <label for="name">Name:</label>
-            <input type="text" id="name" [(ngModel)]="contactForm.name" name="name" required>
-        </div>
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" [(ngModel)]="contactForm.email" name="email" required>
-        </div>
-        <div>
-            <label for="subject">Subject:</label>
-            <input type="text" id="subject" [(ngModel)]="contactForm.subject" name="subject" required>
-        </div>
-        <div>
-            <label for="message">Message:</label>
-            <textarea id="message" [(ngModel)]="contactForm.message" name="message" required></textarea>
-        </div>
-        <button type="submit">Send</button>
-    </form> -->
