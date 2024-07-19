@@ -4,28 +4,36 @@
         <form class="contact-form row" (ngSubmit)="sendEmail()">
             <div class="form-field col-4">
                 <input id="name" [(ngModel)]="contactForm.name" class="input-text" type="text" name="name" required>
-                <label class="label" for="name">Name</label>
+                <label [ngClass]="{'active-label': contactForm.name}" class="label" for="name">Name</label>
             </div>
             <div class="form-field col-4">
                 <input id="email" [(ngModel)]="contactForm.email" class="input-text" type="email" name="email" required>
-                <label class="label" for="email">E-mail</label>
+                <label [ngClass]="{'active-label': contactForm.email}" class="label" for="email">E-mail</label>
             </div>
             <div class="form-field col-9">
                 <input id="subject" [(ngModel)]="contactForm.subject" class="input-text" type="text" name="subject"
                     required>
-                <label class="label" for="subject">Subject</label>
+                <label [ngClass]="{'active-label': contactForm.subject}" class="label" for="subject">Subject</label>
             </div>
             <div class="form-field col-12">
                 <textarea id="message" [(ngModel)]="contactForm.message" class="input-text input-message" name="message"
                     required></textarea>
-                <label class="label" for="message">Message</label>
+                <label [ngClass]="{'active-label': contactForm.message}" class="label" for="message">Message</label>
             </div>
             <div class="form-field col-12 text-center">
-                <input class="submit-btn" type="submit" value="Submit">
+                <button class="submit-btn"
+                    [ngClass]="{'submit-btn-active': contactForm.name && contactForm.email && contactForm.subject && contactForm.message}"
+                    type="submit">
+                    Submit&nbsp;
+                    <fa-icon [icon]="['fas', 'paper-plane']"></fa-icon>
+                </button>
             </div>
             <div class="col-12 text-center">
                 <h1 class="arrow-symbol">⤁</h1>
             </div>
         </form>
+        <div class="col-4 text-center">
+            <h1 class="hand-symbol">🖑</h1>
+        </div>
     </div>
 </section>
