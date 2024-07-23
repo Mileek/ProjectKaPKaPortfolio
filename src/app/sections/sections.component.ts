@@ -36,9 +36,9 @@ export class SectionsComponent implements OnInit
   imgGalaxies!: HTMLCanvasElement;
   isMouseOverBlackhole!: boolean;
   lastUpdateTime: number = 0;
-  numberOfFallingStars: number = 6;
-  numberOfMeteors = 6;
-  numberOfTwinklingStars: number = 600;
+  numberOfFallingStars: number = 4;
+  numberOfMeteors = 5;
+  numberOfTwinklingStars: number = 500;
   photoBackground!: HTMLDivElement;
   slideAnimation!: Animation;
   slideAnimationPosition!: number;
@@ -253,9 +253,9 @@ export class SectionsComponent implements OnInit
     //Animate
     this.AnimateTwinklingStars();
     this.AnimateFallingStars();
-    this.AnimateBlackhole();
-    this.AnimateBlackholeAndStarsInteraction();
-    this.AnimateFloatingObjects();
+    // this.AnimateBlackhole(); //To jest najbardziej pamięciożerne, HUUH?????
+    // this.AnimateBlackholeAndStarsInteraction();
+    // this.AnimateFloatingObjects();
     //Intervals
     this.AngleInterval();
     this.SizeInterval();

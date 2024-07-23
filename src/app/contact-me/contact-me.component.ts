@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ContactMeService } from '../contact-me/contact-me.service';
-import { FormsModule } from '@angular/forms'; // Add this line
 
 @Component({
   selector: 'app-contact-me',
@@ -15,20 +14,43 @@ export class ContactMeComponent
     subject: '',
     message: ''
   };
+  messageText = '';
+  messageType: 'success' | 'error' | 'none' = 'none';
 
+  //test potem na false
   constructor(private contactMeService: ContactMeService) { }
+
+  resetForm()
+  {
+    this.contactForm = {
+      name: '',
+      email: '',
+      subject: '',
+      message: ''
+    };
+  }
 
   sendEmail()
   {
     this.contactMeService.sendContactForm(this.contactForm).subscribe(
       response =>
       {
-        console.log('Email sent successfully', response);
+        this.messageType = 'success';
+        this.messageText = 'Message sent successfully';
+        this.resetForm();
+        this.showTempMessage();
       },
       error =>
       {
-        console.error('Error sending email', error);
+        this.messageType = 'error';
+        this.messageText = 'Failed to send: ' + error.message;
+        this.showTempMessage();
       }
     );
+  }
+
+  showTempMessage()
+  {
+    setTimeout(() => this.messageType = 'none', 30000000);
   }
 }
