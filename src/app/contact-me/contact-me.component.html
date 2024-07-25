@@ -1,3 +1,56 @@
-<div>
-    <h1>Hello Contact Me</h1>
-</div>
+<section class="contact-me-border">
+    <div class="get-in-touch" [ngClass]="{'get-in-touch-slide': messageType === 'success'}">
+        <h1 class="title">Let's Connect</h1>
+        <form class="contact-form row" (ngSubmit)="sendEmail()">
+            <div class="form-field col-4" [ngClass]="{'form-error': messageType === 'error'}">
+                <input id="name" [(ngModel)]="contactForm.name" class="input-text" type="text" name="name" required>
+                <label [ngClass]="{'active-label': contactForm.name}" class="label" for="name">Name</label>
+            </div>
+            <div class="form-field col-4" [ngClass]="{'form-error': messageType === 'error'}">
+                <input id="email" [(ngModel)]="contactForm.email" class="input-text" type="email" name="email" required>
+                <label [ngClass]="{'active-label': contactForm.email}" class="label" for="email">E-mail</label>
+            </div>
+            <div class="form-field col-9" [ngClass]="{'form-error': messageType === 'error'}">
+                <input id="subject" [(ngModel)]="contactForm.subject" class="input-text" type="text" name="subject"
+                    required>
+                <label [ngClass]="{'active-label': contactForm.subject}" class="label" for="subject">Subject</label>
+            </div>
+            <div class="form-field col-12" [ngClass]="{'form-error': messageType === 'error'}">
+                <textarea id="message" [(ngModel)]="contactForm.message" class="input-text input-message" name="message"
+                    required></textarea>
+                <label [ngClass]="{'active-label': contactForm.message}" class="label" for="message">Message</label>
+            </div>
+            <div class="form-field col-12 text-center">
+                <button class="submit-btn"
+                    [ngClass]="{'submit-btn-active': contactForm.name && contactForm.email && contactForm.subject && contactForm.message}"
+                    type="submit">
+                    Submit&nbsp;
+                </button>
+            </div>
+        </form>
+    </div>
+    <h1 *ngIf="messageType === 'success'" class="message-success">
+        {{messageText}}<br>Thank you for the
+        contact!</h1>
+    <div class="col-12 text-center">
+        <h1 class="arrow-symbol">⤁</h1>
+    </div>
+    <div class="col-4 text-center">
+        <h1 class="hand-symbol">🖑</h1>
+    </div>
+    <fa-icon *ngIf="messageType === 'success'" class="plane" [icon]="['fas', 'paper-plane']"></fa-icon>
+    <!-- <div *ngIf="showMessage" class="message-container"
+        [ngClass]="{'message-success': messageType === 'success', 'message-error': messageType === 'error'}">
+        <div class="message-content">
+            <fa-icon [icon]="['fas', 'paper-plane']"></fa-icon>
+            <span>{{ messageText }}</span>
+        </div>
+    </div> -->
+    <!-- <div *ngIf="showMessage" class="message-container"
+        [ngClass]="{'message-success': messageType === 'success', 'message-error': messageType === 'error'}">
+        <div class="message-content">
+            <fa-icon [icon]="messageType === 'success' ? 'paper-plane' : 'times-circle'"></fa-icon>
+            <span>{{ messageText }}</span>
+        </div>
+    </div> -->
+</section>

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { CommonModule } from '@angular/common';
@@ -12,7 +13,7 @@ import { ProjectsComponent } from './projects/projects.component';
 import { ContactMeComponent } from './contact-me/contact-me.component';
 import { SectionsComponent } from './sections/sections.component';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faAngleDown, faAngleUp, faAnglesUp, faAngleLeft, faAngleRight, faCircleDot, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleUp, faAnglesUp, faAngleLeft, faAngleRight, faCircleDot, faUpRightFromSquare, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 const routes: Routes = [
   {
@@ -56,7 +57,8 @@ const routes: Routes = [
     RouterModule.forRoot(routes, { anchorScrolling: 'enabled' }),
     HttpClientModule,
     AngularSvgIconModule.forRoot(),
-    FontAwesomeModule
+    FontAwesomeModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
@@ -65,6 +67,6 @@ export class AppModule
 {
   constructor(private library: FaIconLibrary)
   {
-    library.addIcons(faAngleDown, faAngleUp, faAnglesUp, faAngleLeft, faAngleRight, faCircleDot, faUpRightFromSquare);
+    library.addIcons(faAngleDown, faAngleUp, faAnglesUp, faAngleLeft, faAngleRight, faCircleDot, faUpRightFromSquare, faPaperPlane);
   }
 }
