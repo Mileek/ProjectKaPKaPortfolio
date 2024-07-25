@@ -9,8 +9,7 @@ $formWidth: 80vw;
     background: rgba(0, 0, 0, 0.5);
     position: relative;
     overflow: hidden;
-    top: 25%;
-    transform: translateY(-25%);
+    top: 10%;
     border-radius: 25px;
     border-left: 3px solid rgb(172, 72, 172);
     border-right: 3px solid rgb(172, 72, 172);
@@ -85,22 +84,37 @@ $formWidth: 80vw;
     }
 }
 
-.message-success {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    font-family: "Wire One", Helvetica, Arial, sans-serif;
-    letter-spacing: 6px;
-    font-size: 72px;
-    line-height: 48px;
-    text-decoration: underline;
-    padding-bottom: 48px;
-    font-weight: 500;
-    color: transparent;
-    -webkit-text-stroke: 2px white;
-    animation: handNeonGlow 1.6s ease-in-out infinite alternate;
+@keyframes neonGlowRed {
+    from {
+        text-shadow:
+            0 0 10px #ff6666,
+            0 0 15px #ff6666,
+            0 0 30px #ff3333,
+            0 0 30px #ff3333,
+            0 0 30px #ff3333,
+            0 0 40px #ff3333,
+            0 0 50px #ff3333,
+            0 0 60px #ff3333,
+            0 0 70px #ff3333,
+            0 0 80px #ff3333,
+            0 0 90px #ff3333,
+            0 0 100px #ff1a1a;
+    }
+    to {
+        text-shadow:
+            0 0 20px #ff9999,
+            0 0 30px #ff9999,
+            0 0 40px #ff6666,
+            0 0 40px #ff6666,
+            0 0 40px #ff6666,
+            0 0 50px #ff6666,
+            0 0 60px #ff6666,
+            0 0 70px #ff6666,
+            0 0 80px #ff6666,
+            0 0 90px #ff6666,
+            0 0 100px #ff4d4d,
+            0 0 120px #ff1a1a;
+    }
 }
 
 .get-in-touch-slide,
@@ -136,7 +150,7 @@ $formWidth: 80vw;
     border-radius: 10px;
     animation:
         boxGlowRed 1.5s ease-in-out infinite alternate,
-        shake 0.6s ease-in-out 3;
+        shake 0.6s ease-in-out 3 forwards;
 }
 @keyframes shake {
     0%,
@@ -167,38 +181,6 @@ $formWidth: 80vw;
             inset 0 0 30px #ff6666,
             0 0 20px #ff9999,
             0 0 30px #ff6666;
-    }
-}
-@keyframes neonGlowRed {
-    from {
-        text-shadow:
-            0 0 10px #ff6666,
-            0 0 15px #ff6666,
-            0 0 30px #ff3333,
-            0 0 30px #ff3333,
-            0 0 30px #ff3333,
-            0 0 40px #ff3333,
-            0 0 50px #ff3333,
-            0 0 60px #ff3333,
-            0 0 70px #ff3333,
-            0 0 80px #ff3333,
-            0 0 90px #ff3333,
-            0 0 100px #ff1a1a;
-    }
-    to {
-        text-shadow:
-            0 0 20px #ff9999,
-            0 0 30px #ff9999,
-            0 0 40px #ff6666,
-            0 0 40px #ff6666,
-            0 0 40px #ff6666,
-            0 0 50px #ff6666,
-            0 0 60px #ff6666,
-            0 0 70px #ff6666,
-            0 0 80px #ff6666,
-            0 0 90px #ff6666,
-            0 0 100px #ff4d4d,
-            0 0 120px #ff1a1a;
     }
 }
 
@@ -361,6 +343,7 @@ $formWidth: 80vw;
         animation: none; /* Zatrzymanie drgania na hover */
     }
 }
+
 @keyframes fillBorder {
     0% {
         box-shadow:
@@ -418,6 +401,24 @@ $formWidth: 80vw;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-family: Arial, sans-serif;
+}
+
+.message-success {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-family: "Wire One", Helvetica, Arial, sans-serif;
+    letter-spacing: 6px;
+    font-size: 72px;
+    line-height: 48px;
+    text-decoration: underline;
+    padding-bottom: 48px;
+    font-weight: 500;
+    color: transparent;
+    -webkit-text-stroke: 2px white;
+    animation: handNeonGlow 1.6s ease-in-out infinite alternate;
 }
 
 .hand-symbol {

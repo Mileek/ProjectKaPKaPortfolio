@@ -1,6 +1,6 @@
 <section class="contact-me-border">
     <div class="get-in-touch" [ngClass]="{'get-in-touch-slide': messageType === 'success'}">
-        <h1 class="title">Get in touch</h1>
+        <h1 class="title">Let's Connect</h1>
         <form class="contact-form row" (ngSubmit)="sendEmail()">
             <div class="form-field col-4" [ngClass]="{'form-error': messageType === 'error'}">
                 <input id="name" [(ngModel)]="contactForm.name" class="input-text" type="text" name="name" required>

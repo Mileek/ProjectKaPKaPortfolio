@@ -14,6 +14,7 @@ export class ContactMeComponent
     subject: '',
     message: ''
   };
+  emailSent: boolean = false;
   messageText = '';
   messageType: 'success' | 'error' | 'none' = 'none';
 
@@ -32,6 +33,12 @@ export class ContactMeComponent
 
   sendEmail()
   {
+    if (this.emailSent) {
+      return;
+    }
+
+    this.emailSent = true;
+
     this.contactMeService.sendContactForm(this.contactForm).subscribe(
       response =>
       {
@@ -51,6 +58,10 @@ export class ContactMeComponent
 
   showTempMessage()
   {
-    setTimeout(() => this.messageType = 'none', 30000000);
+    setTimeout(() => 
+      {
+        this.messageType = 'none';
+        this.emailSent = false;
+      }, 12000);
   }
 }
