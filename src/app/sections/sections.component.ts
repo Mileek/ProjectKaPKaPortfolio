@@ -364,6 +364,16 @@ export class SectionsComponent implements OnInit
     }
   }
 
+  scrollToSection(sectionId: string): void
+  {
+    const element = document.getElementById(sectionId);
+    if (element)
+    {
+      const position = element.offsetTop - 75;
+      window.scrollTo({ top: position, behavior: 'smooth' });
+    }
+  }
+
   scrollTop(): void
   {
     window.scrollTo({ top: 0, behavior: 'smooth' });

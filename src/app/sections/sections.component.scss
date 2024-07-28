@@ -3,6 +3,7 @@ $purple: rgb(48, 12, 78);
 $green: rgb(9, 65, 16);
 $purple2: #4c203d;
 $navbar-height: 75px;
+$navbar-backgroud-color: rgba(0, 0, 0, 0.333);
 
 .fps-counter {
   position: absolute;
@@ -98,7 +99,7 @@ $background: linear-gradient(
   z-index: 10;
   position: relative;
   width: 100%;
-  height: calc(100vh - 60px);
+  height: calc(100vh - $navbar-height);
 }
 
 //naw right bottom
@@ -112,18 +113,14 @@ $background: linear-gradient(
 }
 
 .AngleUp {
-  // display: none;
   cursor: pointer;
-  // margin-bottom: -2vh;
   color: #fff;
   font-size: 35px;
   padding: 0 25px;
 }
 
 .AnglesUp {
-  // display: none;
   cursor: pointer;
-  // margin-bottom: -2vh;
   color: #fff;
   font-size: 35px;
   padding: 0 25px;
@@ -179,6 +176,17 @@ $background: linear-gradient(
     margin: 0;
     border-radius: 50%;
     overflow: hidden;
+
+    .logo-link {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-image: url("/assets/logo/KaPKaLogoTrim.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      cursor: pointer;
+    }
   }
 
   .navbar-right {
@@ -188,7 +196,7 @@ $background: linear-gradient(
     align-items: center;
     padding: 0.4% 5% 0% 5%;
     height: $navbar-height;
-    background-color: rgba(0, 0, 0, 0.333);
+    background-color: $navbar-backgroud-color;
     outline: 4px solid #f2e900;
     top: 0;
     margin: 0;
@@ -244,6 +252,7 @@ $background: linear-gradient(
 .navbar-links li {
   list-style: none;
   border-radius: 50px;
+  cursor: pointer;
 }
 
 .navbar-links li:hover {
@@ -320,29 +329,66 @@ $background: linear-gradient(
 
 @media (max-width: 840px) {
   .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    background-color: $navbar-backgroud-color;
+    border: 2px solid #f2e900;
+    padding: 0;
+
+    .navbar-left {
+      flex: 0 0 calc($navbar-height * 1);
+      height: calc($navbar-height * 1);
+      width: calc($navbar-height * 1);
+      margin-left: 25px;
+    }
+    .navbar-right {
+      border: none;
+      background-color: transparent;
+      outline: none;
+      -webkit-clip-path: none;
+      clip-path: none;
+
+      &::before,
+      &::after {
+        border: none;
+      }
+    }
   }
 
   .toggle-button {
     position: absolute;
-    top: 15px;
-    right: 45px;
+    top: 50%;
+    right: 5%;
     display: flex;
     height: 30px;
     flex-direction: column;
     justify-content: space-between;
+    transform: translate(-5%, -50%);
   }
 
   .navbar-links {
     text-align: center;
+    align-items: center;
     display: none;
-    width: 100vw;
+    position: relative;
+    width: 100%;
+
+    &.active {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
   }
 
   .navbar-links ul {
-    width: 100vw;
+    width: 100%;
     flex-direction: column;
+    align-items: center;
   }
 
   .navbar-links ul li {
@@ -351,16 +397,8 @@ $background: linear-gradient(
 
   .navbar-links ul li a {
     padding: 0.5rem 1rem;
-  }
-
-  // .navbar-links ul li a:hover {
-  //   color: #ff0141;
-  //   transition: color 0.6s;
-  //   background-color: #7a04eb;
-  // }
-
-  .navbar-links.active {
-    display: flex;
+    display: block;
+    width: 100%;
   }
 }
 
@@ -406,7 +444,6 @@ $background: linear-gradient(
   }
 }
 
-// Same deal, just duplicated for ultra randomness.
 @keyframes glitch-anim2 {
   $steps: 20;
   @for $i from 0 through $steps {
@@ -417,7 +454,6 @@ $background: linear-gradient(
   }
 }
 
-// Does the same deal as before, but now only skews. Used for main text.
 @keyframes glitch-skew {
   $steps: 10;
   @for $i from 0 through $steps {

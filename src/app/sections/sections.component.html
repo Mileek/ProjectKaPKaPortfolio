@@ -34,7 +34,7 @@
   <canvas id="NebulaRed"></canvas>
   <nav class="navbar sticky-top">
     <div class="navbar-left">
-      <div class="brand-title"><a href="#home" title="Logo"> </a></div>
+      <a (click)="scrollToSection('home')" title="Logo" class="logo-link"></a>
     </div>
     <a href="#" class="toggle-button" #toggleButton title="Toggle Navigation">
       <span class="bar" id="bar-1" #bar1></span>
@@ -44,14 +44,14 @@
     <div class="navbar-right">
       <div class="navbar-links" #navbarLinks>
         <ul>
-          <li><a id="link-1" href="#home" data-text="
-            Home" #home><i class="fi-xtluhl-house-thin"></i> Home</a></li>
-          <li><a id="link-2" href="#about-me" data-text="
-            About" #portfolio><i class="fi-xtluxl-folder-thin"></i> About</a></li>
-          <li><a id="link-3" href="#projects" data-text="
-            Projects" #about><i class="fi-xtluxl-user-thin"></i> Projects</a></li>
-          <li><a id="link-4" href="#contact-me" data-text="
-            Contact" #contact><i class="fi-xtluxl-envelope-thin"></i> Contact</a></li>
+          <li><a id="link-1" (click)="scrollToSection('home')" #home><i class="fi-xtluhl-house-thin"></i> Home</a></li>
+          <li><a id="link-2" (click)="scrollToSection('about-me')" #About><i class="fi-xtluxl-folder-thin"></i>
+              About</a>
+          </li>
+          <li><a id="link-3" (click)="scrollToSection('projects')" #about><i class="fi-xtluxl-user-thin"></i>
+              Projects</a></li>
+          <li><a id="link-4" (click)="scrollToSection('contacts')" #contact><i class="fi-xtluxl-envelope-thin"></i>
+              Contact</a></li>
         </ul>
       </div>
     </div>

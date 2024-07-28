@@ -9,7 +9,7 @@ import * as smoothscroll from 'smoothscroll-polyfill';
 })
 export class HomeComponent implements OnInit
 {
-  private readonly navbarHeight = 0;
+  private readonly navbarHeight = 50;
 
   private currentLength = 0;
   private intervalId: any;
