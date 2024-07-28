@@ -34,7 +34,7 @@ $background: linear-gradient(
   position: relative;
   width: 100%;
   height: 450vh;
-  overflow: hidden;
+  // overflow: hidden;
   background: $background;
   background-repeat: no-repeat;
   animation: gradient 30s linear infinite;
@@ -153,29 +153,84 @@ $background: linear-gradient(
 //Navbar
 .navbar {
   display: flex;
+  font-size: 1.3rem;
+  font-weight: 700;
   top: 0;
   margin: 0;
   height: $navbar-height;
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  background-color: #7a04eb;
-  padding: 0.4% 5% 0% 5%;
-}
+  background-color: transparent;
+  padding: 0.7% 5% 0% 5%;
 
-.brand-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
+  .navbar-left {
+    flex: 0 0 calc($navbar-height * 1.6);
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    height: calc($navbar-height * 1.6);
+    width: calc($navbar-height * 1.6);
+    background-image: url("/assets/logo/KaPKaLogoTrim.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    top: 0;
+    margin: 0;
+    border-radius: 50%;
+    overflow: hidden;
+  }
 
-.brand-title a {
-  color: #ff124f;
-  text-decoration: none;
-  transition: color 0.75s;
-}
+  .navbar-right {
+    flex: 0 0 40%;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4% 5% 0% 5%;
+    height: $navbar-height;
+    background-color: rgba(0, 0, 0, 0.333);
+    outline: 4px solid #f2e900;
+    top: 0;
+    margin: 0;
+    -webkit-clip-path: polygon(
+      22.3333333333px 0,
+      100% 0,
+      100% 25px,
+      calc(100% - 35px) 40px,
+      calc(100% - 35px) 2000%,
+      0 2000%,
+      0 22.3333333333px
+    );
+    clip-path: polygon(
+      22.3333333333px 0,
+      100% 0,
+      100% 25px,
+      calc(100% - 35px) 40px,
+      calc(100% - 35px) 2000%,
+      0 2000%,
+      0 22.3333333333px
+    );
 
-.brand-title a:hover {
-  color: #defe47;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0px;
+      left: 0;
+      height: 100%;
+      border-right: 25px solid #f2e900; /* Ustawienie obramowania */
+      border-top: 25px solid #f2e900; /* Ustawienie obramowania */
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0px;
+      right: 0;
+      height: 100%;
+      border-right: 40px solid #f2e900; /* Ustawienie obramowania */
+      border-top: 40px solid #f2e900; /* Ustawienie obramowania */
+    }
+  }
 }
 
 .navbar-links {
@@ -191,10 +246,10 @@ $background: linear-gradient(
   border-radius: 50px;
 }
 
-.navbar-links li:hover {
-  background-color: #120458;
-  transition: all 3s;
-}
+// .navbar-links li:hover {
+//   background-color: #120458;
+//   transition: all 3s;
+// }
 
 .navbar-links li a {
   display: block;
@@ -206,9 +261,9 @@ $background: linear-gradient(
   transition: color 0.75s;
 }
 
-.navbar-links li a:hover {
-  color: #defe47;
-}
+// .navbar-links li a:hover {
+//   color: #defe47;
+// }
 
 #link-1 {
   animation: 1s fadeIn;
@@ -308,5 +363,87 @@ $background: linear-gradient(
 
   .navbar-links.active {
     display: flex;
+  }
+}
+
+//Glitch
+@mixin glitchCopy {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.navbar-links li a:hover {
+  position: relative;
+  color: white;
+  font-size: 4em;
+  letter-spacing: 0.5em;
+  /* Animation provies a slight random skew. Check bottom of doc
+for more information on how to random skew. */
+  animation: glitch-skew 1s infinite linear alternate-reverse;
+
+  // Creates a copy before our text.
+  &::before {
+    // Duplicates our text with the mixin.
+    @include glitchCopy;
+    // Scoots text slightly to the left for the color offset.
+    left: 2px;
+    // Creates the color 'shadow' that happens on the glitch.
+    text-shadow: -2px 0 #ff00c1;
+    /* Creates an initial clip for our glitch. This works in
+  a typical top,right,bottom,left fashion and creates a mask
+  to only show a certain part of the glitch at a time. */
+    clip: rect(44px, 450px, 56px, 0);
+    /* Runs our glitch-anim defined below to run in a 5s loop, infinitely,
+  with an alternating animation to keep things fresh. */
+    animation: glitch-anim 5s infinite linear alternate-reverse;
+  }
+
+  // Creates a copy after our text. Note comments from ::before.
+  &::after {
+    @include glitchCopy;
+    left: -2px;
+    text-shadow:
+      -2px 0 #00fff9,
+      2px 2px #ff00c1;
+    animation: glitch-anim2 1s infinite linear alternate-reverse;
+  }
+}
+
+/* Creates an animation with 20 steaps. For each step, it calculates 
+a percentage for the specific step. It then generates a random clip
+box to be used for the random glitch effect. Also adds a very subtle
+skew to change the 'thickness' of the glitch.*/
+@keyframes glitch-anim {
+  $steps: 20;
+  @for $i from 0 through $steps {
+    #{percentage($i*(1/$steps))} {
+      clip: rect(random(100) + px, 9999px, random(100) + px, 0);
+      transform: skew((random(100) / 100) + deg);
+    }
+  }
+}
+
+// Same deal, just duplicated for ultra randomness.
+@keyframes glitch-anim2 {
+  $steps: 20;
+  @for $i from 0 through $steps {
+    #{percentage($i*(1/$steps))} {
+      clip: rect(random(100) + px, 9999px, random(100) + px, 0);
+      transform: skew((random(100) / 100) + deg);
+    }
+  }
+}
+
+// Does the same deal as before, but now only skews. Used for main text.
+@keyframes glitch-skew {
+  $steps: 10;
+  @for $i from 0 through $steps {
+    #{percentage($i*(1/$steps))} {
+      transform: skew((random(10) - 5) + deg);
+    }
   }
 }
