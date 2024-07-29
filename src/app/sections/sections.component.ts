@@ -350,17 +350,22 @@ export class SectionsComponent implements OnInit
   {
     const angleUp = document.getElementById('navUp') as HTMLElement;
     const anglesUp = document.getElementById('navDoubleUp') as HTMLElement;;
+    const logo = document.getElementById('logo') as HTMLElement;;
 
-    if (!angleUp || !anglesUp) return;
+    if (!angleUp || !anglesUp || !logo) return;
 
     if (window.scrollY > 0)
     {
       angleUp.style.opacity = '1';
       anglesUp.style.opacity = '1';
+      logo.classList.remove('scrolled-logo-up');
+      logo.classList.add('scrolled-logo-down');
     } else
     {
       angleUp.style.opacity = '0';
       anglesUp.style.opacity = '0';
+      logo.classList.remove('scrolled-logo-down');
+      logo.classList.add('scrolled-logo-up');
     }
   }
 

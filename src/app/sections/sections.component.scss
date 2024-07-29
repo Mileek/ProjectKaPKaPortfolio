@@ -241,6 +241,19 @@ $background: linear-gradient(
   }
 }
 
+.scrolled-logo-up,
+.scrolled-logo-down {
+  transition: transform 0.5s ease-in-out;
+}
+
+.scrolled-logo-up {
+  transform: scale(1);
+}
+
+.scrolled-logo-down {
+  transform: scale(0.7);
+}
+
 .navbar-links {
   height: 100%;
 }
@@ -304,13 +317,14 @@ $background: linear-gradient(
 
 .toggle-button {
   display: none;
+  cursor: pointer;
 }
 
 .bar {
   background-color: #ff00a0;
   height: 3px;
   width: 35px;
-  transition: all 0.75s;
+  transition: all 1.5s;
 }
 
 .bar-1-active {
@@ -329,7 +343,7 @@ $background: linear-gradient(
 
 @media (max-width: 840px) {
   .navbar {
-    position: sticky;
+    position: fixed;
     top: 0;
     z-index: 1000;
     flex-direction: column;
@@ -374,14 +388,22 @@ $background: linear-gradient(
   .navbar-links {
     text-align: center;
     align-items: center;
-    display: none;
-    position: relative;
+    opacity: 0;
     width: 100%;
+    max-height: 0;
+    transition:
+      opacity 0.8s ease-in-out,
+      max-height 1s ease-in-out;
 
     &.active {
       display: flex;
+      opacity: 1;
+      max-height: 500px; // Adjust this value based on the content height
       flex-direction: column;
       align-items: center;
+      transition:
+        max-height 1s ease-in-out,
+        opacity 1.2s ease-in-out;
     }
   }
 
