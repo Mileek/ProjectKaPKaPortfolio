@@ -32,7 +32,7 @@
   <canvas id="NebulaGreen"></canvas>
   <canvas id="NebulaPurple"></canvas>
   <canvas id="NebulaRed"></canvas>
-  <nav class="navbar sticky-top">
+  <nav class="navbar">
     <div id="logo" class="navbar-left">
       <a (click)="scrollToSection('home')" title="Logo" class="logo-link"></a>
     </div>
@@ -44,13 +44,17 @@
     <div class="navbar-right">
       <div class="navbar-links" #navbarLinks>
         <ul>
-          <li><a id="link-1" (click)="scrollToSection('home')" #home><i class="fi-xtluhl-house-thin"></i> Home</a></li>
-          <li><a id="link-2" (click)="scrollToSection('about-me')" #About><i class="fi-xtluxl-folder-thin"></i>
+          <li><a id="link-1" data-text="Home" (click)="scrollToSection('home')" #home><i
+                class="fi-xtluhl-house-thin"></i> Home</a></li>
+          <li><a id="link-2" data-text="About" (click)="scrollToSection('about-me')" #about><i
+                class="fi-xtluxl-folder-thin"></i>
               About</a>
           </li>
-          <li><a id="link-3" (click)="scrollToSection('projects')" #about><i class="fi-xtluxl-user-thin"></i>
+          <li><a id="link-3" data-text="Projects" (click)="scrollToSection('projects')" #projects><i
+                class="fi-xtluxl-user-thin"></i>
               Projects</a></li>
-          <li><a id="link-4" (click)="scrollToSection('contacts')" #contact><i class="fi-xtluxl-envelope-thin"></i>
+          <li><a id="link-4" data-text="Contact" (click)="scrollToSection('contacts')" #contact><i
+                class="fi-xtluxl-envelope-thin"></i>
               Contact</a></li>
         </ul>
       </div>
