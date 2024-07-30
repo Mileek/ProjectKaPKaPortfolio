@@ -374,7 +374,7 @@ export class SectionsComponent implements OnInit
     const element = document.getElementById(sectionId);
     if (element)
     {
-      const position = element.offsetTop - 75;
+      const position = element.offsetTop;// - 75;
       window.scrollTo({ top: position, behavior: 'smooth' });
     }
   }
