@@ -2,12 +2,8 @@ $blue: rgb(12, 57, 78);
 $purple: rgb(48, 12, 78);
 $green: rgb(9, 65, 16);
 $purple2: #4c203d;
-
-.navbar {
-  height: 50px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-}
+$navbar-height: 75px;
+$navbar-backgroud-color: rgba(0, 0, 0, 0.333);
 
 .fps-counter {
   position: absolute;
@@ -96,30 +92,14 @@ $background: linear-gradient(
   z-index: 2;
 }
 
-#home {
-  z-index: 10;
-  position: relative;
-  width: 100%;
-  height: calc(100vh - 50px);
-}
-#about-me {
-  z-index: 10;
-  position: relative;
-  width: 100%;
-  height: 100vh;
-}
-
-#projects {
-  z-index: 10;
-  position: relative;
-  width: 100%;
-  height: calc(100vh - 50px);
-}
+#home,
+#about-me,
+#projects,
 #contact-me {
   z-index: 10;
   position: relative;
   width: 100%;
-  height: calc(100vh - 50px);
+  height: calc(100vh - $navbar-height);
 }
 
 //naw right bottom
@@ -133,18 +113,14 @@ $background: linear-gradient(
 }
 
 .AngleUp {
-  // display: none;
   cursor: pointer;
-  // margin-bottom: -2vh;
   color: #fff;
   font-size: 35px;
   padding: 0 25px;
 }
 
 .AnglesUp {
-  // display: none;
   cursor: pointer;
-  // margin-bottom: -2vh;
   color: #fff;
   font-size: 35px;
   padding: 0 25px;
@@ -168,5 +144,349 @@ $background: linear-gradient(
   }
   50% {
     transform: translateY(-6px);
+  }
+}
+
+//Navbar
+.navbar {
+  display: flex;
+  position: fixed;
+  font-size: 1.3rem;
+  font-weight: 700;
+  top: 0;
+  margin: 0;
+  height: $navbar-height;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  background-color: transparent;
+  padding: 0.7% 5% 0% 5%;
+  z-index: 10000;
+  pointer-events: none;
+
+  .navbar-left {
+    flex: 0 0 calc($navbar-height * 1.6);
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    height: calc($navbar-height * 1.6);
+    width: calc($navbar-height * 1.6);
+    background-image: url("/assets/logo/KaPKaLogoTrim.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    top: 0;
+    margin: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    pointer-events: auto;
+
+    .logo-link {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-image: url("/assets/logo/KaPKaLogoTrim.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      cursor: pointer;
+      pointer-events: auto;
+    }
+  }
+
+  .navbar-right {
+    flex: 0 0 40%;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4% 5% 0% 5%;
+    height: $navbar-height;
+    background-color: $navbar-backgroud-color;
+    outline: 4px solid #f2e900;
+    top: 0;
+    margin: 0;
+    pointer-events: auto;
+    -webkit-clip-path: polygon(
+      22.3333333333px 0,
+      100% 0,
+      100% 25px,
+      calc(100% - 35px) 40px,
+      calc(100% - 35px) 2000%,
+      0 2000%,
+      0 22.3333333333px
+    );
+    clip-path: polygon(
+      22.3333333333px 0,
+      100% 0,
+      100% 25px,
+      calc(100% - 35px) 40px,
+      calc(100% - 35px) 2000%,
+      0 2000%,
+      0 22.3333333333px
+    );
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0px;
+      left: 0;
+      height: 100%;
+      border-right: 25px solid #f2e900;
+      border-top: 25px solid #f2e900;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0px;
+      right: 0;
+      height: 100%;
+      border-right: 40px solid #f2e900;
+      border-top: 40px solid #f2e900;
+    }
+  }
+}
+
+.scrolled-logo-up,
+.scrolled-logo-down {
+  transition: transform 0.5s ease-in-out;
+}
+
+.scrolled-logo-up {
+  transform: scale(1);
+}
+
+.scrolled-logo-down {
+  transform: scale(0.7);
+}
+
+.navbar-links {
+  height: 100%;
+}
+
+.navbar-links ul {
+  display: flex;
+}
+
+.navbar-links li {
+  list-style: none;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.navbar-links li:hover {
+  background-color: #000000a8;
+  transition: all 2s;
+}
+
+.navbar-links li a {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  color: #ff00a0;
+  padding: 1rem;
+  font-weight: lighter;
+  letter-spacing: 0.15em;
+  transition: color 0.75s;
+}
+
+#link-1 {
+  animation: 1s fadeIn;
+}
+
+#link-2 {
+  animation: 2s fadeIn;
+}
+
+#link-3 {
+  animation: 3s fadeIn;
+}
+
+#link-4 {
+  animation: 3.5s fadeIn;
+}
+
+/* fade in animation for links */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    color: #fe75fe;
+  }
+  50% {
+    color: #ffd300;
+  }
+  100% {
+    opacity: 1;
+    color: #ff00a0;
+  }
+}
+
+.toggle-button {
+  display: none;
+  cursor: pointer;
+}
+
+.bar {
+  background-color: #ff00a0;
+  height: 3px;
+  width: 35px;
+  transition: all 1.5s;
+}
+
+.bar-1-active {
+  background-color: #defe47;
+  transform: rotate(-45deg) translate(-30%, 280%);
+}
+
+.bar-2-active {
+  opacity: 0;
+}
+
+.bar-3-active {
+  background-color: #defe47;
+  transform: rotate(45deg) translate(-30%, -280%);
+}
+
+@media (max-width: 840px) {
+  .navbar {
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    background-color: $navbar-backgroud-color;
+    border: 2px solid #f2e900;
+    padding: 0;
+
+    .navbar-left {
+      flex: 0 0 calc($navbar-height * 1);
+      height: calc($navbar-height * 1);
+      width: calc($navbar-height * 1);
+      margin-left: 25px;
+    }
+    .navbar-right {
+      border: none;
+      background-color: transparent;
+      outline: none;
+      -webkit-clip-path: none;
+      clip-path: none;
+
+      &::before,
+      &::after {
+        border: none;
+      }
+    }
+  }
+
+  .toggle-button {
+    position: absolute;
+    top: 50%;
+    right: 5%;
+    display: flex;
+    height: 30px;
+    flex-direction: column;
+    justify-content: space-between;
+    transform: translate(-5%, -50%);
+  }
+
+  .navbar-links {
+    text-align: center;
+    align-items: center;
+    opacity: 0;
+    width: 100%;
+    max-height: 0;
+    transition:
+      opacity 0.8s ease-in-out,
+      max-height 1s ease-in-out;
+
+    &.active {
+      display: flex;
+      opacity: 1;
+      max-height: 500px; // Adjust this value based on the content height
+      flex-direction: column;
+      align-items: center;
+      transition:
+        max-height 1s ease-in-out,
+        opacity 1.2s ease-in-out;
+    }
+  }
+
+  .navbar-links ul {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navbar-links ul li {
+    text-align: center;
+  }
+
+  .navbar-links ul li a {
+    padding: 0.5rem 1rem;
+    display: block;
+    width: 100%;
+  }
+}
+
+//Glitch
+@mixin glitchCopy {
+  content: attr(data-text);
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  transform-origin: center;
+}
+
+.navbar-links li a:hover {
+  color: #02d7f2;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  position: relative;
+  animation: glitch-skew 1s infinite linear alternate-reverse;
+
+  &::before {
+    @include glitchCopy;
+    text-shadow: -2px 0 #ff00c1;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim 3s infinite linear alternate-reverse;
+  }
+
+  &::after {
+    @include glitchCopy;
+    text-shadow:
+      -2px 0 #00fff9,
+      2px 2px #ff00c1;
+    animation: glitch-anim2 0.5s infinite linear alternate-reverse;
+  }
+}
+
+@keyframes glitch-anim {
+  $steps: 20;
+  @for $i from 0 through $steps {
+    #{percentage($i*(1/$steps))} {
+      clip: rect(random(100) + px, 9999px, random(100) + px, 0);
+      transform: skew((random(100) / 100) + deg) translate(-50%, 0%);
+    }
+  }
+}
+
+@keyframes glitch-anim2 {
+  $steps: 20;
+  @for $i from 0 through $steps {
+    #{percentage($i*(1/$steps))} {
+      clip: rect(random(100) + px, 9999px, random(100) + px, 0);
+      transform: skew((random(100) / 100) + deg) translate(-50%, 0%);
+    }
+  }
+}
+
+@keyframes glitch-skew {
+  $steps: 10;
+  @for $i from 0 through $steps {
+    #{percentage($i*(1/$steps))} {
+      transform: skew((random(10) - 5) + deg) translate(-50%, 0%);
+    }
   }
 }

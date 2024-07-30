@@ -1,5 +1,5 @@
 import { DrawBlackhole } from './DrawBlackhole';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DrawLines } from './DrawLines';
 import { BlackholeAndStarsInteraction } from './BlackholeAndStarsInteraction';
 import { ImagesDealer } from './ImagesDealer';
@@ -24,24 +24,33 @@ export class SectionsComponent implements OnInit
   BSInteraction!: BlackholeAndStarsInteraction;
   FallingLinesArray: Array<DrawLines> = [];
   TwinklingLinesArray: Array<DrawLines> = [];
+  @ViewChild('about') about!: ElementRef;
   background!: HTMLDivElement;
+  @ViewChild('bar1') bar1!: ElementRef;
+  @ViewChild('bar2') bar2!: ElementRef;
+  @ViewChild('bar3') bar3!: ElementRef;
   blackhole!: DrawBlackhole;
   canvasBlackhole!: HTMLCanvasElement;
   canvasFalling!: HTMLCanvasElement;
   canvasFloatingObjects!: HTMLCanvasElement;
   canvasTwinkling!: HTMLCanvasElement;
+  @ViewChild('contact') contact!: ElementRef;
   fps: number = 0;
   frameCount: number = 0;
   galaxiesDealer!: ImagesDealer;
+  @ViewChild('home') home!: ElementRef;
   imgGalaxies!: HTMLCanvasElement;
   isMouseOverBlackhole!: boolean;
   lastUpdateTime: number = 0;
+  @ViewChild('navbarLinks') navbarLinks!: ElementRef;
   numberOfFallingStars: number = 4;
   numberOfMeteors = 5;
   numberOfTwinklingStars: number = 500;
   photoBackground!: HTMLDivElement;
+  @ViewChild('portfolio') portfolio!: ElementRef;
   slideAnimation!: Animation;
   slideAnimationPosition!: number;
+  @ViewChild('toggleButton') toggleButton!: ElementRef;
 
   constructor(private viewportScroller: ViewportScroller, private appStatics: AppStatics)
   {
@@ -225,6 +234,40 @@ export class SectionsComponent implements OnInit
     requestAnimationFrame(drawStar);
   }
 
+  HandleNavbar()
+  {
+    this.toggleButton.nativeElement.addEventListener('click', () =>
+    {
+      this.switchToggleStatus();
+    });
+
+    this.home.nativeElement.addEventListener('click', () =>
+    {
+      this.switchToggleStatus();
+    });
+
+    this.portfolio.nativeElement.addEventListener('click', () =>
+    {
+      this.switchToggleStatus();
+    });
+
+    this.about.nativeElement.addEventListener('click', () =>
+    {
+      this.switchToggleStatus();
+    });
+
+    this.contact.nativeElement.addEventListener('click', () =>
+    {
+      this.switchToggleStatus();
+    });
+  }
+
+  ngAfterViewInit(): void
+  {
+    // Inicjalizacja, która wymaga dostępu do elementów ViewChild
+    this.HandleNavbar();
+  }
+
   ngOnDestroy(): void
   {
     this.slideAnimation.cancel();
@@ -255,7 +298,7 @@ export class SectionsComponent implements OnInit
     this.AnimateFallingStars();
     // this.AnimateBlackhole(); //To jest najbardziej pamięciożerne, HUUH?????
     // this.AnimateBlackholeAndStarsInteraction();
-    // this.AnimateFloatingObjects();
+    this.AnimateFloatingObjects();
     //Intervals
     this.AngleInterval();
     this.SizeInterval();
@@ -307,17 +350,32 @@ export class SectionsComponent implements OnInit
   {
     const angleUp = document.getElementById('navUp') as HTMLElement;
     const anglesUp = document.getElementById('navDoubleUp') as HTMLElement;;
+    const logo = document.getElementById('logo') as HTMLElement;;
 
-    if (!angleUp || !anglesUp) return;
+    if (!angleUp || !anglesUp || !logo) return;
 
     if (window.scrollY > 0)
     {
       angleUp.style.opacity = '1';
       anglesUp.style.opacity = '1';
+      logo.classList.remove('scrolled-logo-up');
+      logo.classList.add('scrolled-logo-down');
     } else
     {
       angleUp.style.opacity = '0';
       anglesUp.style.opacity = '0';
+      logo.classList.remove('scrolled-logo-down');
+      logo.classList.add('scrolled-logo-up');
+    }
+  }
+
+  scrollToSection(sectionId: string): void
+  {
+    const element = document.getElementById(sectionId);
+    if (element)
+    {
+      const position = element.offsetTop - 75;
+      window.scrollTo({ top: position, behavior: 'smooth' });
     }
   }
 
@@ -341,6 +399,14 @@ export class SectionsComponent implements OnInit
       }
     }
     window.scrollTo({ top: position, behavior: 'smooth' });
+  }
+
+  switchToggleStatus()
+  {
+    this.navbarLinks.nativeElement.classList.toggle('active');
+    this.bar1.nativeElement.classList.toggle('bar-1-active');
+    this.bar2.nativeElement.classList.toggle('bar-2-active');
+    this.bar3.nativeElement.classList.toggle('bar-3-active');
   }
 
   private AngleInterval(): void

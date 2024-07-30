@@ -1,17 +1,23 @@
-<nav id="navbar-example2" class="navbar bg-dark px-0 mb-0 sticky-top">
-  <a class="navbar-brand" href="#">Navbar</a>
-  <ul class="nav nav-pills">
-    <li class="nav-item">
-      <a class="nav-link" href="#scrollspyHeading1">Home</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#scrollspyHeading2">AboutMe</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#scrollspyHeading3">Contact</a>
-    </li>
-  </ul>
-</nav>
+<!-- <nav class="navbar sticky-top">
+  <div class="navbar-left">
+    <div class="brand-title"><a href="#">KaPKa - Kamil Patryk Kaszuba</a></div>
+  </div>
+  <a href="#" class="toggle-button" #toggleButton title="Toggle Navigation">
+    <span class="bar" id="bar-1" #bar1></span>
+    <span class="bar" id="bar-2" #bar2></span>
+    <span class="bar" id="bar-3" #bar3></span>
+  </a>
+  <div class="navbar-right">
+    <div class="navbar-links" #navbarLinks>
+      <ul>
+        <li><a id="link-1" href="#home" #home><i class="fi-xtluhl-house-thin"></i> Home</a></li>
+        <li><a id="link-2" href="#about-me" #portfolio><i class="fi-xtluxl-folder-thin"></i> Portfolio</a></li>
+        <li><a id="link-3" href="#projects" #about><i class="fi-xtluxl-user-thin"></i> About</a></li>
+        <li><a id="link-4" href="#contact-me" #contact><i class="fi-xtluxl-envelope-thin"></i> Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav> -->
 
 <div class="fps-counter">
   FPS: {{fps}}
@@ -26,7 +32,34 @@
   <canvas id="NebulaGreen"></canvas>
   <canvas id="NebulaPurple"></canvas>
   <canvas id="NebulaRed"></canvas>
-
+  <nav class="navbar">
+    <div id="logo" class="navbar-left">
+      <a (click)="scrollToSection('home')" title="Logo" class="logo-link"></a>
+    </div>
+    <a class="toggle-button" #toggleButton title="Toggle Navigation">
+      <span class="bar" id="bar-1" #bar1></span>
+      <span class="bar" id="bar-2" #bar2></span>
+      <span class="bar" id="bar-3" #bar3></span>
+    </a>
+    <div class="navbar-right">
+      <div class="navbar-links" #navbarLinks>
+        <ul>
+          <li><a id="link-1" data-text="Home" (click)="scrollToSection('home')" #home><i
+                class="fi-xtluhl-house-thin"></i> Home</a></li>
+          <li><a id="link-2" data-text="About" (click)="scrollToSection('about-me')" #about><i
+                class="fi-xtluxl-folder-thin"></i>
+              About</a>
+          </li>
+          <li><a id="link-3" data-text="Projects" (click)="scrollToSection('projects')" #projects><i
+                class="fi-xtluxl-user-thin"></i>
+              Projects</a></li>
+          <li><a id="link-4" data-text="Contact" (click)="scrollToSection('contacts')" #contact><i
+                class="fi-xtluxl-envelope-thin"></i>
+              Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
   <!--Animated canvas-->
   <canvas id="TwinklingStars"></canvas>
   <canvas id="FallingStars"></canvas>

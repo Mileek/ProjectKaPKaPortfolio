@@ -58,7 +58,7 @@ const routes: Routes = [
     HttpClientModule,
     AngularSvgIconModule.forRoot(),
     FontAwesomeModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
