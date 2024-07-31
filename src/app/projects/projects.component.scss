@@ -261,6 +261,7 @@ body {
 
 @media (width > 650px) and (width < 900px) {
     .content {
+        width: 50vw;
         & .title {
             font-size: 22px;
         }

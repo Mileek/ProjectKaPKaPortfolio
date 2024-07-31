@@ -49,8 +49,8 @@ $formWidth: 80vw;
     z-index: 1;
     font-size: 250px;
     position: absolute;
-    bottom: 1%;
-    right: 3%;
+    bottom: -4%;
+    right: 0%;
     animation: neonGlowRed 2.2s linear infinite alternate;
 }
 
@@ -187,7 +187,7 @@ $formWidth: 80vw;
 .contact-form {
     .form-field {
         position: relative;
-        margin: 32px 0;
+        margin: 1vh 0;
         overflow: visible;
     }
     .input-text {
@@ -394,10 +394,10 @@ $formWidth: 80vw;
 
 .input-message {
     position: relative;
-    width: 100%;
+    // width: 100%;
     z-index: 5;
-    min-height: 350px;
-    max-height: 450px;
+    min-height: 35vh;
+    // max-height: 450px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-family: Arial, sans-serif;
@@ -587,13 +587,24 @@ $formWidth: 80vw;
 }
 
 @media (max-width: 768px) {
+    .arrow-symbol {
+        bottom: 0%;
+        right: 0%;
+        font-size: 80px;
+    }
     .hand-symbol {
-        top: 12%;
+        top: 0%;
+        right: -1%;
     }
 }
 
 @media (max-width: 576px) {
+    .arrow-symbol {
+        bottom: 0%;
+        right: 0%;
+        font-size: 80px;
+    }
     .hand-symbol {
-        top: 16%;
+        top: 9%;
     }
 }
