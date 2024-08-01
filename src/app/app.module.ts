@@ -23,23 +23,8 @@ const routes: Routes = [
       { path: 'about-me', component: AboutMeComponent },
       { path: 'projects', component: ProjectsComponent },
       { path: 'contact-me', component: ContactMeComponent },
-
-      //{ path: ':side', component: ListComponent }
     ]
   },
-  //{ path: '', redirectTo: '/home', pathMatch: 'full' },
-  //{ path: 'home', component: HomeComponent },
-  // { path: 'about', component: AboutComponent },
-  // { path: 'services', component: ServicesComponent }
-
-  // {
-  //   path: 'characters', component: TabsComponent, children: [
-  //     { path: '', redirectTo: 'all', pathMatch: 'full' },
-  //     { path: ':side', component: ListComponent }
-  //   ]
-  // },
-  // { path: 'new-character', loadChildren: () => import('./create-character/create-character.module').then(m => m.CreateCharacterModule) }, //Lazy loading, załaduje się dopiero po kliknięciu w tego link
-  // { path: '**', redirectTo: '/characters' }//Musi być OSTATNIE żeby złapać wszytskie POZOSTAŁE adresy
 ]
 
 @NgModule({
