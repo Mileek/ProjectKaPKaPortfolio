@@ -3,4 +3,25 @@
 
 body {
     font-family: "Poppins", sans-serif;
+    font-size: 16px;
+
+    @media (max-width: 1200px) {
+        font-size: 15px; // dla dużych ekranów (laptopy, mniejsze monitory)
+    }
+
+    @media (max-width: 992px) {
+        font-size: 14px; // dla średnich ekranów (tablety poziomo)
+    }
+
+    @media (max-width: 768px) {
+        font-size: 13px; // dla małych ekranów (tablety pionowo, duże telefony)
+    }
+
+    @media (max-width: 576px) {
+        font-size: 12px; // dla bardzo małych ekranów (telefony)
+    }
+
+    @media (max-width: 400px) {
+        font-size: 11px; // dla najmniejszych ekranów (małe telefony)
+    }
 }
