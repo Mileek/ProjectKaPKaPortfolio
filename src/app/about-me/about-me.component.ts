@@ -14,6 +14,11 @@ export class AboutMeComponent implements OnInit
   private drawPathsTimeout: any;
 
   TwinklingLinesArray: Array<DrawLines> = [];
+  blurElement1!: HTMLDivElement;
+  blurElement2!: HTMLDivElement;
+  blurElement3!: HTMLDivElement;
+  blurElement4!: HTMLDivElement;
+  blurElement5!: HTMLDivElement;
   canvasArray: Array<HTMLCanvasElement> = [];
   canvasPath1!: HTMLCanvasElement;
   canvasPath2!: HTMLCanvasElement;
@@ -45,7 +50,6 @@ export class AboutMeComponent implements OnInit
 
   public async DrawPaths(cancellationToken: { isCancellationRequested: boolean })
   {
-    // Clear all contexts first
     if (this.canvasPath1)
     {
       const ctx1 = this.canvasPath1.getContext('2d');
@@ -106,7 +110,6 @@ export class AboutMeComponent implements OnInit
       }
     }
 
-    // Perform the rest of the operations
     if (this.canvasPath1)
     {
       const ctx1 = this.canvasPath1.getContext('2d');
@@ -204,15 +207,6 @@ export class AboutMeComponent implements OnInit
     }
   }
 
-  WriteIntroductions(): void
-  {
-    this.text1.innerText = this.appStatics.texts[0];
-    this.text2.innerText = this.appStatics.texts[1];
-    this.text3.innerText = this.appStatics.texts[2];
-    this.text4.innerText = this.appStatics.texts[3];
-    this.text5.innerText = this.appStatics.texts[4];
-  }
-
   animateStars(): void
   {
     this.canvasArray.forEach(canvas =>
@@ -241,9 +235,9 @@ export class AboutMeComponent implements OnInit
     this.canvasPath3 = document.getElementById('path3') as HTMLCanvasElement;
     this.canvasPath4 = document.getElementById('path4') as HTMLCanvasElement;
     this.InitializeParagraphs();
+    this.InitializeBlurs();
     this.InitializeSVGWaypoints();
     this.InitializeCanvas();
-    this.WriteIntroductions();
 
     // Opóźnienie wykonania kodu do momentu, gdy przeglądarka jest gotowa do wykonania kolejnej klatki animacji
     requestAnimationFrame(() =>
@@ -321,6 +315,19 @@ export class AboutMeComponent implements OnInit
       // Calculate the opacity based on the scroll ratio
       textElement.style.opacity = `${scrollRatio}`;
       canvasElement.style.opacity = `${scrollRatio}`;
+      const maxTranslateValue = 0;
+      const isMaxTranslate = translateValue == maxTranslateValue;
+      // Set opacity for blur elements
+      const blurOpacity = isMaxTranslate ? '1' : '0';
+      this.blurElement1.style.opacity = blurOpacity;
+      this.blurElement2.style.opacity = blurOpacity;
+      this.blurElement3.style.opacity = blurOpacity;
+      this.blurElement4.style.opacity = blurOpacity;
+      this.blurElement5.style.opacity = blurOpacity;
+      console.log(blurOpacity);
+      console.log(isMaxTranslate);
+      console.log(translateValue);
+
       if (scrollRatio > 0.95 && !this.pathsDrawn)
       {
         this.pathsDrawn = true;
@@ -344,11 +351,20 @@ export class AboutMeComponent implements OnInit
   {
     this.canvasArray.forEach(canvas =>
     {
-      for (let i = 0; i < 8; i++)
+      for (let i = 0; i < 16; i++)
       {
         this.DrawTwinklingStar(canvas, this.appStatics.colorArray[Math.floor(Math.random() * this.appStatics.colorArray.length)], Math.random() * 0.8);
       }
     });
+  }
+
+  private InitializeBlurs()
+  {
+    this.blurElement1 = document.querySelector('.border-blur1') as HTMLDivElement;
+    this.blurElement2 = document.querySelector('.border-blur2') as HTMLDivElement;
+    this.blurElement3 = document.querySelector('.border-blur3') as HTMLDivElement;
+    this.blurElement4 = document.querySelector('.border-blur4') as HTMLDivElement;
+    this.blurElement5 = document.querySelector('.border-blur5') as HTMLDivElement;
   }
 
   private InitializeCanvas()

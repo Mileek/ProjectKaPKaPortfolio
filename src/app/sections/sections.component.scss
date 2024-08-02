@@ -402,6 +402,7 @@ $background: linear-gradient(
     opacity: 0;
     width: 100%;
     max-height: 0;
+    pointer-events: none;
     transition:
       opacity 0.8s ease-in-out,
       max-height 1s ease-in-out;
@@ -415,6 +416,7 @@ $background: linear-gradient(
       transition:
         max-height 1s ease-in-out,
         opacity 1.2s ease-in-out;
+      pointer-events: auto;
     }
   }
 
