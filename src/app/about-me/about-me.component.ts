@@ -11,6 +11,7 @@ import { AppStatics } from '../services/AppStatics';
 export class AboutMeComponent implements OnInit
 {
   private cancellationToken = { isCancellationRequested: false };
+  private drawPathsTimeout: any;
 
   TwinklingLinesArray: Array<DrawLines> = [];
   canvasArray: Array<HTMLCanvasElement> = [];
@@ -44,17 +45,73 @@ export class AboutMeComponent implements OnInit
 
   public async DrawPaths(cancellationToken: { isCancellationRequested: boolean })
   {
+    // Clear all contexts first
     if (this.canvasPath1)
     {
       const ctx1 = this.canvasPath1.getContext('2d');
       this.canvasPath1.width = this.divIntroduction.offsetWidth;
       this.canvasPath1.height = this.divIntroduction.offsetHeight;
+      if (ctx1 && cancellationToken.isCancellationRequested)
+      {
+        ctx1.clearRect(0, 0, this.canvasPath1.width, this.canvasPath1.height);
+      }
+      if (this.paths1)
+      {
+        this.paths1.resetContext();
+      }
+    }
+
+    if (this.canvasPath2)
+    {
+      const ctx2 = this.canvasPath2.getContext('2d');
+      this.canvasPath2.width = this.divIntroduction.offsetWidth;
+      this.canvasPath2.height = this.divIntroduction.offsetHeight;
+      if (ctx2 && cancellationToken.isCancellationRequested)
+      {
+        ctx2.clearRect(0, 0, this.canvasPath2.width, this.canvasPath2.height);
+      }
+      if (this.paths2)
+      {
+        this.paths2.resetContext();
+      }
+    }
+
+    if (this.canvasPath3)
+    {
+      const ctx3 = this.canvasPath3.getContext('2d');
+      this.canvasPath3.width = this.divIntroduction.offsetWidth;
+      this.canvasPath3.height = this.divIntroduction.offsetHeight;
+      if (ctx3 && cancellationToken.isCancellationRequested)
+      {
+        ctx3.clearRect(0, 0, this.canvasPath3.width, this.canvasPath3.height);
+      }
+      if (this.paths3)
+      {
+        this.paths3.resetContext();
+      }
+    }
+
+    if (this.canvasPath4)
+    {
+      const ctx4 = this.canvasPath4.getContext('2d');
+      this.canvasPath4.width = this.divIntroduction.offsetWidth;
+      this.canvasPath4.height = this.divIntroduction.offsetHeight;
+      if (ctx4 && cancellationToken.isCancellationRequested)
+      {
+        ctx4.clearRect(0, 0, this.canvasPath4.width, this.canvasPath4.height);
+      }
+      if (this.paths4)
+      {
+        this.paths4.resetContext();
+      }
+    }
+
+    // Perform the rest of the operations
+    if (this.canvasPath1)
+    {
+      const ctx1 = this.canvasPath1.getContext('2d');
       if (ctx1)
       {
-        if (cancellationToken.isCancellationRequested)
-        {
-          ctx1.clearRect(0, 0, this.canvasPath1.width, this.canvasPath1.height);
-        }
         this.paths1 = new DrawPaths(ctx1);
         await this.paths1.DrawPath(this.text1, this.svgWaypoint2, false, cancellationToken);
         this.paths1.animateWaypoint(this.svgWaypoint2, cancellationToken);
@@ -65,14 +122,8 @@ export class AboutMeComponent implements OnInit
     if (this.canvasPath2)
     {
       const ctx2 = this.canvasPath2.getContext('2d');
-      this.canvasPath2.width = this.divIntroduction.offsetWidth;
-      this.canvasPath2.height = this.divIntroduction.offsetHeight;
       if (ctx2)
       {
-        if (cancellationToken.isCancellationRequested)
-        {
-          ctx2.clearRect(0, 0, this.canvasPath2.width, this.canvasPath2.height);
-        }
         this.paths2 = new DrawPaths(ctx2);
         await this.paths2.DrawPath(this.text2, this.svgWaypoint3, true, cancellationToken);
         this.paths2.animateWaypoint(this.svgWaypoint3, cancellationToken);
@@ -83,14 +134,8 @@ export class AboutMeComponent implements OnInit
     if (this.canvasPath3)
     {
       const ctx3 = this.canvasPath3.getContext('2d');
-      this.canvasPath3.width = this.divIntroduction.offsetWidth;
-      this.canvasPath3.height = this.divIntroduction.offsetHeight;
       if (ctx3)
       {
-        if (cancellationToken.isCancellationRequested)
-        {
-          ctx3.clearRect(0, 0, this.canvasPath3.width, this.canvasPath3.height);
-        }
         this.paths3 = new DrawPaths(ctx3);
         await this.paths3.DrawPath(this.text3, this.svgWaypoint4, false, cancellationToken);
         this.paths3.animateWaypoint(this.svgWaypoint4, cancellationToken);
@@ -101,14 +146,8 @@ export class AboutMeComponent implements OnInit
     if (this.canvasPath4)
     {
       const ctx4 = this.canvasPath4.getContext('2d');
-      this.canvasPath4.width = this.divIntroduction.offsetWidth;
-      this.canvasPath4.height = this.divIntroduction.offsetHeight;
       if (ctx4)
       {
-        if (cancellationToken.isCancellationRequested)
-        {
-          ctx4.clearRect(0, 0, this.canvasPath4.width, this.canvasPath4.height);
-        }
         this.paths4 = new DrawPaths(ctx4);
         await this.paths4.DrawPath(this.text4, this.svgWaypoint5, true, cancellationToken);
         this.paths4.animateWaypoint(this.svgWaypoint5, cancellationToken);
@@ -211,11 +250,26 @@ export class AboutMeComponent implements OnInit
     {
       this.OverWriteCanvasSize();
       this.canvasArray.push(this.starryCanvas1, this.starryCanvas2, this.starryCanvas3, this.starryCanvas4, this.starryCanvas5);
-      console.log(this.canvasArray)
       this.DrawTwinklingForEachCanva();
 
       this.animateStars();
     });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void
+  {
+    if (this.drawPathsTimeout)
+    {
+      clearTimeout(this.drawPathsTimeout);
+    }
+    this.cancellationToken.isCancellationRequested = true; // Request cancellation
+    this.drawPathsTimeout = setTimeout(() =>
+    {
+      this.cancellationToken.isCancellationRequested = false;
+      this.DrawPaths(this.cancellationToken);
+
+    }, 100);
   }
 
   @HostListener('window:scroll', ['$event'])

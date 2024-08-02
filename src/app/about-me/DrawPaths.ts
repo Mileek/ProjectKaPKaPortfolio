@@ -47,7 +47,7 @@ export class DrawPaths
         {
             const draw = () =>
             {
-                t += 0.01;
+                t += 0.005;
                 if (t > 1 || cancellationToken.isCancellationRequested)
                 {
                     resolve();
@@ -71,8 +71,8 @@ export class DrawPaths
     public animatePath(cancellationToken: { isCancellationRequested: boolean })
     {
         let direction = 1;
-        const amplitude = 15; // The amount of vertical movement
-        const speed = 0.03; // The speed of the movement
+        const amplitude = 22; // The amplitude of vertical movement
+        const speed = 0.01; // The speed of the movement
 
         const animate = () =>
         {
@@ -112,8 +112,8 @@ export class DrawPaths
         let direction = 1;
         const initialScale = 1.0;
         const maxScale = 1.25;
-        const minScale = 0.95;
-        const speed = 0.005; // The speed of the scaling
+        const minScale = 0.85;
+        const speed = 0.002; // The speed of the scaling
         const opacitySpeed = 0.1; // The speed of the opacity change
 
         const animate = () =>
@@ -153,13 +153,13 @@ export class DrawPaths
         animate();
     }
 
-    private resetContext()
+    public resetContext()
     {
         this.ctx.lineWidth = 1;
-        this.ctx.strokeStyle = '#000000';
+        this.ctx.strokeStyle = 'transparent';
         this.ctx.lineCap = "butt";
         this.ctx.filter = "none";
-        this.ctx.fillStyle = '#000000';
+        this.ctx.fillStyle = 'transparent';
         this.ctx.globalAlpha = 1;
         this.ctx.globalCompositeOperation = "source-over";
     }
