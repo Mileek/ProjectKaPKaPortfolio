@@ -11,34 +11,33 @@ $formWidth: 80vw;
     overflow: hidden;
     top: 10%;
     border-radius: 25px;
-    border-left: 3px solid rgb(172, 72, 172);
-    border-right: 3px solid rgb(172, 72, 172);
-    border-bottom: 3px solid rgb(172, 72, 172);
-    border-top: 1px solid rgb(172, 72, 172);
     padding: 20px;
-    animation: neonGlowPurple 2.2s linear infinite alternate;
+    animation: neonGlowPurple 1.2s infinite;
 }
 
 @keyframes neonGlowPurple {
-    from {
+    0%,
+    18%,
+    22%,
+    25%,
+    53%,
+    57%,
+    100% {
+        border-left-color: rgba(172, 72, 172, 0.7); /* Slightly lighter color */
         box-shadow:
-            0 0 10px rgba(172, 72, 172, 0.8),
-            0 0 20px rgba(172, 72, 172, 0.6),
-            0 0 30px rgba(172, 72, 172, 0.4),
-            0 0 80px rgba(172, 72, 172, 0.2),
-            inset 0 0 5px rgba(172, 72, 172, 0.6),
-            inset 0 0 10px rgba(172, 72, 172, 0.4);
-        border-color: rgba(172, 72, 172, 0.8);
+            0 0 4px rgba(172, 72, 172, 0.7),
+            0 0 8px rgba(172, 72, 172, 0.7),
+            0 0 12px rgba(172, 72, 172, 0.7),
+            0 0 16px rgba(172, 72, 172, 0.7),
+            0 0 24px rgba(172, 72, 172, 0.7),
+            0 0 32px rgba(172, 72, 172, 0.7),
+            0 0 40px rgba(172, 72, 172, 0.7),
+            0 0 66px rgba(172, 72, 172, 0.7);
     }
-    to {
-        box-shadow:
-            0 0 20px rgba(172, 72, 172, 1),
-            0 0 30px rgba(172, 72, 172, 0.8),
-            0 0 40px rgba(172, 72, 172, 0.6),
-            0 0 100px rgba(172, 72, 172, 0.4),
-            inset 0 0 10px rgba(172, 72, 172, 1),
-            inset 0 0 20px rgba(172, 72, 172, 0.8);
-        border-color: rgba(172, 72, 172, 1);
+    20%,
+    24%,
+    55% {
+        box-shadow: none;
     }
 }
 
