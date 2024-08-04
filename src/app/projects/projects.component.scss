@@ -173,11 +173,7 @@ body {
     }
 }
 
-.box1,
-.box2,
-.box3,
-.box4,
-.box5 {
+.box1 {
     position: relative;
     background: transparent;
     border-radius: 20px;
@@ -223,11 +219,7 @@ body {
     }
 }
 
-.box1 span,
-.box2 span,
-.box3 span,
-.box4 span,
-.box5 span {
+.box1 span {
     position: absolute;
     inset: 5px;
     border-radius: 16px;
