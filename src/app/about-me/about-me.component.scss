@@ -119,28 +119,6 @@
     overflow: hidden;
 }
 
-.box1 #text1 {
-    z-index: 2;
-    color: white;
-}
-
-.box2 #text2 {
-    z-index: 2;
-    color: white;
-}
-.box3 #text2 {
-    z-index: 2;
-    color: white;
-}
-.box4 #text2 {
-    z-index: 2;
-    color: white;
-}
-.box5 #text2 {
-    z-index: 2;
-    color: white;
-}
-
 .border-blur1::before,
 .border-blur1::after {
     border-radius: 50%;
@@ -290,34 +268,10 @@
     }
 }
 
-.box1 span {
-    position: absolute;
-    inset: 5px;
-    border-radius: 16px;
-    background: #0c1022;
-    z-index: 1;
-}
-.box2 span {
-    position: absolute;
-    inset: 5px;
-    border-radius: 16px;
-    background: #0c1022;
-    z-index: 1;
-}
-.box3 span {
-    position: absolute;
-    inset: 5px;
-    border-radius: 16px;
-    background: #0c1022;
-    z-index: 1;
-}
-.box4 span {
-    position: absolute;
-    inset: 5px;
-    border-radius: 16px;
-    background: #0c1022;
-    z-index: 1;
-}
+.box1 span,
+.box2 span,
+.box3 span,
+.box4 span,
 .box5 span {
     position: absolute;
     inset: 5px;
