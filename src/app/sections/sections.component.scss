@@ -197,17 +197,18 @@ $background: linear-gradient(
   }
 
   .navbar-right {
-    flex: 0 0 40%;
+    flex: 0 0 42%;
     position: relative;
     justify-content: space-between;
     align-items: center;
-    padding: 0.4% 5% 0% 5%;
     height: $navbar-height;
     background-color: $navbar-backgroud-color;
     outline: 4px solid #f2e900;
     top: 0;
     margin: 0;
+    align-content: center;
     pointer-events: auto;
+    overflow: hidden;
     -webkit-clip-path: polygon(
       22.3333333333px 0,
       100% 0,
@@ -264,20 +265,25 @@ $background: linear-gradient(
 
 .navbar-links {
   height: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .navbar-links ul {
   display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .navbar-links li {
   list-style: none;
   border-radius: 50px;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .navbar-links li:hover {
-  background-color: #000000a8;
+  background-color: #4c502ca8;
   transition: all 2s;
 }
 
@@ -286,13 +292,13 @@ $background: linear-gradient(
   display: block;
   text-decoration: none;
   color: #ff00a0;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: 1.2rem;
+  padding-right: 1.2rem;
   font-weight: lighter;
   letter-spacing: 0.15em;
   transition: color 0.75s;
+  box-sizing: border-box;
 }
-
 #link-1 {
   animation: 1s fadeIn;
 }
@@ -410,7 +416,7 @@ $background: linear-gradient(
     &.active {
       display: flex;
       opacity: 1;
-      max-height: 500px; // Adjust this value based on the content height
+      max-height: 500px;
       flex-direction: column;
       align-items: center;
       transition:

@@ -30,7 +30,6 @@ body {
     background-position: center;
     background-size: cover;
     cursor: hand;
-    border-radius: 25px;
     box-shadow: 0 20px 30px rgba(255, 255, 255, 0.3) inset;
     transition:
         transform 0.1s,
@@ -65,12 +64,13 @@ body {
         & .caption {
             position: absolute;
             text-align: center;
+            background: #0c1022;
             padding: 0.2rem;
             color: white;
             text-wrap: wrap;
             top: 15%;
+            font-size: 12px;
             text-shadow: 0 3px 12px rgba(0, 0, 0, 0.7);
-            letter-spacing: 0.1rem;
         }
 
         &:hover {
@@ -122,6 +122,12 @@ body {
     }
 }
 
+.button {
+    position: absolute;
+    right: 0;
+    margin-top: 5px;
+}
+
 .content {
     color: rgb(255, 255, 255);
     text-shadow: 0 3px 12px rgba(0, 0, 0, 0.7);
@@ -133,7 +139,7 @@ body {
 
     & .title {
         font-size: 32px;
-        margin-top: 40px;
+        // margin-top: 40px;
         padding: 15px;
         letter-spacing: 0.5px;
         color: white;
@@ -164,12 +170,21 @@ body {
     & button {
         width: -moz-fit-content;
         width: fit-content;
-        background-color: rgba(0, 0, 0, 0.1);
-        color: white;
+        background-color: rgba(255, 255, 255, 0.5);
+        font-weight: 600;
+        color: black;
         border: 2px solid white;
         border-radius: 0.25rem;
         padding: 0.75rem;
         cursor: pointer;
+        animation: neonTextGlowWhite 4s infinite;
+        transition:
+            background-color 0.3s ease,
+            color 0.3s ease;
+    }
+
+    & button:hover {
+        background-color: rgba(255, 255, 255, 0.8);
     }
 }
 
@@ -275,6 +290,42 @@ body {
     }
 }
 
+@keyframes neon-border {
+    0% {
+        box-shadow:
+            0 0 10px rgba(59, 126, 117, 0.6),
+            0 0 20px rgba(59, 126, 117, 0.6),
+            0 0 40px rgba(59, 126, 117, 0.6),
+            0 0 80px rgba(59, 126, 117, 0.6),
+            0 0 160px rgba(59, 126, 117, 0.6),
+            0 0 180px rgba(59, 126, 117, 0.6),
+            0 0 200px rgba(59, 126, 117, 0.6),
+            0 0 300px rgba(59, 126, 117, 0.6);
+    }
+    50% {
+        box-shadow:
+            0 0 20px rgba(59, 126, 117, 0.6),
+            0 0 40px rgba(59, 126, 117, 0.6),
+            0 0 60px rgba(59, 126, 117, 0.6),
+            0 0 100px rgba(59, 126, 117, 0.6),
+            0 0 200px rgba(59, 126, 117, 0.6),
+            0 0 220px rgba(59, 126, 117, 0.6),
+            0 0 240px rgba(59, 126, 117, 0.6),
+            0 0 400px rgba(59, 126, 117, 0.6);
+    }
+    100% {
+        box-shadow:
+            0 0 10px rgba(59, 126, 117, 0.6),
+            0 0 20px rgba(59, 126, 117, 0.6),
+            0 0 40px rgba(59, 126, 117, 0.6),
+            0 0 80px rgba(59, 126, 117, 0.6),
+            0 0 160px rgba(59, 126, 117, 0.6),
+            0 0 180px rgba(59, 126, 117, 0.6),
+            0 0 200px rgba(59, 126, 117, 0.6),
+            0 0 300px rgba(59, 126, 117, 0.6);
+    }
+}
+
 .btnLeft,
 .btnRight {
     position: absolute;
@@ -283,8 +334,8 @@ body {
     z-index: 5;
     -webkit-user-select: none;
     user-select: none;
-    background-color: rgba(215, 178, 178, 0.3);
-    color: rgb(0, 0, 0);
+    background-color: #0c1022;
+    color: rgb(255, 255, 255);
     border: 3px solid rgba(59, 126, 117, 0.6);
     width: 65px;
     height: 65px;
@@ -294,9 +345,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    animation: neon-border 1.5s infinite alternate;
+    transition:
+        background-color 0.3s,
+        border-color 0.3s;
 
     &:hover {
-        background-color: rgba(255, 255, 255, 0.5);
+        background-color: rgba(59, 126, 117, 0.6);
+        border-color: rgba(59, 126, 117, 1);
     }
 }
 
@@ -366,6 +422,15 @@ body {
             font-size: 0.7rem;
         }
     }
+
+    .btnLeft {
+        left: 65vw;
+    }
+
+    .btnRight {
+        left: 80vw;
+    }
+
     .item {
         width: 15vw;
         height: 33vh;
@@ -507,6 +572,123 @@ body {
             cursor: pointer;
             opacity: 0;
             pointer-events: none;
+        }
+    }
+}
+// Author: https://codepen.io/ixkaito
+// I just made adjustments so it fits my portfolio
+@function rand($min, $max) {
+    @return random() * ($max - $min) + $min;
+}
+
+$animation-duration: 3s;
+$glitch-duration: 15%;
+$glitch-frequency: 1;
+$glitch-interval: $glitch-duration / $glitch-frequency;
+
+@mixin rgb-shift($name) {
+    @keyframes rgb-shift-#{$name} {
+        @for $i from 0 to $glitch-frequency {
+            #{$i * $glitch-interval} {
+                transform: translate(#{rand(-2, 2) * 1%}, #{rand(-0.5, 0.5) * 1%});
+            }
+        }
+
+        #{$glitch-duration},
+        100% {
+            transform: none;
+        }
+    }
+
+    animation: rgb-shift-#{$name} $animation-duration steps(1, jump-end) infinite alternate both;
+}
+
+@mixin glitch($name) {
+    @keyframes glitch-#{$name} {
+        @for $i from 0 to $glitch-frequency {
+            $left: 0%;
+            $right: 100%;
+            $top: rand(0, 90) * 1%;
+            $bottom: $top + rand(1, 5) * 1%;
+
+            #{$i * $glitch-interval} {
+                clip-path: polygon($left $top, $right $top, $right $bottom, $left $bottom);
+                transform: translate(#{rand(-6, 6) * 1%}, #{rand(-0.5, 0.5) * 1%});
+            }
+        }
+
+        #{$glitch-duration},
+        100% {
+            clip-path: none;
+            transform: none;
+        }
+    }
+
+    animation: glitch-#{$name} $animation-duration linear infinite alternate both;
+}
+
+.glitch {
+    background: #000 no-repeat center;
+    background-size: cover;
+
+    &::before,
+    &::after,
+    .channel {
+        background: inherit;
+        background-size: cover;
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    &::before {
+        @include glitch(before);
+        content: "";
+    }
+
+    &::after {
+        @include glitch(after);
+        content: "";
+    }
+
+    .channel {
+        mix-blend-mode: screen;
+
+        &::before {
+            bottom: 0;
+            content: "";
+            display: block;
+            mix-blend-mode: multiply;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+        }
+    }
+
+    .r {
+        @include rgb-shift(r);
+
+        &::before {
+            background: #f00;
+        }
+    }
+
+    .g {
+        @include rgb-shift(g);
+
+        &::before {
+            background: #0f0;
+        }
+    }
+
+    .b {
+        @include rgb-shift(b);
+
+        &::before {
+            background: #00f;
         }
     }
 }
