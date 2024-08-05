@@ -1,61 +1,47 @@
 @import url(https://fonts.googleapis.com/css?family=Wire+One);
 
 $formWidth: 80vw;
+$gradientWidth: 8px;
+$gradientSmallWidth: 4px;
+
+@mixin gradient-background($width) {
+    background:
+        linear-gradient(to right, #f2e900 $width, transparent 4px) 0 0,
+        linear-gradient(to right, #f2e900 $width, transparent 4px) 0 100%,
+        linear-gradient(to left, #f2e900 $width, transparent 4px) 100% 0,
+        linear-gradient(to left, #f2e900 $width, transparent 4px) 100% 100%,
+        linear-gradient(to bottom, #f2e900 $width, transparent 4px) 0 0,
+        linear-gradient(to bottom, #f2e900 $width, transparent 4px) 100% 0,
+        linear-gradient(to top, #f2e900 $width, transparent 4px) 0 100%,
+        linear-gradient(to top, #f2e900 $width, transparent 4px) 100% 100%;
+    background-color: rgba(255, 255, 255, 0.4);
+    background-repeat: no-repeat;
+    background-size: 150px 150px;
+}
 
 .contact-me-border {
     height: auto;
     margin: 0 auto;
     width: $formWidth;
-    background: rgba(0, 0, 0, 0.5);
     position: relative;
     overflow: hidden;
     top: 10%;
-    border-radius: 25px;
-    padding: 20px;
-    animation: neonGlowPurple 1.2s infinite;
+    padding: 30px;
+    @include gradient-background($gradientWidth);
 }
 
-@keyframes neonGlowPurple {
-    0%,
-    18%,
-    22%,
-    25%,
-    53%,
-    57%,
-    100% {
-        border-left-color: rgba(172, 72, 172, 0.7); /* Slightly lighter color */
-        box-shadow:
-            0 0 4px rgba(172, 72, 172, 0.7),
-            0 0 8px rgba(172, 72, 172, 0.7),
-            0 0 12px rgba(172, 72, 172, 0.7),
-            0 0 16px rgba(172, 72, 172, 0.7),
-            0 0 24px rgba(172, 72, 172, 0.7),
-            0 0 32px rgba(172, 72, 172, 0.7),
-            0 0 40px rgba(172, 72, 172, 0.7),
-            0 0 66px rgba(172, 72, 172, 0.7);
-    }
-    20%,
-    24%,
-    55% {
-        box-shadow: none;
-    }
-}
-
-.arrow-symbol {
-    font-weight: 400;
-    color: transparent;
-    -webkit-text-stroke: 3px white;
-    z-index: 1;
-    font-size: 250px;
-    position: absolute;
-    bottom: -4%;
-    right: 0%;
-    animation: neonGlowRed 2.2s linear infinite alternate;
+.inner-border {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background-color: #0c1022;
+    box-sizing: border-box;
 }
 
 .get-in-touch {
-    width: 75vw;
-    margin: 0 auto;
+    position: relative;
+    width: 100%;
     .title {
         text-align: center;
         font-family: "Wire One", Helvetica, Arial, sans-serif;
@@ -63,7 +49,7 @@ $formWidth: 80vw;
         font-size: 72px;
         line-height: 48px;
         padding-bottom: 48px;
-        font-weight: 400;
+        font-weight: 500;
         color: transparent;
         -webkit-text-stroke: 2px white;
         text-shadow:
@@ -190,6 +176,7 @@ $formWidth: 80vw;
         overflow: visible;
     }
     .input-text {
+        position: relative;
         display: block;
         width: 100%;
         height: 36px;
@@ -200,6 +187,7 @@ $formWidth: 80vw;
         font-size: 24px;
         line-height: 26px;
         font-weight: 400;
+        box-sizing: border-box;
 
         &:focus {
             outline: none;
@@ -393,13 +381,13 @@ $formWidth: 80vw;
 
 .input-message {
     position: relative;
-    // width: 100%;
     z-index: 5;
-    min-height: 35vh;
-    // max-height: 450px;
+    min-height: 20vh;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-family: Arial, sans-serif;
+    resize: none;
+    overflow-y: auto;
 }
 
 .message-success {
@@ -417,35 +405,9 @@ $formWidth: 80vw;
     font-weight: 500;
     color: transparent;
     -webkit-text-stroke: 2px white;
-    animation: handNeonGlow 1.6s ease-in-out infinite alternate;
+    animation: successNeonGlow 1.6s ease-in-out infinite alternate;
 }
-
-.hand-symbol {
-    font-weight: 400;
-    color: transparent;
-    -webkit-text-stroke: 3px white;
-    z-index: 1;
-    font-size: 15vw;
-    position: absolute;
-    top: 2%;
-    right: 4%;
-    animation:
-        handNeonGlow 2s linear infinite alternate,
-        handWave 6s ease-in-out infinite;
-    text-shadow:
-        0 0 10px #00ff00,
-        0 0 15px #00ff00,
-        0 0 30px #00ff00,
-        0 0 40px #00ff00,
-        0 0 50px #00ff00,
-        0 0 60px #00ff00,
-        0 0 70px #00ff00,
-        0 0 80px #00ff00,
-        0 0 90px #00ff00,
-        0 0 100px #00ff00;
-}
-
-@keyframes handNeonGlow {
+@keyframes successNeonGlow {
     from {
         text-shadow:
             0 0 10px #00ff00,
@@ -474,19 +436,74 @@ $formWidth: 80vw;
     }
 }
 
+.hand-symbol {
+    font-weight: 400;
+    color: transparent;
+    -webkit-text-stroke: 3px white;
+    z-index: 1;
+    font-size: 15vw;
+    position: absolute;
+    top: 2%;
+    right: 4%;
+    animation:
+        handNeonGlow 6s linear infinite alternate,
+        handWave 6s linear infinite;
+}
+
+@keyframes handNeonGlow {
+    18%,
+    53%,
+    57%,
+    100% {
+        text-shadow:
+            0 0 10px #00ff00,
+            0 0 15px #00ff00,
+            0 0 30px #00ff00,
+            0 0 40px #00ff00,
+            0 0 50px #00ff00,
+            0 0 60px #00ff00,
+            0 0 70px #00ff00,
+            0 0 80px #00ff00,
+            0 0 90px #00ff00,
+            0 0 100px #00ff00;
+    }
+    20%,
+    24%,
+    55%,
+    80% {
+        text-shadow: none;
+    }
+    0%,
+    22%,
+    25%,
+    50% {
+        text-shadow:
+            0 0 10px #ff0000,
+            0 0 15px #ff0000,
+            0 0 30px #ff0000,
+            0 0 40px #ff0000,
+            0 0 50px #ff0000,
+            0 0 60px #ff0000,
+            0 0 70px #ff0000,
+            0 0 80px #ff0000,
+            0 0 90px #ff0000,
+            0 0 100px #ff0000;
+    }
+}
+
 @keyframes handWave {
     0%,
     100% {
         transform: rotate(0deg);
     }
     25% {
-        transform: rotate(-5deg);
+        transform: rotate(-8deg);
     }
     50% {
         transform: rotate(0deg);
     }
     75% {
-        transform: rotate(5deg);
+        transform: rotate(8deg);
     }
 }
 
@@ -580,30 +597,22 @@ $formWidth: 80vw;
 }
 
 @media (max-width: 992px) {
+    .contact-me-border {
+        @include gradient-background($gradientSmallWidth);
+    }
     .hand-symbol {
         top: 10%;
     }
 }
 
 @media (max-width: 768px) {
-    .arrow-symbol {
-        bottom: 0%;
-        right: 0%;
-        font-size: 80px;
-    }
     .hand-symbol {
-        top: 0%;
-        right: -1%;
+        opacity: 0;
     }
 }
 
 @media (max-width: 576px) {
-    .arrow-symbol {
-        bottom: 0%;
-        right: 0%;
-        font-size: 80px;
-    }
     .hand-symbol {
-        top: 9%;
+        opacity: 0;
     }
 }
