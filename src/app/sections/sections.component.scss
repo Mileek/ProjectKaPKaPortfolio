@@ -110,7 +110,7 @@ $background: linear-gradient(
   display: flex;
   flex-direction: column;
   bottom: 5px;
-  right: 5px;
+  right: 0px;
   z-index: 10;
 }
 
@@ -118,14 +118,14 @@ $background: linear-gradient(
   cursor: pointer;
   color: #fff;
   font-size: 35px;
-  padding: 0 25px;
+  padding: 0 15px;
 }
 
 .AnglesUp {
   cursor: pointer;
   color: #fff;
   font-size: 35px;
-  padding: 0 25px;
+  padding: 0 15px;
 }
 
 .AnglesUp:hover,
@@ -198,8 +198,8 @@ $background: linear-gradient(
 
   .navbar-right {
     flex: 0 0 auto;
-    min-width: 42%;
-    padding-right: 2rem;
+    // min-width: 42%;
+    padding-right: 2.4rem;
     position: relative;
     justify-content: space-between;
     align-items: center;
@@ -363,6 +363,7 @@ $background: linear-gradient(
 @media (max-width: 840px) {
   .navbar {
     position: fixed;
+    // flex: 0 0 42%;
     top: 0;
     z-index: 1000;
     pointer-events: auto;
@@ -378,9 +379,11 @@ $background: linear-gradient(
       flex: 0 0 calc($navbar-height * 1);
       height: calc($navbar-height * 1);
       width: calc($navbar-height * 1);
-      margin-left: 25px;
+      align-self: flex-start;
+      margin-left: 15px;
     }
     .navbar-right {
+      flex: 0 0 42%;
       border: none;
       background-color: transparent;
       outline: none;
@@ -457,8 +460,6 @@ $background: linear-gradient(
 
 .navbar-links li a:hover {
   color: #02d7f2;
-  font-weight: 300;
-  letter-spacing: 0.15em;
   position: relative;
   animation: glitch-skew 1s infinite linear alternate-reverse;
 
