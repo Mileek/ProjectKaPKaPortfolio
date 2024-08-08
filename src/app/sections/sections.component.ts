@@ -555,29 +555,33 @@ export class SectionsComponent implements OnInit
     {
       this.updateBlackHoleDimensions(viewportWidth, 0.28);
       if (this.blackhole)
-        this.blackhole.bendingYShift = 0;
-      this.blackhole.bendingWidthCoeff = 1.2;
-
+        this.blackhole.bendingWidthCoeff = 1.5;
+      this.blackhole.bendingHeight = 15;
+      this.blackhole.blurRingWidth = 60;
     } else if (viewportWidth <= 768)
     {
       this.updateBlackHoleDimensions(viewportWidth, 0.26);
-      this.blackhole.bendingYShift = 20;
-      this.blackhole.bendingWidthCoeff = 1.3;
+      this.blackhole.bendingWidthCoeff = 1.5;
+      this.blackhole.bendingHeight = 20;
+      this.blackhole.blurRingWidth = 90;
     } else if (viewportWidth <= 1024)
     {
       this.updateBlackHoleDimensions(viewportWidth, 0.22);
-      this.blackhole.bendingYShift = 40;
-      this.blackhole.bendingWidthCoeff = 1.4;
+      this.blackhole.bendingWidthCoeff = 1.5;
+      this.blackhole.bendingHeight = 30;
+      this.blackhole.blurRingWidth = 110;
     } else if (viewportWidth <= 1200)
     {
       this.updateBlackHoleDimensions(viewportWidth, 0.18);
-      this.blackhole.bendingYShift = 50;
       this.blackhole.bendingWidthCoeff = 1.6;
+      this.blackhole.bendingHeight = 40;
+      this.blackhole.blurRingWidth = 130;
     } else
     {
       this.updateBlackHoleDimensions(viewportWidth, 0.18);
-      this.blackhole.bendingYShift = 70;
       this.blackhole.bendingWidthCoeff = 1.7;
+      this.blackhole.bendingHeight = 50;
+      this.blackhole.blurRingWidth = 150;
     }
   }
 
