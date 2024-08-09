@@ -6,12 +6,6 @@ app-home {
   text-align: center;
 }
 
-.WelcomeDiv {
-  position: absolute;
-  bottom: 12vh;
-  right: 2vw;
-}
-
 .DividerDiv {
   position: absolute;
   width: 80%;
@@ -22,11 +16,138 @@ app-home {
   bottom: 0;
 }
 
+.WelcomeDiv {
+  position: absolute;
+  bottom: 6vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
 .WelcomeQuote {
-  font-size: 26px;
-  text-align: center;
-  font-style: italic;
+  font-size: 1.8rem;
+  letter-spacing: 2px;
   color: #fff;
+  text-shadow:
+    -4px 0 rgba(255, 0, 255, 0.5),
+    4px 0 rgba(144, 238, 144, 0.5);
+  text-align: center;
+}
+
+.glitch {
+  font-size: 1.8rem;
+  width: auto;
+  color: #fff;
+  letter-spacing: 2px;
+  animation: glitch 8s 2s infinite;
+}
+
+.glitch::before {
+  content: attr(data-text);
+  position: absolute;
+  left: -2px;
+  text-shadow: -8px 0 magenta;
+  background: transparent;
+  overflow: hidden;
+  top: 8;
+  animation:
+    noise-1 1s linear infinite alternate-reverse,
+    glitch 4s 1.05s infinite;
+}
+
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 2px;
+  text-shadow: -8px 0 lightgreen;
+  background: transparent;
+  overflow: hidden;
+  top: 8;
+  animation:
+    noise-2 1s linear infinite alternate-reverse,
+    glitch 4s 1s infinite;
+}
+.no-glitch {
+  animation: none !important;
+  content: "" !important;
+}
+
+.no-glitch::before {
+  animation: none !important;
+  content: "" !important;
+}
+
+.no-glitch::after {
+  animation: none !important;
+  content: "" !important;
+}
+@keyframes glitch {
+  1% {
+    transform: rotateX(10deg) skewX(90deg);
+  }
+  60% {
+    transform: rotateX(0deg) skewX(0deg);
+  }
+}
+
+@keyframes noise-1 {
+  $steps: 50;
+  @for $i from 1 through $steps {
+    #{percentage($i*(1/$steps))} {
+      $top: random(100);
+      $bottom: random(101 - $top);
+      clip-path: inset(#{$top}px 0 #{$bottom}px 0);
+    }
+  }
+}
+
+@keyframes noise-2 {
+  $steps: 50;
+  @for $i from 0 through $steps {
+    #{percentage($i*(1/$steps))} {
+      $top: random(100);
+      $bottom: random(101 - $top);
+      clip-path: inset(#{$top}px 0 #{$bottom}px 0);
+    }
+  }
+}
+
+.scanlines {
+  overflow: hidden;
+  mix-blend-mode: difference;
+}
+
+.scanlines::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: repeating-linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0) 0.5%, transparent 1%);
+  animation: fudge 8s ease-in-out alternate infinite;
+}
+
+@keyframes fudge {
+  from {
+    transform: translate(0px, 0px);
+  }
+  to {
+    transform: translate(0px, 2%);
+  }
+}
+
+@keyframes glitch-2 {
+  1% {
+    transform: rotateX(10deg) skewX(70deg);
+  }
+  60% {
+    transform: rotateX(0deg) skewX(0deg);
+  }
 }
 
 .Divider {
