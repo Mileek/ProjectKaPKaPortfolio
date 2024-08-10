@@ -18,7 +18,12 @@ export class SectionsComponent implements OnInit
 {
   private BlackHoleHeight: number = 250;
   private BlackHoleWidth: number = 250;
+  private baseAngleIncrement: number = 0.005;
   private increasing: boolean = true;
+  // Base value for angle increment
+  private maxAngleIncrement: number = 0.05;
+  // Maximum value for angle increment
+  private minAngleIncrement: number = 0.005;
   private resizeTimeout: any;
 
   BSInteraction!: BlackholeAndStarsInteraction;
@@ -30,11 +35,13 @@ export class SectionsComponent implements OnInit
   @ViewChild('bar2') bar2!: ElementRef;
   @ViewChild('bar3') bar3!: ElementRef;
   blackhole!: DrawBlackhole;
+  blackholeContainer!: HTMLDivElement;
   canvasBlackhole!: HTMLCanvasElement;
   canvasFalling!: HTMLCanvasElement;
   canvasFloatingObjects!: HTMLCanvasElement;
   canvasTwinkling!: HTMLCanvasElement;
   @ViewChild('contact') contact!: ElementRef;
+  divBlackhole!: HTMLDivElement;
   fps: number = 0;
   frameCount: number = 0;
   galaxiesDealer!: ImagesDealer;
@@ -48,6 +55,7 @@ export class SectionsComponent implements OnInit
   numberOfTwinklingStars: number = 500;
   photoBackground!: HTMLDivElement;
   @ViewChild('portfolio') portfolio!: ElementRef;
+  redEye!: HTMLDivElement;
   slideAnimation!: Animation;
   slideAnimationPosition!: number;
   @ViewChild('toggleButton') toggleButton!: ElementRef;
@@ -73,14 +81,11 @@ export class SectionsComponent implements OnInit
   DrawBlackhole(): void
   {
     var ctx = this.canvasBlackhole.getContext('2d');
-    const width = this.background.offsetWidth;
-    const height = this.background.offsetHeight;
-    this.canvasBlackhole.width = width;
-    this.canvasBlackhole.height = height;
 
     if (ctx)
     {
-      this.blackhole = new DrawBlackhole(ctx, this.BlackHoleWidth, this.BlackHoleHeight, this.canvasBlackhole.width / 2, 400);
+      this.blackhole = new DrawBlackhole(ctx, this.BlackHoleWidth, this.BlackHoleHeight,
+        this.blackholeContainer.offsetWidth / 2, this.blackholeContainer.offsetHeight * 0.3);
     }
   }
 
@@ -276,31 +281,32 @@ export class SectionsComponent implements OnInit
   ngOnInit(): void
   {
     this.background = document.getElementById('Background') as HTMLDivElement;
+    this.blackholeContainer = document.getElementById('BlackholeContainer') as HTMLDivElement;
     this.canvasBlackhole = document.getElementById('Blackhole') as HTMLCanvasElement;
     this.canvasTwinkling = document.getElementById('TwinklingStars') as HTMLCanvasElement;
     this.canvasFalling = document.getElementById('FallingStars') as HTMLCanvasElement;
     this.imgGalaxies = document.getElementById('Galaxies') as HTMLCanvasElement;
     this.canvasFloatingObjects = document.getElementById('FloatingObjects') as HTMLCanvasElement;
-
+    //Dostosowanie do telefonów/tabletów
+    this.applyMediaQueryBeforeDrawLogic();
     //Draw FPS
     this.DrawFPS();
-
     //Draw
     this.DrawBlackhole();
     this.DrawTwinklingStars(this.numberOfTwinklingStars);
     this.DrawFallingStars(this.numberOfFallingStars);
     this.DrawNebulas();
     this.DrawFloatingObjects();
+    this.applyMediaQueryAfterDrawLogic();
     //Create Interactions
     this.BlackholeStarsInteraction();
     //Animate
     this.AnimateTwinklingStars();
     this.AnimateFallingStars();
-    // this.AnimateBlackhole(); //To jest najbardziej pamięciożerne, HUUH?????
-    // this.AnimateBlackholeAndStarsInteraction();
+    this.AnimateBlackhole(); //To jest najbardziej pamięciożerne, HUUH?????
+    this.AnimateBlackholeAndStarsInteraction();
     this.AnimateFloatingObjects();
     //Intervals
-    this.AngleInterval();
     this.SizeInterval();
   }
 
@@ -336,12 +342,14 @@ export class SectionsComponent implements OnInit
 
     this.resizeTimeout = setTimeout(() =>
     {
+      this.applyMediaQueryBeforeDrawLogic();
       this.DrawFloatingObjects();
       this.DrawBlackhole();
       this.DrawTwinklingStars(this.numberOfTwinklingStars);
       this.DrawFallingStars(this.numberOfFallingStars);
       this.BlackholeStarsInteraction();
       this.DrawNebulas();
+      this.applyMediaQueryAfterDrawLogic();
     }, 250); // Czas debouncingu
   }
 
@@ -409,53 +417,78 @@ export class SectionsComponent implements OnInit
     this.bar3.nativeElement.classList.toggle('bar-3-active');
   }
 
-  private AngleInterval(): void
-  {
-    setInterval(() =>
-    {
-      if (this.isMouseOverBlackhole && this.blackhole.angleIncrement < 0.05)
-      {
-        this.blackhole.angleIncrement += 0.0005; // Increase the angle increment
-      } else if (!this.isMouseOverBlackhole && this.blackhole.angleIncrement > 0.005)
-      {
-        this.blackhole.angleIncrement -= 0.001; // Decrease the angle increment
-      }
-    }, 200);
-  }
-
   private AnimateBlackhole()
   {
-    requestAnimationFrame(() => this.AnimateBlackhole());
-    let ctx = this.canvasBlackhole.getContext('2d');
-    const width = this.background.offsetWidth;
-    const height = this.background.offsetHeight;
-    this.canvasBlackhole.width = width;
-    this.canvasBlackhole.height = height;
+    const targetFPS = 30;
+    const frameDuration = 1000 / targetFPS;
+    let lastFrameTime = 0;
 
-    if (ctx)
+    const animate = (currentTime: number) =>
     {
-      ctx.clearRect(0, 0, width, height);
-      this.blackhole.AnimateBlackholeElements();
-    }
+      requestAnimationFrame(animate);
+
+      const deltaTime = currentTime - lastFrameTime;
+      if (deltaTime < frameDuration)
+      {
+        return;
+      }
+
+      lastFrameTime = currentTime;
+
+      let ctx = this.canvasBlackhole.getContext('2d');
+      const width = this.background.offsetWidth;
+      const height = this.background.offsetHeight;
+
+      if (this.canvasBlackhole.width !== width || this.canvasBlackhole.height !== height)
+      {
+        this.canvasBlackhole.width = width;
+        this.canvasBlackhole.height = height;
+      }
+
+      if (ctx)
+      {
+        ctx.clearRect(0, 0, width, height);
+        this.blackhole.AnimateBlackholeElements();
+      }
+    };
+
+    requestAnimationFrame(animate);
   }
 
   private AnimateBlackholeAndStarsInteraction()
   {
-    requestAnimationFrame(() => this.AnimateBlackholeAndStarsInteraction());
+    const targetFPS = 45;
+    const frameDuration = 1000 / targetFPS;
+    let lastFrameTime = 0;
 
-    this.BSInteraction.MoveStarsToBlackhole();
-    if (this.BSInteraction.ReGenerateStar > 0)
+    const animate = (currentTime: number) =>
     {
-      const color = this.appStatics.colorArray[Math.floor(Math.random() * this.appStatics.colorArray.length)];
-      const width = this.background.offsetWidth;
-      const height = this.background.offsetHeight;
+      requestAnimationFrame(animate);
 
-      for (let i = 0; i < this.BSInteraction.ReGenerateStar; i++)
+      const deltaTime = currentTime - lastFrameTime;
+      if (deltaTime < frameDuration)
       {
-        this.BSInteraction.addStar(this.DrawTwinklingStar(color, width, height));
+        return;
       }
-      this.BSInteraction.ReGenerateStar = 0;
-    }
+
+      lastFrameTime = currentTime;
+
+      this.BSInteraction.MoveStarsToBlackhole();
+      if (this.BSInteraction.ReGenerateStar > 0)
+      {
+        const color = this.appStatics.colorArray[Math.floor(Math.random() * this.appStatics.colorArray.length)];
+        const width = this.background.offsetWidth;
+        const height = this.background.offsetHeight;
+
+        for (let i = 0; i < this.BSInteraction.ReGenerateStar; i++)
+        {
+          this.BSInteraction.addStar(this.DrawTwinklingStar(color, width, height));
+        }
+        this.BSInteraction.ReGenerateStar = 0;
+      }
+    };
+
+    requestAnimationFrame(animate);
   }
 
   private AnimateFallingStars()
@@ -512,5 +545,78 @@ export class SectionsComponent implements OnInit
         this.blackhole.ReturnToOrginalSize();
       }
     }, 200);
+  }
+
+  private applyMediaQueryAfterDrawLogic(): void
+  {
+    const viewportWidth = window.innerWidth;
+
+    if (viewportWidth <= 480)
+    {
+      this.updateBlackHoleDimensions(viewportWidth, 0.28);
+      if (this.blackhole)
+        this.blackhole.bendingWidthCoeff = 1.5;
+      this.blackhole.bendingHeight = 15;
+      this.blackhole.blurRingWidth = 60;
+    } else if (viewportWidth <= 768)
+    {
+      this.updateBlackHoleDimensions(viewportWidth, 0.26);
+      this.blackhole.bendingWidthCoeff = 1.5;
+      this.blackhole.bendingHeight = 20;
+      this.blackhole.blurRingWidth = 90;
+    } else if (viewportWidth <= 1024)
+    {
+      this.updateBlackHoleDimensions(viewportWidth, 0.22);
+      this.blackhole.bendingWidthCoeff = 1.5;
+      this.blackhole.bendingHeight = 30;
+      this.blackhole.blurRingWidth = 110;
+    } else if (viewportWidth <= 1200)
+    {
+      this.updateBlackHoleDimensions(viewportWidth, 0.18);
+      this.blackhole.bendingWidthCoeff = 1.6;
+      this.blackhole.bendingHeight = 40;
+      this.blackhole.blurRingWidth = 130;
+    } else
+    {
+      this.updateBlackHoleDimensions(viewportWidth, 0.18);
+      this.blackhole.bendingWidthCoeff = 1.7;
+      this.blackhole.bendingHeight = 50;
+      this.blackhole.blurRingWidth = 150;
+    }
+  }
+
+  private applyMediaQueryBeforeDrawLogic(): void
+  {
+    const viewportWidth = window.innerWidth;
+
+    if (viewportWidth <= 480)
+    {
+      this.updateBlackHoleDimensions(viewportWidth, 0.28);
+
+    } else if (viewportWidth <= 768)
+    {
+      this.updateBlackHoleDimensions(viewportWidth, 0.26);
+    } else if (viewportWidth <= 1024)
+    {
+      this.updateBlackHoleDimensions(viewportWidth, 0.22);
+
+    } else if (viewportWidth <= 1200)
+    {
+      this.updateBlackHoleDimensions(viewportWidth, 0.18);
+
+    } else
+    {
+      this.updateBlackHoleDimensions(viewportWidth, 0.18);
+    }
+  }
+
+  private updateBlackHoleDimensions(viewportWidth: number, widthCoeff: number, maxDiameter: number = 650): void
+  {
+    let diameter = viewportWidth * widthCoeff;
+
+    diameter = Math.min(maxDiameter, diameter);
+
+    this.BlackHoleHeight = diameter;
+    this.BlackHoleWidth = diameter;
   }
 }
