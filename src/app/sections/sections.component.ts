@@ -457,7 +457,7 @@ export class SectionsComponent implements OnInit
 
   private AnimateBlackholeAndStarsInteraction()
   {
-    const targetFPS = 144;
+    const targetFPS = 45;
     const frameDuration = 1000 / targetFPS;
     let lastFrameTime = 0;
 

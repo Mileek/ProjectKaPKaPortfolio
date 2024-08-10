@@ -13,7 +13,8 @@ export class HomeComponent implements OnInit
 
   private currentLength = 0;
   private intervalId: any;
-  private quote: string = "We were born to inherit the stars … our destiny is to reach for them.";
+  //Its a stupid idea(but works). Spaces are used to make a pause in animation
+  private quote: string = "We were born to inherit the stars       -       our destiny is to reach for them.";
   private resizeTimeout: any;
   private swapIntervalId: any;
 
@@ -33,27 +34,6 @@ export class HomeComponent implements OnInit
     this.AnimateQuote();
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any): void
-  {
-    clearTimeout(this.resizeTimeout);
-    this.Quote.innerText = '';
-    this.QuoteDataText.removeAttribute('data-text');
-    this.QuoteDataText.classList.add('no-glitch'); // Disable glitch animation
-
-    clearInterval(this.intervalId);
-    clearInterval(this.swapIntervalId);
-    this.resizeTimeout = setTimeout(() =>
-    {
-      this.currentLength = 0; // Reset currentLength
-      this.Quote.innerText = ''; // Reset innerText
-      this.QuoteDataText.removeAttribute('data-text'); // Remove data-text
-      this.QuoteDataText.classList.remove('no-glitch'); // Re-enable glitch animation
-      console.log('data-text after debounce reset:', this.QuoteDataText.getAttribute('data-text'));
-      this.AnimateQuote();
-    }, 200); // Czas debouncingu
-  }
-
   scrollDown()
   {
     const element = document.querySelector('#about-me') as HTMLElement;
@@ -66,9 +46,6 @@ export class HomeComponent implements OnInit
 
   private AnimateQuote()
   {
-    this.currentLength = 0;
-    this.Quote.innerText = '';
-    this.QuoteDataText.removeAttribute('data-text');
     this.updateGlitchWidth();
 
     this.intervalId = setInterval(() =>
@@ -87,7 +64,7 @@ export class HomeComponent implements OnInit
         this.SwapLetters('a', '@');
         this.SwapLetters('i', '1');
       }
-    }, 100);
+    }, 75);
   }
 
   private SwapLetters(toReplace: string, replaceWith: string)
@@ -114,7 +91,7 @@ export class HomeComponent implements OnInit
   private updateGlitchWidth(): void
   {
     const quoteWidth = this.Quote.offsetWidth;
-    const buffer = 20; // Add a buffer to cover additional effects
+    const buffer = 25; // Add a buffer to cover additional effects
     this.QuoteDataText.style.width = `${quoteWidth + buffer}px`;
   }
 }

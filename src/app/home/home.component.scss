@@ -44,46 +44,36 @@ app-home {
   color: #fff;
   letter-spacing: 2px;
   animation: glitch 8s 2s infinite;
+  padding-left: 5%;
+  padding-right: 5%;
 }
 
 .glitch::before {
   content: attr(data-text);
   position: absolute;
-  left: -2px;
+  left: -4px;
   text-shadow: -8px 0 magenta;
   background: transparent;
   overflow: hidden;
-  top: 8;
+  margin-top: 5px;
+  // top: 26;
   animation:
-    noise-1 1s linear infinite alternate-reverse,
-    glitch 4s 1.05s infinite;
+    noise-1 2s linear infinite alternate-reverse,
+    glitch 6s 3.1s infinite;
 }
 
 .glitch::after {
   content: attr(data-text);
   position: absolute;
-  left: 2px;
+  left: 4px;
   text-shadow: -8px 0 lightgreen;
   background: transparent;
   overflow: hidden;
-  top: 8;
+  margin-top: 5px;
+  // top: 26;
   animation:
-    noise-2 1s linear infinite alternate-reverse,
-    glitch 4s 1s infinite;
-}
-.no-glitch {
-  animation: none !important;
-  content: "" !important;
-}
-
-.no-glitch::before {
-  animation: none !important;
-  content: "" !important;
-}
-
-.no-glitch::after {
-  animation: none !important;
-  content: "" !important;
+    noise-2 2s linear infinite alternate-reverse,
+    glitch 6s 3s infinite;
 }
 @keyframes glitch {
   1% {
@@ -95,7 +85,7 @@ app-home {
 }
 
 @keyframes noise-1 {
-  $steps: 50;
+  $steps: 90;
   @for $i from 1 through $steps {
     #{percentage($i*(1/$steps))} {
       $top: random(100);
@@ -106,7 +96,7 @@ app-home {
 }
 
 @keyframes noise-2 {
-  $steps: 50;
+  $steps: 90;
   @for $i from 0 through $steps {
     #{percentage($i*(1/$steps))} {
       $top: random(100);

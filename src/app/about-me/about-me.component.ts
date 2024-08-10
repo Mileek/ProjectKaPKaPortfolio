@@ -324,9 +324,6 @@ export class AboutMeComponent implements OnInit
       this.blurElement3.style.opacity = blurOpacity;
       this.blurElement4.style.opacity = blurOpacity;
       this.blurElement5.style.opacity = blurOpacity;
-      console.log(blurOpacity);
-      console.log(isMaxTranslate);
-      console.log(translateValue);
 
       if (scrollRatio > 0.95 && !this.pathsDrawn)
       {
