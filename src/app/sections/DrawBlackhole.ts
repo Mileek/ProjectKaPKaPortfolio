@@ -29,7 +29,7 @@ export class DrawBlackhole
   ctx: CanvasRenderingContext2D;
   defaultHeight: number;
   defaultWidth: number;
-  maxGravitationalPull: number = 0.1;
+  maxGravitationalPull: number = 0.2;
   public mouseOnSizeIncrement: number = 0;
 
   constructor(ctx: CanvasRenderingContext2D, width: number, height: number, centerOffsetX: number, centerOffsetY: number,

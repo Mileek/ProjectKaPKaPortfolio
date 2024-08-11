@@ -44,8 +44,8 @@ export class SectionsComponent implements OnInit
   isMouseOverBlackhole!: boolean;
   lastUpdateTime: number = 0;
   @ViewChild('navbarLinks') navbarLinks!: ElementRef;
-  numberOfFallingStars: number = 4;
-  numberOfMeteors = 5;
+  numberOfFallingStars: number = 6;
+  numberOfMeteors = 6;
   numberOfTwinklingStars: number = 500;
   photoBackground!: HTMLDivElement;
   @ViewChild('portfolio') portfolio!: ElementRef;
@@ -110,8 +110,8 @@ export class SectionsComponent implements OnInit
       var x = Math.random() * (width - longWidth * 2) + longWidth;
       var y = Math.random() * (height - longWidth * 2) + longWidth;
       let alpha = Math.random() * 0.6;
-      let trailXSpeed = Math.random() * 3.5 + 0.1;
-      let trailYSpeed = Math.random() * 3.5 + 0.1;
+      let trailXSpeed = Math.random() * 6 + 1.4;
+      let trailYSpeed = Math.random() * 6 + 1.4;
       // Stwórz obiekt gwiazdy i dodaj go do tablicy, na której będą wykonywane "metody" akcji
       if (ctx)
       {
