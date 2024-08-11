@@ -16,14 +16,9 @@ import * as smoothscroll from 'smoothscroll-polyfill';
 
 export class SectionsComponent implements OnInit
 {
-  private BlackHoleHeight: number = 250;
-  private BlackHoleWidth: number = 250;
-  private baseAngleIncrement: number = 0.005;
+  private BlackHoleHeight!: number;
+  private BlackHoleWidth!: number;
   private increasing: boolean = true;
-  // Base value for angle increment
-  private maxAngleIncrement: number = 0.05;
-  // Maximum value for angle increment
-  private minAngleIncrement: number = 0.005;
   private resizeTimeout: any;
 
   BSInteraction!: BlackholeAndStarsInteraction;
@@ -260,6 +255,17 @@ export class SectionsComponent implements OnInit
 
   ngAfterViewInit(): void
   {
+    // Inicjalizacja, która wymaga dostępu do elementów ViewChild
+    this.HandleNavbar();
+  }
+
+  ngOnDestroy(): void
+  {
+    this.slideAnimation.cancel();
+  }
+
+  ngOnInit(): void
+  {
     this.background = document.getElementById('Background') as HTMLDivElement;
     this.blackholeContainer = document.getElementById('BlackholeContainer') as HTMLDivElement;
     this.canvasBlackhole = document.getElementById('Blackhole') as HTMLCanvasElement;
@@ -284,17 +290,12 @@ export class SectionsComponent implements OnInit
     this.AnimateAll();
     //Intervals
     this.SizeInterval();
-    // Inicjalizacja, która wymaga dostępu do elementów ViewChild
-    this.HandleNavbar();
   }
 
-  ngOnDestroy(): void
+  @HostListener('window:load')
+  onLoad(): void
   {
-    this.slideAnimation.cancel();
-  }
-
-  ngOnInit(): void
-  {
+    window.scrollTo(0, 0);
   }
 
   @HostListener('mousedown', ['$event'])
@@ -410,13 +411,6 @@ export class SectionsComponent implements OnInit
     const frameDuration = 1000 / targetFPS;
     let lastFrameTime = 0;
 
-    // Cache width, height and context
-    const width = this.background.offsetWidth;
-    const height = this.background.offsetHeight;
-    var blackholeCtx = this.canvasBlackhole.getContext('2d');
-    var fallingCtx = this.canvasFalling.getContext('2d');
-    var twinklingCtx = this.canvasTwinkling.getContext('2d');
-
     const animate = (currentTime: number) =>
     {
       const deltaTime = currentTime - lastFrameTime;
@@ -424,6 +418,11 @@ export class SectionsComponent implements OnInit
       if (deltaTime >= frameDuration)
       {
         lastFrameTime = currentTime;
+        const width = this.background.offsetWidth;
+        const height = this.background.offsetHeight;
+        const blackholeCtx = this.canvasBlackhole.getContext('2d');
+        const fallingCtx = this.canvasFalling.getContext('2d');
+        const twinklingCtx = this.canvasTwinkling.getContext('2d');
 
         // Clear and redraw all animations
         this.AnimateBlackhole(blackholeCtx, width, height);

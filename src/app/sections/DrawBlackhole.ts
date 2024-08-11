@@ -224,15 +224,13 @@ export class DrawBlackhole
     gradient.addColorStop(0.5, '#d400ffaa');
     gradient.addColorStop(1, '#ff0000aa');
 
-    for (let i = 0; i < 5; i++)
-    {
-      this.ctx.beginPath();
-      this.ctx.arc(posX, posY, this.height * 0.08 + i * 0.5, 0, 2 * Math.PI, false);
-      this.ctx.fillStyle = gradient;
-      this.ctx.globalAlpha = 0.04;
-      this.ctx.fill();
-      this.ctx.stroke();
-    }
+    this.ctx.beginPath();
+    this.ctx.arc(posX, posY, this.height * 0.12, 0, 2 * Math.PI, false);
+    this.ctx.fillStyle = gradient;
+    this.ctx.filter = "blur(10px)";
+    this.ctx.globalAlpha = 0.9;
+    this.ctx.fill();
+    this.ctx.stroke();
 
     this.resetContext();
   }

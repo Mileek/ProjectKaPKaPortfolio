@@ -305,7 +305,7 @@
 
 #text5 {
     width: 50vw;
-    top: 172vh;
+    top: 170vh;
     left: 2vw;
 }
 
@@ -344,7 +344,7 @@
     right: 20vw;
 }
 #svgIcon5 {
-    top: 164vh;
+    top: 162vh;
     left: 5vw;
 }
 
@@ -419,29 +419,46 @@
 @media (min-width: 576px) {
     .title {
         font-size: 18px;
+        padding: 2px;
     }
 }
 
 @media (min-width: 768px) {
     .title {
         font-size: 20px;
+        padding: 2px;
+    }
+    .content {
+        padding: 2px;
     }
 }
 
 @media (min-width: 992px) {
     .title {
         font-size: 24px;
+        padding: 2px;
+    }
+    .content {
+        padding: 2px;
     }
 }
 
 @media (min-width: 1200px) {
     .title {
         font-size: 28px;
+        padding: 5px;
+    }
+    .content {
+        padding: 5px;
     }
 }
 
 @media (min-width: 1400px) {
     .title {
         font-size: 32px;
+        padding: 10px;
+    }
+    .content {
+        padding: 10px;
     }
 }
