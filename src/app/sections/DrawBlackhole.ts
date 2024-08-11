@@ -10,15 +10,15 @@ export class DrawBlackhole
   private readonly blackholeRadius: number = 8;
   private readonly blurryRadius: number = 25;
 
-  private _gravitionalPull: number = 0;
+  private _gravitationalPull: number = 0;
   private angle: number;
   private centerOffsetX: number;
   private centerOffsetY: number;
   private height: number;
   private isReachedHeight: boolean = false;
   private isReachedWidth: boolean = false;
-  private orginalHeight: number;
-  private orginalWidth: number;
+  private originalHeight: number;
+  private originalWidth: number;
   private width: number;
 
   public angleIncrement: number;
@@ -26,17 +26,14 @@ export class DrawBlackhole
   public bendingWidthCoeff: number = 1.7;
   public birthSizeIncrement: number = 0.6;
   public blurRingWidth: number = 150;
-  //pewnie default będzie 0.2 lub mniej
   ctx: CanvasRenderingContext2D;
   defaultHeight: number;
   defaultWidth: number;
-  maxGravitionalPull: number = 0.1;
-  //Maksymalne przyciąganie do czarnej dziury
+  maxGravitationalPull: number = 0.1;
   public mouseOnSizeIncrement: number = 0;
 
-  constructor(ctx: CanvasRenderingContext2D, width: number, height: number,
-    centerOffsetX: number, centerOffsetY: number,
-    angleIncrement: number = 0.1)
+  constructor(ctx: CanvasRenderingContext2D, width: number, height: number, centerOffsetX: number, centerOffsetY: number,
+    angleIncrement: number = 0.2)
   {
     this.angle = Math.random() * 360;
     this.ctx = ctx;
@@ -46,50 +43,35 @@ export class DrawBlackhole
     this.height = 0;
     this.centerOffsetX = centerOffsetX;
     this.centerOffsetY = centerOffsetY;
-    this.orginalWidth = width;
-    this.orginalHeight = height;
+    this.originalWidth = width;
+    this.originalHeight = height;
     this.angleIncrement = angleIncrement;
   }
 
-  public get gravitionalPull(): number
+  public get gravitationalPull(): number
   {
-    return this._gravitionalPull;
+    return this._gravitationalPull;
   }
 
-  public set gravitionalPull(value: number)
+  public set gravitationalPull(value: number)
   {
-    this._gravitionalPull = value;
+    this._gravitationalPull = value;
   }
 
   public AnimateBlackholeElements(): void
   {
-    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-
-    //Draw Blackhole
     this.drawBlackhole();
-    //Draw ring and its blur
     this.drawBlurRing();
     this.drawRing();
-    //Draw first satellite
     this.drawFirstSatellite();
-    // Draw second satellite
-    this.drawSecondSatellite();
-    //Draw halo
-    // this.drawHalo();
-    //Draw blurry effect
-    this.drawBlurryEffect();
-    //Draw smaller Ring around blackhole
     this.drawSmallerRing();
-    //Bending Init
     this.drawBending();
 
-    // Update the angle for the next frame
     this.angle += this.angleIncrement;
     if (this.height < this.defaultHeight && !this.isReachedHeight)
     {
       this.height += this.birthSizeIncrement;
-    }
-    else
+    } else
     {
       this.isReachedHeight = true;
     }
@@ -97,67 +79,61 @@ export class DrawBlackhole
     if (this.width < this.defaultWidth && !this.isReachedWidth)
     {
       this.width += this.birthSizeIncrement;
-    }
-    else
+    } else
     {
       this.isReachedWidth = true;
     }
     this.width += this.mouseOnSizeIncrement;
     this.height += this.mouseOnSizeIncrement;
-    this.gravitionalPull = (this.width / this.defaultWidth) * (this.height / this.defaultHeight) * this.maxGravitionalPull;
+    this.gravitationalPull = (this.width / this.defaultWidth) * (this.height / this.defaultHeight) * this.maxGravitationalPull;
   }
 
   public GetBlackholeCenterPoint(): Point
   {
-    return { x: this.blackholeRadius * Math.cos(this.angle) + this.centerOffsetX, y: this.blackholeRadius * Math.sin(this.angle) + this.centerOffsetY };
+    const x = this.blackholeRadius * Math.cos(this.angle) + this.centerOffsetX;
+    const y = this.blackholeRadius * Math.sin(this.angle) + this.centerOffsetY;
+    return { x, y };
   }
 
   public GetRandomPointInsideBlackhole(): Point
   {
-    let angle = Math.random() * 2 * Math.PI; // Losowy kąt
-    let radius = Math.random() * (this.blackholeRadius - 10); // Losowy promień, który jest mniejszy od promienia czarnej dziury o 10
-
-    return { x: radius * Math.cos(angle) + this.centerOffsetX, y: radius * Math.sin(angle) + this.centerOffsetY };
+    const angle = Math.random() * 2 * Math.PI;
+    const radius = Math.random() * (this.blackholeRadius - 10);
+    const x = radius * Math.cos(angle) + this.centerOffsetX;
+    const y = radius * Math.sin(angle) + this.centerOffsetY;
+    return { x, y };
   }
 
   public IsPointCloseToEllipse(x: number, y: number): boolean
   {
-    // Calculate the distance between the cursor and the center of the ellipse
-    let d = Math.sqrt(Math.pow((x - (this.blackholeRadius * Math.cos(this.angle) + this.centerOffsetX)) / this.width, 2) +
+    const d = Math.sqrt(Math.pow((x - (this.blackholeRadius * Math.cos(this.angle) + this.centerOffsetX)) / this.width, 2) +
       Math.pow((y - (this.blackholeRadius * Math.sin(this.angle) + this.centerOffsetY)) / this.height, 2));
-
-    // Return true if the distance is less than 1, false otherwise
     return d < 1.8;
   }
 
   public IsPointInEllipse(x: number, y: number): boolean
   {
-    // Calculate the distance between the cursor and the center of the ellipse
-    let d = Math.sqrt(Math.pow((x - (this.blackholeRadius * Math.cos(this.angle) + this.centerOffsetX)) / this.width, 2) +
+    const d = Math.sqrt(Math.pow((x - (this.blackholeRadius * Math.cos(this.angle) + this.centerOffsetX)) / this.width, 2) +
       Math.pow((y - (this.blackholeRadius * Math.sin(this.angle) + this.centerOffsetY)) / this.height, 2));
-
-    // Return true if the distance is less than 1, false otherwise
     return d < 1;
   }
 
-  public ReturnToOrginalSize(): void
+  public ReturnToOriginalSize(): void
   {
-    const sizeDecrement = 0.5; // Adjust this value as needed
+    const sizeDecrement = 0.5;
 
-    if (this.width > this.orginalWidth) // If width is greater than original, decrease it
+    if (this.width > this.originalWidth)
     {
       this.width -= sizeDecrement;
-    }
-    else if (this.width < this.orginalWidth) // If width is less than original, increase it
+    } else if (this.width < this.originalWidth)
     {
       this.width += sizeDecrement;
     }
 
-    if (this.height > this.orginalHeight) // If height is greater than original, decrease it
+    if (this.height > this.originalHeight)
     {
       this.height -= sizeDecrement;
-    }
-    else if (this.height < this.orginalHeight) // If height is less than original, increase it
+    } else if (this.height < this.originalHeight)
     {
       this.height += sizeDecrement;
     }
@@ -168,15 +144,21 @@ export class DrawBlackhole
     return this.height - subtractCoeff < 0 || this.width - subtractCoeff < 0;
   }
 
+  private createGradient(posX: number, posY: number, color1: string, color2: string, radius: number = 40): CanvasGradient
+  {
+    const gradient = this.ctx.createRadialGradient(posX, posY, 0, posX, posY, radius);
+    gradient.addColorStop(0, color1);
+    gradient.addColorStop(1, color2);
+    return gradient;
+  }
+
   private drawBending(): void
   {
     const posX = this.blackholeRadius + this.centerOffsetX;
     const posY = this.blackholeRadius + this.centerOffsetY + this.width * 0.22;
-    // Create gradient
-    let gradient = this.ctx.createRadialGradient(posX, posY, 0, posX, posY, 40);
+    const gradient = this.ctx.createRadialGradient(posX, posY, 0, posX, posY, 40);
     gradient.addColorStop(1, '#006eff');
 
-    // Draw the first satellite
     this.ctx.beginPath();
     this.ctx.ellipse(posX, posY, this.width * this.bendingWidthCoeff, this.bendingHeight, 0, 0, 2 * Math.PI, false);
     this.ctx.fillStyle = gradient;
@@ -188,7 +170,7 @@ export class DrawBlackhole
     this.resetContext();
     this.ctx.beginPath();
     this.ctx.ellipse(posX, posY, this.width * this.bendingWidthCoeff, this.bendingHeight, 0, Math.PI, 2 * Math.PI, true);
-    this.ctx.lineWidth = 5; // Adjust the border width as needed
+    this.ctx.lineWidth = 5;
     this.ctx.strokeStyle = 'white';
     this.ctx.filter = "blur(6px)";
     this.ctx.stroke();
@@ -220,8 +202,7 @@ export class DrawBlackhole
     this.ctx.fillStyle = "transparent";
     this.ctx.fill();
 
-    // Create a linear gradient
-    let gradient = this.ctx.createLinearGradient(posX, posY - this.height, posX, posY + this.height);
+    const gradient = this.ctx.createLinearGradient(posX, posY - this.height, posX, posY + this.height);
     gradient.addColorStop(0.5, '#006eff');
     gradient.addColorStop(1, '#2e3b85');
 
@@ -229,23 +210,6 @@ export class DrawBlackhole
     this.ctx.strokeStyle = gradient;
     this.ctx.lineCap = "round";
     this.ctx.filter = "blur(18px)";
-    this.ctx.stroke();
-
-    // Reset the context settings to their defaults
-    this.resetContext();
-  }
-
-  private drawBlurryEffect(): void
-  {
-    const posX = this.blurryRadius * Math.cos(this.angle) + this.centerOffsetX;
-    const posY = this.blurryRadius * Math.sin(this.angle) + this.centerOffsetY;
-
-    this.ctx.beginPath();
-    this.ctx.ellipse(posX, posY, this.width + 100, this.height + 100, 0, 0, 2 * Math.PI, true);
-    this.ctx.fillStyle = '#0B3D91';
-    this.ctx.filter = "blur(5px)";
-    this.ctx.globalAlpha = 0.05;
-    this.ctx.fill();
     this.ctx.stroke();
 
     this.resetContext();
@@ -256,38 +220,19 @@ export class DrawBlackhole
     const posX = this.width * Math.cos(this.angle) + this.centerOffsetX;
     const posY = this.height * Math.sin(this.angle) + this.centerOffsetY;
 
-    // Create gradient
-    let gradient = this.ctx.createRadialGradient(posX, posY, 0, posX, posY, 40);
-    gradient.addColorStop(1, '#ff000099');
-    gradient.addColorStop(0, '#FFFFFF');
+    const gradient = this.ctx.createRadialGradient(posX, posY, 0, posX, posY, 40);
+    gradient.addColorStop(0.5, '#d400ffaa');
+    gradient.addColorStop(1, '#ff0000aa');
 
-    // Draw the first satellite
-    this.ctx.beginPath();
-    this.ctx.arc(posX, posY, this.height * 0.16, 0, 2 * Math.PI, false);
-    this.ctx.fillStyle = gradient;
-    this.ctx.filter = "blur(10px)";
-    this.ctx.globalAlpha = 0.9;
-    this.ctx.fill();
-    this.ctx.stroke();
-
-    this.resetContext();
-  }
-
-  private drawHalo(): void
-  {
-    const posXHalo = this.width * Math.cos(1.6 * Math.PI) + this.centerOffsetX;
-    const posYHalo = this.height * Math.sin(1.6 * Math.PI) + this.centerOffsetY;
-
-    // Draw Halo
-    this.ctx.beginPath();
-    this.ctx.arc(posXHalo, posYHalo, this.height * 0.8, 0, 3 * Math.PI, false); // Half the radius
-    //this.ctx.fillStyle = gradient; // Use the same gradient or create a new one
-    this.ctx.fillStyle = '#114B5F';
-    this.ctx.filter = "blur(6px)"; // Half the blur
-    this.ctx.globalAlpha = 0.1;
-    this.ctx.globalCompositeOperation = "destination-over";
-    this.ctx.fill();
-    this.ctx.stroke();
+    for (let i = 0; i < 5; i++)
+    {
+      this.ctx.beginPath();
+      this.ctx.arc(posX, posY, this.height * 0.08 + i * 0.5, 0, 2 * Math.PI, false);
+      this.ctx.fillStyle = gradient;
+      this.ctx.globalAlpha = 0.04;
+      this.ctx.fill();
+      this.ctx.stroke();
+    }
 
     this.resetContext();
   }
@@ -302,8 +247,7 @@ export class DrawBlackhole
     this.ctx.fillStyle = "transparent";
     this.ctx.fill();
 
-    // Create a linear gradient
-    let gradient = this.ctx.createLinearGradient(posX, posY - this.height, posX, posY + this.height);
+    const gradient = this.ctx.createLinearGradient(posX, posY - this.height, posX, posY + this.height);
     gradient.addColorStop(0.5, '#d400ff65');
     gradient.addColorStop(1, '#e761eb65');
 
@@ -311,28 +255,6 @@ export class DrawBlackhole
     this.ctx.strokeStyle = gradient;
     this.ctx.lineCap = "round";
     this.ctx.filter = "blur(12px)";
-    this.ctx.stroke();
-
-    // Reset the context settings to their defaults
-    this.resetContext();
-  }
-
-  private drawSecondSatellite(): void
-  {
-    const posXSmall = this.width * Math.cos(this.angle - 0.25) + this.centerOffsetX;
-    const posYSmall = this.height * Math.sin(this.angle - 0.25) + this.centerOffsetY;
-
-    let gradient = this.ctx.createRadialGradient(posXSmall, posYSmall, 0, posXSmall, posYSmall, 40);
-    gradient.addColorStop(1, '#00ff15');
-    gradient.addColorStop(0, '#FFFFFF');
-
-    // Draw the second satellite
-    this.ctx.beginPath();
-    this.ctx.arc(posXSmall, posYSmall, this.height * 0.09, 0, 3 * Math.PI, false); // Half the radius
-    this.ctx.fillStyle = gradient; // Use the same gradient or create a new one
-    this.ctx.filter = "blur(8px)"; // Half the blur
-    this.ctx.globalAlpha = 0.8;
-    this.ctx.fill();
     this.ctx.stroke();
 
     this.resetContext();
@@ -349,8 +271,8 @@ export class DrawBlackhole
     const posX = this.blackholeRadius * Math.cos(this.angle) + this.centerOffsetX;
     const posY = this.blackholeRadius * Math.sin(this.angle) + this.centerOffsetY;
 
-    var smallHeight = this.height - subtractCoeff;
-    var smallWidth = this.width - subtractCoeff;
+    const smallHeight = this.height - subtractCoeff;
+    const smallWidth = this.width - subtractCoeff;
     this.ctx.beginPath();
     this.ctx.ellipse(posX, posY, smallHeight, smallWidth, 0, 0, 2 * Math.PI, false);
     this.ctx.fillStyle = "transparent";
@@ -361,7 +283,6 @@ export class DrawBlackhole
     this.ctx.filter = "blur(4px)";
     this.ctx.stroke();
 
-    // Reset the context settings to their defaults
     this.resetContext();
   }
 

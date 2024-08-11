@@ -17,7 +17,7 @@ export class BlackholeAndStarsInteraction
   public MoveStarsToBlackhole()
   {
     let starsToRemove = [];
-    const gravitationalPull = this.blackhole.gravitionalPull;
+    const gravitationalPull = this.blackhole.gravitationalPull;
     const rotationSpeed = 0.45 * Math.PI;
     const speedRotate = 4;
 

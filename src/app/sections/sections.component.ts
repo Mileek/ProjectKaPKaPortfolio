@@ -52,7 +52,7 @@ export class SectionsComponent implements OnInit
   @ViewChild('navbarLinks') navbarLinks!: ElementRef;
   numberOfFallingStars: number = 4;
   numberOfMeteors = 5;
-  numberOfTwinklingStars: number = 500;
+  numberOfTwinklingStars: number = 400;
   photoBackground!: HTMLDivElement;
   @ViewChild('portfolio') portfolio!: ElementRef;
   redEye!: HTMLDivElement;
@@ -63,14 +63,6 @@ export class SectionsComponent implements OnInit
   constructor(private viewportScroller: ViewportScroller, private appStatics: AppStatics)
   {
     smoothscroll.polyfill();
-  }
-
-  AnimateFloatingObjects()
-  {
-    requestAnimationFrame(() => this.AnimateFloatingObjects());
-    const width = this.background.offsetWidth;
-    const height = this.background.offsetHeight;
-    this.galaxiesDealer.Update(width, height);
   }
 
   BlackholeStarsInteraction()
@@ -182,9 +174,8 @@ export class SectionsComponent implements OnInit
     }
   }
 
-  DrawTwinklingStar(color: string, width: number, height: number): DrawLines
+  DrawTwinklingStar(ctx: CanvasRenderingContext2D | null, color: string, width: number, height: number): DrawLines
   {
-    const ctx = this.canvasTwinkling.getContext('2d');
     const longWidth = (Math.random() - 0.5) * 22;
     const shortWidth = (Math.random() - 0.5) * 14;
     const x = Math.random() * (width - longWidth * 2) + longWidth;
@@ -301,11 +292,7 @@ export class SectionsComponent implements OnInit
     //Create Interactions
     this.BlackholeStarsInteraction();
     //Animate
-    this.AnimateTwinklingStars();
-    this.AnimateFallingStars();
-    this.AnimateBlackhole(); //To jest najbardziej pamięciożerne, HUUH?????
-    this.AnimateBlackholeAndStarsInteraction();
-    this.AnimateFloatingObjects();
+    this.AnimateAll();
     //Intervals
     this.SizeInterval();
   }
@@ -417,102 +404,96 @@ export class SectionsComponent implements OnInit
     this.bar3.nativeElement.classList.toggle('bar-3-active');
   }
 
-  private AnimateBlackhole()
+  private AnimateAll()
   {
     const targetFPS = 30;
     const frameDuration = 1000 / targetFPS;
     let lastFrameTime = 0;
 
+    // Cache width, height and context
+    const width = this.background.offsetWidth;
+    const height = this.background.offsetHeight;
+    var blackholeCtx = this.canvasBlackhole.getContext('2d');
+    var fallingCtx = this.canvasFalling.getContext('2d');
+    var twinklingCtx = this.canvasTwinkling.getContext('2d');
+
     const animate = (currentTime: number) =>
     {
-      requestAnimationFrame(animate);
-
       const deltaTime = currentTime - lastFrameTime;
-      if (deltaTime < frameDuration)
+
+      if (deltaTime >= frameDuration)
       {
-        return;
+        lastFrameTime = currentTime;
+
+        // Clear and redraw all animations
+        this.AnimateBlackhole(blackholeCtx, width, height);
+        this.AnimateBlackholeAndStarsInteraction(twinklingCtx, width, height);
+        this.AnimateFallingStars(fallingCtx, width, height);
+        this.AnimateTwinklingStars(twinklingCtx, width, height);
+        this.AnimateFloatingObjects(width, height);
       }
 
-      lastFrameTime = currentTime;
-
-      let ctx = this.canvasBlackhole.getContext('2d');
-      const width = this.background.offsetWidth;
-      const height = this.background.offsetHeight;
-
-      if (this.canvasBlackhole.width !== width || this.canvasBlackhole.height !== height)
-      {
-        this.canvasBlackhole.width = width;
-        this.canvasBlackhole.height = height;
-      }
-
-      if (ctx)
-      {
-        ctx.clearRect(0, 0, width, height);
-        this.blackhole.AnimateBlackholeElements();
-      }
+      requestAnimationFrame(animate);
     };
 
     requestAnimationFrame(animate);
   }
 
-  private AnimateBlackholeAndStarsInteraction()
+  private AnimateBlackhole(ctx: CanvasRenderingContext2D | null, width: number, height: number)
   {
-    const targetFPS = 45;
-    const frameDuration = 1000 / targetFPS;
-    let lastFrameTime = 0;
-
-    const animate = (currentTime: number) =>
+    if (this.canvasBlackhole.width !== width || this.canvasBlackhole.height !== height)
     {
-      requestAnimationFrame(animate);
+      this.canvasBlackhole.width = width;
+      this.canvasBlackhole.height = height;
+    }
 
-      const deltaTime = currentTime - lastFrameTime;
-      if (deltaTime < frameDuration)
-      {
-        return;
-      }
-
-      lastFrameTime = currentTime;
-
-      this.BSInteraction.MoveStarsToBlackhole();
-      if (this.BSInteraction.ReGenerateStar > 0)
-      {
-        const color = this.appStatics.colorArray[Math.floor(Math.random() * this.appStatics.colorArray.length)];
-        const width = this.background.offsetWidth;
-        const height = this.background.offsetHeight;
-
-        for (let i = 0; i < this.BSInteraction.ReGenerateStar; i++)
-        {
-          this.BSInteraction.addStar(this.DrawTwinklingStar(color, width, height));
-        }
-        this.BSInteraction.ReGenerateStar = 0;
-      }
-    };
-
-    requestAnimationFrame(animate);
-  }
-
-  private AnimateFallingStars()
-  {
-    requestAnimationFrame(() => this.AnimateFallingStars());
-
-    var ctx = this.canvasFalling.getContext('2d');
-    ctx?.clearRect(0, 0, this.background.offsetWidth, this.background.offsetHeight);
-    for (let i = 0; i < this.FallingLinesArray.length; i++)
+    if (ctx)
     {
-      this.FallingLinesArray[i].UpdateFallingPosition();
-      this.FallingLinesArray[i].UpdateAlphaValue();
+      ctx.clearRect(0, 0, width, height);
+      this.blackhole.AnimateBlackholeElements();
     }
   }
 
-  private AnimateTwinklingStars()
+  private AnimateBlackholeAndStarsInteraction(ctx: CanvasRenderingContext2D | null, width: number, height: number)
   {
-    requestAnimationFrame(() => this.AnimateTwinklingStars());
-
-    var ctx = this.canvasTwinkling.getContext('2d');
-    ctx?.clearRect(0, 0, this.background.offsetWidth, this.background.offsetHeight);
-    for (let i = 0; i < this.TwinklingLinesArray.length; i++)
+    this.BSInteraction.MoveStarsToBlackhole();
+    if (this.BSInteraction.ReGenerateStar > 0)
     {
-      this.TwinklingLinesArray[i].UpdateAlphaValue();
+      const color = this.appStatics.colorArray[Math.floor(Math.random() * this.appStatics.colorArray.length)];
+
+      for (let i = 0; i < this.BSInteraction.ReGenerateStar; i++)
+      {
+        this.BSInteraction.addStar(this.DrawTwinklingStar(ctx, color, width, height));
+      }
+      this.BSInteraction.ReGenerateStar = 0;
+    }
+  }
+
+  private AnimateFallingStars(ctx: CanvasRenderingContext2D | null, width: number, height: number)
+  {
+    ctx?.clearRect(0, 0, width, height);
+    for (let i = 0; i < this.FallingLinesArray.length; i++)
+    {
+      const fallingLine = this.FallingLinesArray[i];
+      fallingLine.UpdateFallingPosition();
+      fallingLine.UpdateAlphaValue();
+    }
+  }
+
+  private AnimateFloatingObjects(width: number, height: number)
+  {
+    this.galaxiesDealer.Update(width, height);
+  }
+
+  private AnimateTwinklingStars(ctx: CanvasRenderingContext2D | null, width: number, height: number)
+  {
+    if (ctx)
+    {
+      ctx.clearRect(0, 0, width, height);
+      for (let i = 0; i < this.TwinklingLinesArray.length; i++)
+      {
+        this.TwinklingLinesArray[i].UpdateAlphaValue();
+      }
     }
   }
 
@@ -542,7 +523,7 @@ export class SectionsComponent implements OnInit
       else
       {
         this.blackhole.mouseOnSizeIncrement = 0;
-        this.blackhole.ReturnToOrginalSize();
+        this.blackhole.ReturnToOriginalSize();
       }
     }, 200);
   }
