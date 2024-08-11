@@ -1,5 +1,5 @@
 import { DrawBlackhole } from './DrawBlackhole';
-import { Component, HostListener, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { DrawLines } from './DrawLines';
 import { BlackholeAndStarsInteraction } from './BlackholeAndStarsInteraction';
 import { ImagesDealer } from './ImagesDealer';
@@ -60,7 +60,7 @@ export class SectionsComponent implements OnInit
   slideAnimationPosition!: number;
   @ViewChild('toggleButton') toggleButton!: ElementRef;
 
-  constructor(private viewportScroller: ViewportScroller, private appStatics: AppStatics)
+  constructor(private viewportScroller: ViewportScroller, private appStatics: AppStatics, private renderer: Renderer2)
   {
     smoothscroll.polyfill();
   }
@@ -202,7 +202,7 @@ export class SectionsComponent implements OnInit
 
     let i = 0;
     let lastTime = performance.now();
-    const delay = 10; // Opóźnienie w milisekundach
+    const delay = 20; // Opóźnienie w milisekundach
 
     const drawStar = (currentTime: number) =>
     {
@@ -232,44 +232,33 @@ export class SectionsComponent implements OnInit
 
   HandleNavbar()
   {
-    this.toggleButton.nativeElement.addEventListener('click', () =>
+    this.renderer.listen(this.toggleButton.nativeElement, 'click', () =>
     {
       this.switchToggleStatus();
     });
 
-    this.home.nativeElement.addEventListener('click', () =>
+    this.renderer.listen(this.home.nativeElement, 'click', () =>
     {
-      this.switchToggleStatus();
+      this.scrollToSection('home');
     });
 
-    this.portfolio.nativeElement.addEventListener('click', () =>
+    this.renderer.listen(this.portfolio.nativeElement, 'click', () =>
     {
-      this.switchToggleStatus();
+      this.scrollToSection('portfolio');
     });
 
-    this.about.nativeElement.addEventListener('click', () =>
+    this.renderer.listen(this.about.nativeElement, 'click', () =>
     {
-      this.switchToggleStatus();
+      this.scrollToSection('about');
     });
 
-    this.contact.nativeElement.addEventListener('click', () =>
+    this.renderer.listen(this.contact.nativeElement, 'click', () =>
     {
-      this.switchToggleStatus();
+      this.scrollToSection('contact');
     });
   }
 
   ngAfterViewInit(): void
-  {
-    // Inicjalizacja, która wymaga dostępu do elementów ViewChild
-    this.HandleNavbar();
-  }
-
-  ngOnDestroy(): void
-  {
-    this.slideAnimation.cancel();
-  }
-
-  ngOnInit(): void
   {
     this.background = document.getElementById('Background') as HTMLDivElement;
     this.blackholeContainer = document.getElementById('BlackholeContainer') as HTMLDivElement;
@@ -295,6 +284,17 @@ export class SectionsComponent implements OnInit
     this.AnimateAll();
     //Intervals
     this.SizeInterval();
+    // Inicjalizacja, która wymaga dostępu do elementów ViewChild
+    this.HandleNavbar();
+  }
+
+  ngOnDestroy(): void
+  {
+    this.slideAnimation.cancel();
+  }
+
+  ngOnInit(): void
+  {
   }
 
   @HostListener('mousedown', ['$event'])

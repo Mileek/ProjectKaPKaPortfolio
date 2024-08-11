@@ -180,51 +180,45 @@ export class AboutMeComponent implements OnInit
 
   OverWriteCanvasSize()
   {
-    if (this.starryCanvas1 && this.text1)
-    {
-      this.starryCanvas1.width = this.text1.offsetWidth;
-      this.starryCanvas1.height = this.text1.offsetHeight;
-    }
-    if (this.starryCanvas2 && this.text2)
-    {
-      this.starryCanvas2.width = this.text2.offsetWidth;
-      this.starryCanvas2.height = this.text2.offsetHeight;
-    }
-    if (this.starryCanvas3 && this.text3)
-    {
-      this.starryCanvas3.width = this.text3.offsetWidth;
-      this.starryCanvas3.height = this.text3.offsetHeight;
-    }
-    if (this.starryCanvas4 && this.text4)
-    {
-      this.starryCanvas4.width = this.text4.offsetWidth;
-      this.starryCanvas4.height = this.text4.offsetHeight;
-    }
-    if (this.starryCanvas5 && this.text5)
-    {
-      this.starryCanvas5.width = this.text5.offsetWidth;
-      this.starryCanvas5.height = this.text5.offsetHeight;
-    }
+    this.SetSizeIfExist(this.starryCanvas1, this.text1);
+    this.SetSizeIfExist(this.starryCanvas2, this.text2);
+    this.SetSizeIfExist(this.starryCanvas3, this.text3);
+    this.SetSizeIfExist(this.starryCanvas4, this.text4);
+    this.SetSizeIfExist(this.starryCanvas5, this.text5);
   }
 
   animateStars(): void
   {
-    this.canvasArray.forEach(canvas =>
+    const targetFps = 30;
+    const frameDuration = 1000 / targetFps;
+    let lastFrameTime = 0;
+
+    const animate = (time: number) =>
     {
-      const ctx = canvas.getContext('2d');
-
-      if (ctx)
+      if (time - lastFrameTime >= frameDuration)
       {
-        ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
-
-        this.TwinklingLinesArray.forEach(star =>
+        this.canvasArray.forEach(canvas =>
         {
-          star.UpdateAlphaValue();
-        });
-      }
-    });
+          const ctx = canvas.getContext('2d');
 
-    requestAnimationFrame(() => this.animateStars());
+          if (ctx)
+          {
+            ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
+
+            this.TwinklingLinesArray.forEach(star =>
+            {
+              star.UpdateAlphaValue();
+            });
+          }
+        });
+
+        lastFrameTime = time;
+      }
+
+      requestAnimationFrame(animate);
+    };
+
+    requestAnimationFrame(animate);
   }
 
   ngOnInit(): void
@@ -388,5 +382,14 @@ export class AboutMeComponent implements OnInit
     this.svgWaypoint3 = document.getElementById('svgIcon3') as HTMLObjectElement;
     this.svgWaypoint4 = document.getElementById('svgIcon4') as HTMLObjectElement;
     this.svgWaypoint5 = document.getElementById('svgIcon5') as HTMLObjectElement;
+  }
+
+  private SetSizeIfExist(canva: HTMLCanvasElement, text: HTMLParagraphElement)
+  {
+    if (canva && text)
+    {
+      canva.width = text.offsetWidth;
+      canva.height = text.offsetHeight;
+    }
   }
 }
