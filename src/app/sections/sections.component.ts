@@ -5,7 +5,6 @@ import { BlackholeAndStarsInteraction } from './BlackholeAndStarsInteraction';
 import { ImagesDealer } from './ImagesDealer';
 import { DrawBorealis as DrawNebulas } from './DrawBorealis';
 import { AppStatics } from '../services/AppStatics';
-import { ViewportScroller } from '@angular/common';
 import * as smoothscroll from 'smoothscroll-polyfill';
 
 @Component({
@@ -47,7 +46,7 @@ export class SectionsComponent implements OnInit
   @ViewChild('navbarLinks') navbarLinks!: ElementRef;
   numberOfFallingStars: number = 4;
   numberOfMeteors = 5;
-  numberOfTwinklingStars: number = 400;
+  numberOfTwinklingStars: number = 500;
   photoBackground!: HTMLDivElement;
   @ViewChild('portfolio') portfolio!: ElementRef;
   redEye!: HTMLDivElement;
@@ -55,7 +54,7 @@ export class SectionsComponent implements OnInit
   slideAnimationPosition!: number;
   @ViewChild('toggleButton') toggleButton!: ElementRef;
 
-  constructor(private viewportScroller: ViewportScroller, private appStatics: AppStatics, private renderer: Renderer2)
+  constructor(private appStatics: AppStatics, private renderer: Renderer2)
   {
     smoothscroll.polyfill();
   }
@@ -225,32 +224,47 @@ export class SectionsComponent implements OnInit
     requestAnimationFrame(drawStar);
   }
 
-  HandleNavbar()
+  HandleNavbar(): void
   {
-    this.renderer.listen(this.toggleButton.nativeElement, 'click', () =>
+    if (this.toggleButton && this.toggleButton.nativeElement)
     {
-      this.switchToggleStatus();
-    });
+      this.renderer.listen(this.toggleButton.nativeElement, 'click', () =>
+      {
+        this.switchToggleStatus();
+      });
+    }
 
-    this.renderer.listen(this.home.nativeElement, 'click', () =>
+    if (this.home && this.home.nativeElement)
     {
-      this.scrollToSection('home');
-    });
+      this.renderer.listen(this.home.nativeElement, 'click', () =>
+      {
+        this.scrollToSection('home');
+      });
+    }
 
-    this.renderer.listen(this.portfolio.nativeElement, 'click', () =>
+    if (this.portfolio && this.portfolio.nativeElement)
     {
-      this.scrollToSection('portfolio');
-    });
+      this.renderer.listen(this.portfolio.nativeElement, 'click', () =>
+      {
+        this.scrollToSection('portfolio');
+      });
+    }
 
-    this.renderer.listen(this.about.nativeElement, 'click', () =>
+    if (this.about && this.about.nativeElement)
     {
-      this.scrollToSection('about');
-    });
+      this.renderer.listen(this.about.nativeElement, 'click', () =>
+      {
+        this.scrollToSection('about');
+      });
+    }
 
-    this.renderer.listen(this.contact.nativeElement, 'click', () =>
+    if (this.contact && this.contact.nativeElement)
     {
-      this.scrollToSection('contact');
-    });
+      this.renderer.listen(this.contact.nativeElement, 'click', () =>
+      {
+        this.scrollToSection('contact');
+      });
+    }
   }
 
   ngAfterViewInit(): void

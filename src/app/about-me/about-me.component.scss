@@ -39,7 +39,8 @@
     border-right: transparent !important;
     position: absolute;
     color: white;
-    text-wrap: wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
     text-align: justify;
     border-radius: 20px;
     z-index: 2;
@@ -426,30 +427,30 @@
 @media (min-width: 768px) {
     .title {
         font-size: 20px;
-        padding: 2px;
+        padding: 10px;
     }
     .content {
-        padding: 2px;
+        padding: 8px;
     }
 }
 
 @media (min-width: 992px) {
     .title {
         font-size: 24px;
-        padding: 2px;
+        padding: 10px;
     }
     .content {
-        padding: 2px;
+        padding: 8px;
     }
 }
 
 @media (min-width: 1200px) {
     .title {
         font-size: 28px;
-        padding: 5px;
+        padding: 10px;
     }
     .content {
-        padding: 5px;
+        padding: 8px;
     }
 }
 

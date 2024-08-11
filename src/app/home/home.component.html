@@ -1,14 +1,15 @@
-<div class="HomeContainer">
+<div class="HomeContainer" role="region" aria-label="Home Section">
     <div class="WelcomeDiv">
-        <h1 id="QuoteDataText" class="WelcomeQuote glitch"></h1>
-        <h1 id="Quote" class="WelcomeQuote "></h1>
-        <div class="scanlines"></div>
+        <h1 id="QuoteDataText" class="WelcomeQuote glitch" aria-hidden="true"></h1>
+        <h1 id="Quote" class="WelcomeQuote"></h1>
+        <div class="scanlines" aria-hidden="true"></div>
     </div>
     <div class="DividerDiv">
         <div class="Divider">
-            <div class="Line"></div>
-            <fa-icon [icon]="['fas', 'angle-down']" class="AngleDown" (click)="scrollDown()"></fa-icon>
-            <div class="Line"></div>
+            <div class="Line" aria-hidden="true"></div>
+            <fa-icon [icon]="['fas', 'angle-down']" class="AngleDown" (click)="scrollDown()"
+                aria-label="Scroll Down"></fa-icon>
+            <div class="Line" aria-hidden="true"></div>
         </div>
     </div>
 </div>
