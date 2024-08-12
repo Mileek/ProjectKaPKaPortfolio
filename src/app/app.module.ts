@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { FormsModule } from '@angular/forms';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { AppComponent } from './app.component';
 import { CommonModule } from '@angular/common';
@@ -14,11 +15,12 @@ import { ContactMeComponent } from './contact-me/contact-me.component';
 import { SectionsComponent } from './sections/sections.component';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import
-  {
-    faAngleDown, faAngleUp, faAnglesUp, faAngleLeft, faAngleRight,
-    faCircleDot, faUpRightFromSquare, faPaperPlane, faEnvelope
-  } from '@fortawesome/free-solid-svg-icons';
+{
+  faAngleDown, faAngleUp, faAnglesUp, faAngleLeft, faAngleRight,
+  faCircleDot, faUpRightFromSquare, faPaperPlane, faEnvelope
+} from '@fortawesome/free-solid-svg-icons';
 import { faLinkedin, faGithub } from '@fortawesome/free-brands-svg-icons';
+import { environment } from 'src/enviroments/environment.prod';
 
 const routes: Routes = [
   {
@@ -49,6 +51,10 @@ const routes: Routes = [
     AngularSvgIconModule.forRoot(),
     FontAwesomeModule,
     FormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -83,7 +83,7 @@ app-home {
 }
 
 @keyframes noise-1 {
-  $steps: 90;
+  $steps: 30;
   @for $i from 1 through $steps {
     #{percentage($i*(1/$steps))} {
       $top: random(100);
@@ -94,7 +94,7 @@ app-home {
 }
 
 @keyframes noise-2 {
-  $steps: 90;
+  $steps: 30;
   @for $i from 0 through $steps {
     #{percentage($i*(1/$steps))} {
       $top: random(100);
@@ -117,7 +117,7 @@ app-home {
   top: 0;
   left: 0;
   background: repeating-linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0) 0.5%, transparent 1%);
-  animation: fudge 8s ease-in-out alternate infinite;
+  animation: fudge 4s ease-in-out alternate infinite;
 }
 
 @keyframes fudge {
