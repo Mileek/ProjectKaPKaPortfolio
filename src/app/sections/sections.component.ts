@@ -45,8 +45,8 @@ export class SectionsComponent implements OnInit
   lastUpdateTime: number = 0;
   @ViewChild('navbarLinks') navbarLinks!: ElementRef;
   numberOfFallingStars: number = 6;
-  numberOfMeteors = 6;
-  numberOfTwinklingStars: number = 500;
+  numberOfMeteors = 4;
+  numberOfTwinklingStars: number = 400;
   photoBackground!: HTMLDivElement;
   @ViewChild('portfolio') portfolio!: ElementRef;
   redEye!: HTMLDivElement;
@@ -586,17 +586,20 @@ export class SectionsComponent implements OnInit
     if (viewportWidth <= 480)
     {
       this.updateBlackHoleDimensions(viewportWidth, 0.28);
-
+      this.numberOfTwinklingStars = 200;
     } else if (viewportWidth <= 768)
     {
       this.updateBlackHoleDimensions(viewportWidth, 0.26);
+      this.numberOfTwinklingStars = 200;
     } else if (viewportWidth <= 1024)
     {
       this.updateBlackHoleDimensions(viewportWidth, 0.22);
+      this.numberOfTwinklingStars = 200;
 
     } else if (viewportWidth <= 1200)
     {
       this.updateBlackHoleDimensions(viewportWidth, 0.18);
+      this.numberOfTwinklingStars = 300;
 
     } else
     {

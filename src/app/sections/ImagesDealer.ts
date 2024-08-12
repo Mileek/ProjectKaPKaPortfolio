@@ -9,11 +9,11 @@ export class ImagesDealer
 
     ctx: CanvasRenderingContext2D;
     public customImages: ICustomImage[] = [];
-    dynamicCustomUrlArray: string[] = ["assets/images/custom/smallStation.png", "assets/images/custom/astronaut.png",
-        "assets/images/custom/deathStar.png", "assets/images/custom/satellite.png"
+    dynamicCustomUrlArray: string[] = ["assets/images/custom/smallStation.webp", "assets/images/custom/astronaut.webp",
+        "assets/images/custom/deathStar.webp", "assets/images/custom/satellite.webp"
     ];
-    dynamicMeteorUrlArray: string[] = ["assets/images/dynamic/GrayBlueStone.png", "assets/images/dynamic/BlackStone.png",
-        "assets/images/dynamic/DiamondStone.png", "assets/images/dynamic/MulticoloredStone.png",];
+    dynamicMeteorUrlArray: string[] = ["assets/images/dynamic/GrayBlueStone.webp", "assets/images/dynamic/BlackStone.webp",
+        "assets/images/dynamic/DiamondStone.webp", "assets/images/dynamic/MulticoloredStone.webp",];
     height: number;
     mathHelper: MathHelper;
     public meteorImages: IMeteor[] = [];
