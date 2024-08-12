@@ -6,6 +6,7 @@ export class DrawBorealis
     ctxPurple: CanvasRenderingContext2D;
     ctxRed: CanvasRenderingContext2D;
     height: number;
+    lastFrameTime: number;
     width: number;
 
     constructor(ctxBlue: CanvasRenderingContext2D,
@@ -21,11 +22,12 @@ export class DrawBorealis
         this.width = width;
         this.height = height;
         this.color = { fill: '#FABE3A' };
+        this.lastFrameTime = 0;
     }
 
     public drawAllColors()
     {
-        const ellipseCount = 8; // ilość elips do wygenerowania
+        const ellipseCount = 4; // ilość elips do wygenerowania
         const minRadius = 75; // minimalny promień elipsy
         const maxRadius = 375; // maksymalny promień elipsy
 
@@ -37,9 +39,27 @@ export class DrawBorealis
 
     private async drawEllipsesAsync(ctx: CanvasRenderingContext2D, color: string, ellipseCount: number, minRadius: number, maxRadius: number)
     {
+        const fps = 30;
+        const frameDuration = 1000 / fps;
+
         for (let i = 0; i < ellipseCount; i++)
         {
-            await new Promise(resolve => setTimeout(resolve, 0)); // Odroczenie rysowania
+            await new Promise<void>(resolve =>
+            {
+                const loop = (time: number) =>
+                {
+                    if (time - this.lastFrameTime >= frameDuration)
+                    {
+                        this.lastFrameTime = time;
+                        resolve();
+                    }
+                    else
+                    {
+                        requestAnimationFrame(loop);
+                    }
+                };
+                requestAnimationFrame(loop);
+            });
 
             const x = Math.random() * this.width;
             const y = Math.random() * this.height;
@@ -54,17 +74,17 @@ export class DrawBorealis
             ctx.ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle);
             ctx.filter = "blur(30px)";
             ctx.fill();
-            this.resetContext();
+            this.resetContext(ctx);
         }
     }
 
-    private resetContext()
+    private resetContext(ctx: CanvasRenderingContext2D)
     {
-        this.ctxBlue.lineWidth = 1;
-        this.ctxBlue.strokeStyle = '#000000';
-        this.ctxBlue.lineCap = "butt";
-        this.ctxBlue.filter = "none";
-        this.ctxBlue.fillStyle = '#000000';
-        this.ctxBlue.globalAlpha = 1;
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = '#000000';
+        ctx.lineCap = "butt";
+        ctx.filter = "none";
+        ctx.fillStyle = '#000000';
+        ctx.globalAlpha = 1;
     }
 }

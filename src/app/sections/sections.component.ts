@@ -161,11 +161,13 @@ export class SectionsComponent implements OnInit
 
     if (ctxBlue && ctxGreen && ctxPurple && ctxRed)
     {
-      setTimeout(() =>
+      const drawNebulas = () =>
       {
         let nebula = new DrawNebulas(ctxBlue, ctxGreen, ctxPurple, ctxRed, this.background.offsetWidth, this.background.offsetHeight);
         nebula.drawAllColors();
-      }, 0);
+      };
+
+      setTimeout(drawNebulas, 500); // Opóźnienie o 500 ms
     }
   }
 

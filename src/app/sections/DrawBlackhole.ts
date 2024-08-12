@@ -144,14 +144,6 @@ export class DrawBlackhole
     return this.height - subtractCoeff < 0 || this.width - subtractCoeff < 0;
   }
 
-  private createGradient(posX: number, posY: number, color1: string, color2: string, radius: number = 40): CanvasGradient
-  {
-    const gradient = this.ctx.createRadialGradient(posX, posY, 0, posX, posY, radius);
-    gradient.addColorStop(0, color1);
-    gradient.addColorStop(1, color2);
-    return gradient;
-  }
-
   private drawBending(): void
   {
     const posX = this.blackholeRadius + this.centerOffsetX;
