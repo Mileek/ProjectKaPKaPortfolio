@@ -75,18 +75,18 @@ export class SectionsComponent implements OnInit
 
   DrawFPS()
   {
-    const now = performance.now();
-    const delta = now - this.lastUpdateTime;
+    // const now = performance.now();
+    // const delta = now - this.lastUpdateTime;
 
-    if (delta > 1000)
-    {
-      this.fps = this.frameCount;
-      this.frameCount = 0;
-      this.lastUpdateTime = now;
-    }
+    // if (delta > 1000)
+    // {
+    //   this.fps = this.frameCount;
+    //   this.frameCount = 0;
+    //   this.lastUpdateTime = now;
+    // }
 
-    this.frameCount++;
-    requestAnimationFrame(() => this.DrawFPS());
+    // this.frameCount++;
+    // requestAnimationFrame(() => this.DrawFPS());
   }
 
   DrawFallingStars(numberOfFallingStars: number)
@@ -161,8 +161,11 @@ export class SectionsComponent implements OnInit
 
     if (ctxBlue && ctxGreen && ctxPurple && ctxRed)
     {
-      let nebula = new DrawNebulas(ctxBlue, ctxGreen, ctxPurple, ctxRed, this.background.offsetWidth, this.background.offsetHeight);
-      nebula.drawAllColors();
+      setTimeout(() =>
+      {
+        let nebula = new DrawNebulas(ctxBlue, ctxGreen, ctxPurple, ctxRed, this.background.offsetWidth, this.background.offsetHeight);
+        nebula.drawAllColors();
+      }, 0);
     }
   }
 
@@ -185,7 +188,7 @@ export class SectionsComponent implements OnInit
 
   DrawTwinklingStars(numberOfStars: number): void
   {
-    var ctx = this.canvasTwinkling.getContext('2d');
+    const ctx = this.canvasTwinkling.getContext('2d');
     const width = this.background.offsetWidth;
     const height = this.background.offsetHeight + 1500;
     this.canvasTwinkling.width = width;
@@ -194,30 +197,40 @@ export class SectionsComponent implements OnInit
 
     let i = 0;
     let lastTime = performance.now();
-    const delay = 20; // Opóźnienie w milisekundach
+    const delay = 60;
+    const targetFPS = 30;
+    const frameDuration = 1000 / targetFPS;
+    let lastFrameTime = 0;
 
     const drawStar = (currentTime: number) =>
     {
-      if (currentTime - lastTime >= delay) // Jeśli upłynęło wystarczająco dużo czasu od ostatniego rysowania
-      {
-        if (i < numberOfStars)
-        {
-          var color = this.appStatics.colorArray[Math.floor(Math.random() * this.appStatics.colorArray.length)];
-          var longWidth = (Math.random() - 0.5) * 22;
-          var shortWidth = (Math.random() - 0.5) * 14;
-          var x = Math.random() * (width - longWidth * 2) + longWidth;
-          var y = Math.random() * (height - longWidth * 2) + longWidth;
-          let alpha = Math.random() * 0.6;
-
-          if (ctx)
+      if (currentTime - lastFrameTime >= frameDuration)
+      { // Sprawdź, czy upłynęło wystarczająco dużo czasu od ostatniej klatki
+        if (currentTime - lastTime >= delay)
+        { // Jeśli upłynęło wystarczająco dużo czasu od ostatniego rysowania
+          const batchSize = 5; // Liczba gwiazd do narysowania na klatkę
+          for (let j = 0; j < batchSize && i < numberOfStars; j++, i++)
           {
-            this.TwinklingLinesArray.push(new DrawLines(ctx, x, y, longWidth, shortWidth, 10, alpha, color));
+            const color = this.appStatics.colorArray[Math.floor(Math.random() * this.appStatics.colorArray.length)];
+            const longWidth = (Math.random() - 0.5) * 22;
+            const shortWidth = (Math.random() - 0.5) * 14;
+            const x = Math.random() * (width - longWidth * 2) + longWidth;
+            const y = Math.random() * (height - longWidth * 2) + longWidth;
+            const alpha = Math.random() * 0.6;
+
+            if (ctx)
+            {
+              this.TwinklingLinesArray.push(new DrawLines(ctx, x, y, longWidth, shortWidth, 10, alpha, color));
+            }
           }
-          i++;
           lastTime = currentTime; // Zaktualizuj czas ostatniego rysowania
         }
+        lastFrameTime = currentTime; // Zaktualizuj czas ostatniej klatki
       }
-      requestAnimationFrame(drawStar); // Zawsze wywołaj requestAnimationFrame, niezależnie od tego, czy rysujemy czy nie
+      if (i < numberOfStars)
+      {
+        requestAnimationFrame(drawStar); // Wywołaj requestAnimationFrame tylko wtedy, gdy są jeszcze gwiazdy do narysowania
+      }
     };
     requestAnimationFrame(drawStar);
   }

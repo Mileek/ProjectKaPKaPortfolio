@@ -1,5 +1,3 @@
-import { gsap } from 'gsap';
-import { createNoise2D } from 'simplex-noise'
 export class DrawBorealis
 {
     color: { fill: string };
@@ -8,7 +6,6 @@ export class DrawBorealis
     ctxPurple: CanvasRenderingContext2D;
     ctxRed: CanvasRenderingContext2D;
     height: number;
-    noise: ReturnType<typeof createNoise2D>;
     width: number;
 
     constructor(ctxBlue: CanvasRenderingContext2D,
@@ -24,7 +21,6 @@ export class DrawBorealis
         this.width = width;
         this.height = height;
         this.color = { fill: '#FABE3A' };
-        this.noise = createNoise2D(Math.random);
     }
 
     public drawAllColors()
@@ -33,16 +29,18 @@ export class DrawBorealis
         const minRadius = 75; // minimalny promień elipsy
         const maxRadius = 375; // maksymalny promień elipsy
 
-        this.drawEllipses(this.ctxBlue, `rgba(0, 0, 255, 0.05)`, ellipseCount, minRadius, maxRadius);
-        this.drawEllipses(this.ctxGreen, `rgba(0, 255, 0, 0.05)`, ellipseCount, minRadius, maxRadius);
-        this.drawEllipses(this.ctxPurple, `rgba(161, 63, 252, 0.05)`, ellipseCount, minRadius, maxRadius);
-        this.drawEllipses(this.ctxRed, `rgba(255, 0, 0, 0.05)`, ellipseCount, minRadius, maxRadius);
+        this.drawEllipsesAsync(this.ctxBlue, `rgba(0, 0, 255, 0.05)`, ellipseCount, minRadius, maxRadius);
+        this.drawEllipsesAsync(this.ctxGreen, `rgba(0, 255, 0, 0.05)`, ellipseCount, minRadius, maxRadius);
+        this.drawEllipsesAsync(this.ctxPurple, `rgba(161, 63, 252, 0.05)`, ellipseCount, minRadius, maxRadius);
+        this.drawEllipsesAsync(this.ctxRed, `rgba(255, 0, 0, 0.05)`, ellipseCount, minRadius, maxRadius);
     }
 
-    private drawEllipses(ctx: CanvasRenderingContext2D, color: string, ellipseCount: number, minRadius: number, maxRadius: number)
+    private async drawEllipsesAsync(ctx: CanvasRenderingContext2D, color: string, ellipseCount: number, minRadius: number, maxRadius: number)
     {
         for (let i = 0; i < ellipseCount; i++)
         {
+            await new Promise(resolve => setTimeout(resolve, 0)); // Odroczenie rysowania
+
             const x = Math.random() * this.width;
             const y = Math.random() * this.height;
             const radiusX = minRadius + Math.random() * (maxRadius - minRadius);
