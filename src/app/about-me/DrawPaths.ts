@@ -14,7 +14,7 @@ export class DrawPaths
         this.ctx = ctx
     }
 
-    public async DrawPath(paragraph: HTMLParagraphElement, waypoint: HTMLObjectElement, side: boolean = false, cancellationToken: { isCancellationRequested: boolean })
+    public async DrawPath(paragraph: HTMLParagraphElement, waypoint: HTMLImageElement, side: boolean = false, cancellationToken: { isCancellationRequested: boolean })
     {
         // Reset context
         this.resetContext();
@@ -103,7 +103,7 @@ export class DrawPaths
         animate();
     }
 
-    public animateWaypoint(waypoint: HTMLElement, cancellationToken: { isCancellationRequested: boolean })
+    public animateWaypoint(waypoint: HTMLImageElement, cancellationToken: { isCancellationRequested: boolean })
     {
         // Set initial opacity and scale
         waypoint.style.opacity = '0';

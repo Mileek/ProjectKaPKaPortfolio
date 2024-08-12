@@ -36,10 +36,10 @@ export class AboutMeComponent implements OnInit
   starryCanvas3!: HTMLCanvasElement;
   starryCanvas4!: HTMLCanvasElement;
   starryCanvas5!: HTMLCanvasElement;
-  svgWaypoint2!: HTMLObjectElement;
-  svgWaypoint3!: HTMLObjectElement;
-  svgWaypoint4!: HTMLObjectElement;
-  svgWaypoint5!: HTMLObjectElement;
+  svgWaypoint2!: HTMLImageElement;
+  svgWaypoint3!: HTMLImageElement;
+  svgWaypoint4!: HTMLImageElement;
+  svgWaypoint5!: HTMLImageElement;
   text1!: HTMLParagraphElement;
   text2!: HTMLParagraphElement;
   text3!: HTMLParagraphElement;
@@ -378,10 +378,10 @@ export class AboutMeComponent implements OnInit
 
   private InitializeSVGWaypoints()
   {
-    this.svgWaypoint2 = document.getElementById('svgIcon2') as HTMLObjectElement;
-    this.svgWaypoint3 = document.getElementById('svgIcon3') as HTMLObjectElement;
-    this.svgWaypoint4 = document.getElementById('svgIcon4') as HTMLObjectElement;
-    this.svgWaypoint5 = document.getElementById('svgIcon5') as HTMLObjectElement;
+    this.svgWaypoint2 = document.getElementById('svgIcon2') as HTMLImageElement;
+    this.svgWaypoint3 = document.getElementById('svgIcon3') as HTMLImageElement;
+    this.svgWaypoint4 = document.getElementById('svgIcon4') as HTMLImageElement;
+    this.svgWaypoint5 = document.getElementById('svgIcon5') as HTMLImageElement;
   }
 
   private SetSizeIfExist(canva: HTMLCanvasElement, text: HTMLParagraphElement)
