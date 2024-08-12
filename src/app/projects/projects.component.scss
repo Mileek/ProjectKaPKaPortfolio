@@ -414,7 +414,7 @@ body {
 
 @media (width > 650px) and (width < 900px) {
     .content {
-        width: 50vw;
+        width: 52vw;
         & .title {
             font-size: 22px;
         }
@@ -436,7 +436,6 @@ body {
         height: 33vh;
 
         &:nth-child(3) {
-            left: $cardsStart;
             cursor: pointer;
         }
         &:nth-child(4) {
@@ -517,6 +516,7 @@ body {
     .content {
         width: 68vw;
         padding-bottom: 0;
+        letter-spacing: 0;
         & .title {
             font-size: 18px;
         }
@@ -529,46 +529,46 @@ body {
         height: 33vh;
 
         &:nth-child(3) {
-            left: 15% + $cardsStart;
+            left: 14% + $cardsStart;
         }
         &:nth-child(4) {
-            left: calc(15% + $cardsStart + #{$smallCardsDistance});
+            left: calc(14% + $cardsStart + #{$smallCardsDistance});
             cursor: pointer;
             pointer-events: none;
             opacity: 0;
         }
         &:nth-child(5) {
-            left: calc(15% + $cardsStart + #{$smallCardsDistance * 2});
+            left: calc(14% + $cardsStart + #{$smallCardsDistance * 2});
             cursor: pointer;
             opacity: 0;
             pointer-events: none;
         }
         &:nth-child(6) {
-            left: calc(15% + $cardsStart + #{$smallCardsDistance * 3});
+            left: calc(14% + $cardsStart + #{$smallCardsDistance * 3});
             cursor: pointer;
             opacity: 0;
             pointer-events: none;
         }
         &:nth-child(7) {
-            left: calc(15% + $cardsStart + #{$smallCardsDistance * 4});
+            left: calc(14% + $cardsStart + #{$smallCardsDistance * 4});
             cursor: pointer;
             opacity: 0;
             pointer-events: none;
         }
         &:nth-child(8) {
-            left: calc(15% + $cardsStart + #{$smallCardsDistance * 5});
+            left: calc(14% + $cardsStart + #{$smallCardsDistance * 5});
             cursor: pointer;
             opacity: 0;
             pointer-events: none;
         }
         &:nth-child(9) {
-            left: calc(15% + $cardsStart + #{$smallCardsDistance * 6});
+            left: calc(14% + $cardsStart + #{$smallCardsDistance * 6});
             cursor: pointer;
             opacity: 0;
             pointer-events: none;
         }
         &:nth-child(10) {
-            left: calc(15% + $cardsStart + #{$smallCardsDistance * 7});
+            left: calc(14% + $cardsStart + #{$smallCardsDistance * 7});
             cursor: pointer;
             opacity: 0;
             pointer-events: none;

@@ -36,10 +36,10 @@ export class AboutMeComponent implements OnInit
   starryCanvas3!: HTMLCanvasElement;
   starryCanvas4!: HTMLCanvasElement;
   starryCanvas5!: HTMLCanvasElement;
-  svgWaypoint2!: HTMLObjectElement;
-  svgWaypoint3!: HTMLObjectElement;
-  svgWaypoint4!: HTMLObjectElement;
-  svgWaypoint5!: HTMLObjectElement;
+  svgWaypoint2!: HTMLImageElement;
+  svgWaypoint3!: HTMLImageElement;
+  svgWaypoint4!: HTMLImageElement;
+  svgWaypoint5!: HTMLImageElement;
   text1!: HTMLParagraphElement;
   text2!: HTMLParagraphElement;
   text3!: HTMLParagraphElement;
@@ -180,51 +180,45 @@ export class AboutMeComponent implements OnInit
 
   OverWriteCanvasSize()
   {
-    if (this.starryCanvas1 && this.text1)
-    {
-      this.starryCanvas1.width = this.text1.offsetWidth;
-      this.starryCanvas1.height = this.text1.offsetHeight;
-    }
-    if (this.starryCanvas2 && this.text2)
-    {
-      this.starryCanvas2.width = this.text2.offsetWidth;
-      this.starryCanvas2.height = this.text2.offsetHeight;
-    }
-    if (this.starryCanvas3 && this.text3)
-    {
-      this.starryCanvas3.width = this.text3.offsetWidth;
-      this.starryCanvas3.height = this.text3.offsetHeight;
-    }
-    if (this.starryCanvas4 && this.text4)
-    {
-      this.starryCanvas4.width = this.text4.offsetWidth;
-      this.starryCanvas4.height = this.text4.offsetHeight;
-    }
-    if (this.starryCanvas5 && this.text5)
-    {
-      this.starryCanvas5.width = this.text5.offsetWidth;
-      this.starryCanvas5.height = this.text5.offsetHeight;
-    }
+    this.SetSizeIfExist(this.starryCanvas1, this.text1);
+    this.SetSizeIfExist(this.starryCanvas2, this.text2);
+    this.SetSizeIfExist(this.starryCanvas3, this.text3);
+    this.SetSizeIfExist(this.starryCanvas4, this.text4);
+    this.SetSizeIfExist(this.starryCanvas5, this.text5);
   }
 
   animateStars(): void
   {
-    this.canvasArray.forEach(canvas =>
+    const targetFps = 30;
+    const frameDuration = 1000 / targetFps;
+    let lastFrameTime = 0;
+
+    const animate = (time: number) =>
     {
-      const ctx = canvas.getContext('2d');
-
-      if (ctx)
+      if (time - lastFrameTime >= frameDuration)
       {
-        ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
-
-        this.TwinklingLinesArray.forEach(star =>
+        this.canvasArray.forEach(canvas =>
         {
-          star.UpdateAlphaValue();
-        });
-      }
-    });
+          const ctx = canvas.getContext('2d');
 
-    requestAnimationFrame(() => this.animateStars());
+          if (ctx)
+          {
+            ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
+
+            this.TwinklingLinesArray.forEach(star =>
+            {
+              star.UpdateAlphaValue();
+            });
+          }
+        });
+
+        lastFrameTime = time;
+      }
+
+      requestAnimationFrame(animate);
+    };
+
+    requestAnimationFrame(animate);
   }
 
   ngOnInit(): void
@@ -384,9 +378,18 @@ export class AboutMeComponent implements OnInit
 
   private InitializeSVGWaypoints()
   {
-    this.svgWaypoint2 = document.getElementById('svgIcon2') as HTMLObjectElement;
-    this.svgWaypoint3 = document.getElementById('svgIcon3') as HTMLObjectElement;
-    this.svgWaypoint4 = document.getElementById('svgIcon4') as HTMLObjectElement;
-    this.svgWaypoint5 = document.getElementById('svgIcon5') as HTMLObjectElement;
+    this.svgWaypoint2 = document.getElementById('svgIcon2') as HTMLImageElement;
+    this.svgWaypoint3 = document.getElementById('svgIcon3') as HTMLImageElement;
+    this.svgWaypoint4 = document.getElementById('svgIcon4') as HTMLImageElement;
+    this.svgWaypoint5 = document.getElementById('svgIcon5') as HTMLImageElement;
+  }
+
+  private SetSizeIfExist(canva: HTMLCanvasElement, text: HTMLParagraphElement)
+  {
+    if (canva && text)
+    {
+      canva.width = text.offsetWidth;
+      canva.height = text.offsetHeight;
+    }
   }
 }

@@ -1,40 +1,19 @@
-<!-- <nav class="navbar sticky-top">
-  <div class="navbar-left">
-    <div class="brand-title"><a href="#">KaPKa - Kamil Patryk Kaszuba</a></div>
-  </div>
-  <a href="#" class="toggle-button" #toggleButton title="Toggle Navigation">
-    <span class="bar" id="bar-1" #bar1></span>
-    <span class="bar" id="bar-2" #bar2></span>
-    <span class="bar" id="bar-3" #bar3></span>
-  </a>
-  <div class="navbar-right">
-    <div class="navbar-links" #navbarLinks>
-      <ul>
-        <li><a id="link-1" href="#home" #home><i class="fi-xtluhl-house-thin"></i> Home</a></li>
-        <li><a id="link-2" href="#about-me" #portfolio><i class="fi-xtluxl-folder-thin"></i> Portfolio</a></li>
-        <li><a id="link-3" href="#projects" #about><i class="fi-xtluxl-user-thin"></i> About</a></li>
-        <li><a id="link-4" href="#contact-me" #contact><i class="fi-xtluxl-envelope-thin"></i> Contact</a></li>
-      </ul>
-    </div>
-  </div>
-</nav> -->
-
-<div class="fps-counter">
+<!-- <div class="fps-counter" aria-live="polite">
   FPS: {{fps}}
-</div>
+</div> -->
 <!--Just some background elements, nothing special here-->
-<div id="Background">
+<div id="Background" role="img" aria-label="Background with floating images and nebulas">
   <!--Floating images-->
-  <canvas id="Galaxies"></canvas>
-  <canvas id="FloatingObjects"></canvas>
-  <!-- Nobulas -->
-  <canvas id="NebulaBlue"></canvas>
-  <canvas id="NebulaGreen"></canvas>
-  <canvas id="NebulaPurple"></canvas>
-  <canvas id="NebulaRed"></canvas>
-  <nav class="navbar">
+  <canvas id="Galaxies" aria-hidden="true"></canvas>
+  <canvas id="FloatingObjects" aria-hidden="true"></canvas>
+  <!-- Nebulas -->
+  <canvas id="NebulaBlue" aria-hidden="true"></canvas>
+  <canvas id="NebulaGreen" aria-hidden="true"></canvas>
+  <canvas id="NebulaPurple" aria-hidden="true"></canvas>
+  <canvas id="NebulaRed" aria-hidden="true"></canvas>
+  <nav class="navbar" role="navigation" aria-label="Secondary Navigation">
     <div id="logo" class="navbar-left">
-      <a (click)="scrollToSection('home')" class="logo-link"></a>
+      <a (click)="scrollToSection('home')" class="logo-link" aria-label="Scroll to Home"></a>
     </div>
     <a class="toggle-button" #toggleButton title="Toggle Navigation">
       <span class="bar" id="bar-1" #bar1></span>
@@ -47,39 +26,37 @@
           <li><a id="link-1" data-text="Home" (click)="scrollToSection('home')" #home><i
                 class="fi-xtluhl-house-thin"></i> Home</a></li>
           <li><a id="link-2" data-text="About" (click)="scrollToSection('about-me')" #about><i
-                class="fi-xtluxl-folder-thin"></i>
-              About</a>
-          </li>
+                class="fi-xtluxl-folder-thin"></i> About</a></li>
           <li><a id="link-3" data-text="Projects" (click)="scrollToSection('projects')" #projects><i
-                class="fi-xtluxl-user-thin"></i>
-              Projects</a></li>
+                class="fi-xtluxl-user-thin"></i> Projects</a></li>
           <li><a id="link-4" data-text="Contact" (click)="scrollToSection('contact-me')" #contact><i
-                class="fi-xtluxl-envelope-thin"></i>
-              Contact</a></li>
+                class="fi-xtluxl-envelope-thin"></i> Contact</a></li>
         </ul>
       </div>
     </div>
   </nav>
   <!--Animated canvas-->
-  <canvas id="TwinklingStars"></canvas>
-  <canvas id="FallingStars"></canvas>
+  <canvas id="TwinklingStars" aria-hidden="true"></canvas>
+  <canvas id="FallingStars" aria-hidden="true"></canvas>
   <div id="BlackholeContainer" class="blackhole-container">
-    <div class="section" id="home">
+    <div class="section" id="home" role="region" aria-label="Home Section">
       <app-home></app-home>
     </div>
-    <canvas id="Blackhole"></canvas>
+    <canvas id="Blackhole" aria-hidden="true"></canvas>
   </div>
-  <div class="section" id="about-me">
+  <div class="section" id="about-me" role="region" aria-label="About Me Section">
     <app-about-me></app-about-me>
   </div>
-  <div class="section" id="projects">
+  <div class="section" id="projects" role="region" aria-label="Projects Section">
     <app-projects></app-projects>
   </div>
-  <div class="section" id="contact-me">
+  <div class="section" id="contact-me" role="region" aria-label="Contact Me Section">
     <app-contact-me></app-contact-me>
   </div>
   <div class="StickyUpNav">
-    <fa-icon (click)="scrollTop()" [icon]="['fas', 'angles-up']" id="navDoubleUp" class="AnglesUp"></fa-icon>
-    <fa-icon (click)="scrollUp()" [icon]="['fas', 'angle-up']" id="navUp" class="AngleUp"></fa-icon>
+    <fa-icon (click)="scrollTop()" [icon]="['fas', 'angles-up']" id="navDoubleUp" class="AnglesUp"
+      aria-label="Scroll to Top"></fa-icon>
+    <fa-icon (click)="scrollUp()" [icon]="['fas', 'angle-up']" id="navUp" class="AngleUp"
+      aria-label="Scroll Up"></fa-icon>
   </div>
 </div>

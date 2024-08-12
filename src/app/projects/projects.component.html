@@ -1,10 +1,10 @@
-<fa-icon class='btnLeft' (click)="prev()" [icon]="['fas', 'angle-left']"></fa-icon>
-<fa-icon class='btnRight' (click)="next()" [icon]="['fas', 'angle-right']"></fa-icon>
+<fa-icon class='btnLeft' (click)="prev()" [icon]="['fas', 'angle-left']" aria-label="Previous slide"></fa-icon>
+<fa-icon class='btnRight' (click)="next()" [icon]="['fas', 'angle-right']" aria-label="Next slide"></fa-icon>
 
-<div class="sliderContainer">
+<div class="sliderContainer" role="region" aria-label="Project Slider">
     <ul class="slider">
-        <li (click)="select(8)" id="imageLast" class='item'>
-            <div id="imageLast" class="glitch">
+        <li (click)="select(8)" id="imageLast" class='item' aria-label="Select First Web Portfolio project">
+            <div id="imageLast" class="glitch" aria-hidden="true">
                 <div class="channel r"></div>
                 <div class="channel g"></div>
                 <div class="channel b"></div>
@@ -57,8 +57,8 @@
                 </div>
             </div>
         </li>
-        <li (click)="select(0)" id="image0" class='item'>
-            <div id="image0" class="glitch">
+        <li (click)="select(0)" id="image0" class='item' aria-label="Select Allcomp cutter HMI project">
+            <div id="image0" class="glitch" aria-hidden="true">
                 <div class="channel r"></div>
                 <div class="channel g"></div>
                 <div class="channel b"></div>
@@ -105,8 +105,8 @@
                 </div>
             </div>
         </li>
-        <li (click)="select(1)" id="image1" class='item'>
-            <div id="image1" class="glitch">
+        <li (click)="select(1)" id="image1" class='item' aria-label="Select Multiagent Queue Simulation project">
+            <div id="image1" class="glitch" aria-hidden="true">
                 <div class="channel r"></div>
                 <div class="channel g"></div>
                 <div class="channel b"></div>
@@ -154,14 +154,15 @@
                                 </p>
                             </div>
                         </div>
-                        <button (click)="openLink('https://github.com/Mileek/Multiagent-Queue-Simulation')">Github
+                        <button class="button"
+                            (click)="openLink('https://github.com/Mileek/Multiagent-Queue-Simulation')">Github
                             <fa-icon [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
                     </div>
                 </div>
             </div>
         </li>
-        <li (click)="select(2)" id="image2" class='item'>
-            <div id="image2" class="glitch">
+        <li (click)="select(2)" id="image2" class='item' aria-label="Select Real Estate Web Application project">
+            <div id="image2" class="glitch" aria-hidden="true">
                 <div class="channel r"></div>
                 <div class="channel g"></div>
                 <div class="channel b"></div>
@@ -201,14 +202,15 @@
                                 </ul>
                             </div>
                         </div>
-                        <button (click)="openLink('https://github.com/Mileek/Angular-Real-Estate-Website')">Github
+                        <button class="button"
+                            (click)="openLink('https://github.com/Mileek/Angular-Real-Estate-Website')">Github
                             <fa-icon [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
                     </div>
                 </div>
             </div>
         </li>
-        <li (click)="select(3)" id="image3" class='item'>
-            <div id="image3" class="glitch">
+        <li (click)="select(3)" id="image3" class='item' aria-label="Select ReSCat: Simple ERP Application project">
+            <div id="image3" class="glitch" aria-hidden="true">
                 <div class="channel r"></div>
                 <div class="channel g"></div>
                 <div class="channel b"></div>
@@ -248,14 +250,14 @@
                                 </ul>
                             </div>
                         </div>
-                        <button (click)="openLink('https://github.com/Mileek/ReSCat')">Github <fa-icon
+                        <button class="button" (click)="openLink('https://github.com/Mileek/ReSCat')">Github <fa-icon
                                 [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
                     </div>
                 </div>
             </div>
         </li>
-        <li (click)="select(4)" id="image4" class='item'>
-            <div id="image4" class="glitch">
+        <li (click)="select(4)" id="image4" class='item' aria-label="Select NotesApplication Kotlin Project">
+            <div id="image4" class="glitch" aria-hidden="true">
                 <div class="channel r"></div>
                 <div class="channel g"></div>
                 <div class="channel b"></div>
@@ -298,14 +300,14 @@
                                 </p>
                             </div>
                         </div>
-                        <button (click)="openLink('https://github.com/Mileek/NotesApplication')">Github <fa-icon
-                                [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
+                        <button class="button" (click)="openLink('https://github.com/Mileek/NotesApplication')">Github
+                            <fa-icon [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
                     </div>
                 </div>
             </div>
         </li>
-        <li (click)="select(5)" id="image5" class='item'>
-            <div id="image5" class="glitch">
+        <li (click)="select(5)" id="image5" class='item' aria-label="Select FTP Server project">
+            <div id="image5" class="glitch" aria-hidden="true">
                 <div class="channel r"></div>
                 <div class="channel g"></div>
                 <div class="channel b"></div>
@@ -352,14 +354,14 @@
                                 </p>
                             </div>
                         </div>
-                        <button (click)="openLink('https://github.com/Mileek/SimpleServerFTP')">Github <fa-icon
-                                [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
+                        <button class="button" (click)="openLink('https://github.com/Mileek/SimpleServerFTP')">Github
+                            <fa-icon [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
                     </div>
                 </div>
             </div>
         </li>
-        <li (click)="select(6)" id="image6" class='item'>
-            <div id="image6" class="glitch">
+        <li (click)="select(6)" id="image6" class='item' aria-label="Select FTP Client project">
+            <div id="image6" class="glitch" aria-hidden="true">
                 <div class="channel r"></div>
                 <div class="channel g"></div>
                 <div class="channel b"></div>
@@ -400,14 +402,14 @@
                                 </p>
                             </div>
                         </div>
-                        <button (click)="openLink('https://github.com/Mileek/SimpleClientFTP')">Github <fa-icon
-                                [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
+                        <button class="button" (click)="openLink('https://github.com/Mileek/SimpleClientFTP')">Github
+                            <fa-icon [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
                     </div>
                 </div>
             </div>
         </li>
-        <li (click)="select(7)" id="image7" class='item'>
-            <div id="image7" class="glitch">
+        <li (click)="select(7)" id="image7" class='item' aria-label="Select ToDo Web Application project">
+            <div id="image7" class="glitch" aria-hidden="true">
                 <div class="channel r"></div>
                 <div class="channel g"></div>
                 <div class="channel b"></div>
@@ -453,8 +455,8 @@
                                 </p>
                             </div>
                         </div>
-                        <button (click)="openLink('https://github.com/Mileek/WebOrganizer')">Github <fa-icon
-                                [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
+                        <button class="button" (click)="openLink('https://github.com/Mileek/WebOrganizer')">Github
+                            <fa-icon [icon]="['fas', 'up-right-from-square']"></fa-icon></button>
                     </div>
                 </div>
             </div>
