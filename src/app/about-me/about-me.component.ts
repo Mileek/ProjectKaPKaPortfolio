@@ -26,6 +26,7 @@ export class AboutMeComponent implements OnInit
   canvasPath4!: HTMLCanvasElement;
   canvasPaths!: HTMLCanvasElement;
   divIntroduction!: HTMLDivElement;
+  executeAnimations: boolean = true;
   paths1?: DrawPaths;
   paths2?: DrawPaths;
   paths3?: DrawPaths;
@@ -50,6 +51,11 @@ export class AboutMeComponent implements OnInit
 
   public async DrawPaths(cancellationToken: { isCancellationRequested: boolean })
   {
+    if (!this.executeAnimations)
+    {
+      return;
+    }
+
     if (this.canvasPath1)
     {
       const ctx1 = this.canvasPath1.getContext('2d');
@@ -228,6 +234,7 @@ export class AboutMeComponent implements OnInit
     this.canvasPath2 = document.getElementById('path2') as HTMLCanvasElement;
     this.canvasPath3 = document.getElementById('path3') as HTMLCanvasElement;
     this.canvasPath4 = document.getElementById('path4') as HTMLCanvasElement;
+    this.applyMediaQueryBeforeDrawLogic();
     this.InitializeParagraphs();
     this.InitializeBlurs();
     this.InitializeSVGWaypoints();
@@ -247,6 +254,7 @@ export class AboutMeComponent implements OnInit
   @HostListener('window:resize', ['$event'])
   onResize(event: Event): void
   {
+    this.applyMediaQueryBeforeDrawLogic();
     if (this.drawPathsTimeout)
     {
       clearTimeout(this.drawPathsTimeout);
@@ -390,6 +398,25 @@ export class AboutMeComponent implements OnInit
     {
       canva.width = text.offsetWidth;
       canva.height = text.offsetHeight;
+    }
+  }
+
+  private applyMediaQueryBeforeDrawLogic(): void
+  {
+    const viewportWidth = window.innerWidth;
+
+    if (viewportWidth <= 480)
+    {
+      this.executeAnimations = false;
+    } else if (viewportWidth <= 768)
+    {
+      this.executeAnimations = false;
+    } else if (viewportWidth <= 1024)
+    {
+      this.executeAnimations = false;
+    } else
+    {
+      this.executeAnimations = true;
     }
   }
 }

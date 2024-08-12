@@ -29,11 +29,12 @@ export class DrawBlackhole
   ctx: CanvasRenderingContext2D;
   defaultHeight: number;
   defaultWidth: number;
+  drawSatellite: boolean = true;
   maxGravitationalPull: number = 0.2;
   public mouseOnSizeIncrement: number = 0;
 
   constructor(ctx: CanvasRenderingContext2D, width: number, height: number, centerOffsetX: number, centerOffsetY: number,
-    angleIncrement: number = 0.2)
+    drawSatellite: boolean = true, angleIncrement: number = 0.2,)
   {
     this.angle = Math.random() * 360;
     this.ctx = ctx;
@@ -46,6 +47,7 @@ export class DrawBlackhole
     this.originalWidth = width;
     this.originalHeight = height;
     this.angleIncrement = angleIncrement;
+    this.drawSatellite = drawSatellite;
   }
 
   public get gravitationalPull(): number
@@ -209,6 +211,11 @@ export class DrawBlackhole
 
   private drawFirstSatellite(): void
   {
+    if (!this.drawSatellite)
+    {
+      return;
+    }
+
     const posX = this.width * Math.cos(this.angle) + this.centerOffsetX;
     const posY = this.height * Math.sin(this.angle) + this.centerOffsetY;
 

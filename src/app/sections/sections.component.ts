@@ -7,7 +7,6 @@ import
 import { DrawLines } from './DrawLines';
 import { BlackholeAndStarsInteraction } from './BlackholeAndStarsInteraction';
 import { ImagesDealer } from './ImagesDealer';
-import { DrawBorealis as DrawNebulas } from './DrawBorealis';
 import { AppStatics } from '../services/AppStatics';
 import { HomeComponent } from '../home/home.component';
 import { AboutMeComponent } from '../about-me/about-me.component';
@@ -46,6 +45,7 @@ export class SectionsComponent implements OnInit
   @ViewChild('contact') contact!: ElementRef;
   @ViewChild('contactMeContainer', { read: ViewContainerRef }) contactMeContainer!: ViewContainerRef;
   divBlackhole!: HTMLDivElement;
+  drawSatellite: boolean = true;
   fps: number = 0;
   frameCount: number = 0;
   galaxiesDealer!: ImagesDealer;
@@ -57,6 +57,7 @@ export class SectionsComponent implements OnInit
   @ViewChild('navbarLinks') navbarLinks!: ElementRef;
   numberOfFallingStars: number = 6;
   numberOfMeteors = 4;
+  numberOfNebulas: number = 5;
   numberOfTwinklingStars: number = 400;
   photoBackground!: HTMLDivElement;
   @ViewChild('portfolio') portfolio!: ElementRef;
@@ -83,7 +84,7 @@ export class SectionsComponent implements OnInit
     if (ctx)
     {
       this.blackhole = new DrawBlackhole(ctx, this.BlackHoleWidth, this.BlackHoleHeight,
-        this.blackholeContainer.offsetWidth / 2, this.blackholeContainer.offsetHeight * 0.3);
+        this.blackholeContainer.offsetWidth / 2, this.blackholeContainer.offsetHeight * 0.3, this.drawSatellite);
     }
   }
 
@@ -188,7 +189,7 @@ export class SectionsComponent implements OnInit
       try
       {
         const { DrawBorealis } = await import('./DrawBorealis');
-        const nebula = new DrawBorealis(ctxBlue, ctxGreen, ctxPurple, ctxRed, width, height);
+        const nebula = new DrawBorealis(ctxBlue, ctxGreen, ctxPurple, ctxRed, width, height, this.numberOfNebulas);
         nebula.drawAllColors();
       } catch (error)
       {
@@ -680,24 +681,40 @@ export class SectionsComponent implements OnInit
     if (viewportWidth <= 480)
     {
       this.updateBlackHoleDimensions(viewportWidth, 0.28);
-      this.numberOfTwinklingStars = 200;
+      this.numberOfTwinklingStars = 100;
+      this.numberOfFallingStars = 2;
+      this.numberOfMeteors = 2;
+      this.numberOfNebulas = 0;
+      this.drawSatellite = false;
     } else if (viewportWidth <= 768)
     {
       this.updateBlackHoleDimensions(viewportWidth, 0.26);
-      this.numberOfTwinklingStars = 200;
+      this.numberOfTwinklingStars = 150;
+      this.numberOfFallingStars = 2;
+      this.numberOfMeteors = 2;
+      this.numberOfNebulas = 0;
+      this.drawSatellite = false;
     } else if (viewportWidth <= 1024)
     {
       this.updateBlackHoleDimensions(viewportWidth, 0.22);
       this.numberOfTwinklingStars = 200;
+      this.numberOfFallingStars = 3;
+      this.numberOfMeteors = 2;
+      this.numberOfNebulas = 1;
+      this.drawSatellite = false;
 
     } else if (viewportWidth <= 1200)
     {
       this.updateBlackHoleDimensions(viewportWidth, 0.18);
       this.numberOfTwinklingStars = 300;
-
+      this.numberOfFallingStars = 5;
+      this.numberOfMeteors = 3;
+      this.numberOfNebulas = 1;
+      this.drawSatellite = true;
     } else
     {
       this.updateBlackHoleDimensions(viewportWidth, 0.18);
+      this.drawSatellite = true;
     }
   }
 

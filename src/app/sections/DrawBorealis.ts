@@ -8,12 +8,17 @@ export class DrawBorealis
     height: number;
     lastFrameTime: number;
     width: number;
+    // ilość elips do wygenerowania
+    public ellipseCount: number = 5;
 
     constructor(ctxBlue: CanvasRenderingContext2D,
         ctxGreen: CanvasRenderingContext2D,
         ctxPurple: CanvasRenderingContext2D,
         ctxRed: CanvasRenderingContext2D,
-        width: number, height: number)
+        width: number,
+        height: number,
+        numberOfNebulas: number
+    )
     {
         this.ctxBlue = ctxBlue;
         this.ctxGreen = ctxGreen;
@@ -23,18 +28,18 @@ export class DrawBorealis
         this.height = height;
         this.color = { fill: '#FABE3A' };
         this.lastFrameTime = 0;
+        this.ellipseCount = numberOfNebulas;
     }
 
     public drawAllColors()
     {
-        const ellipseCount = 5; // ilość elips do wygenerowania
         const minRadius = 75; // minimalny promień elipsy
         const maxRadius = 375; // maksymalny promień elipsy
 
-        this.drawEllipsesAsync(this.ctxBlue, `rgba(0, 0, 255, 0.05)`, ellipseCount, minRadius, maxRadius);
-        this.drawEllipsesAsync(this.ctxGreen, `rgba(0, 255, 0, 0.05)`, ellipseCount, minRadius, maxRadius);
-        this.drawEllipsesAsync(this.ctxPurple, `rgba(161, 63, 252, 0.05)`, ellipseCount, minRadius, maxRadius);
-        this.drawEllipsesAsync(this.ctxRed, `rgba(255, 0, 0, 0.05)`, ellipseCount, minRadius, maxRadius);
+        this.drawEllipsesAsync(this.ctxBlue, `rgba(0, 0, 255, 0.05)`, this.ellipseCount, minRadius, maxRadius);
+        this.drawEllipsesAsync(this.ctxGreen, `rgba(0, 255, 0, 0.05)`, this.ellipseCount, minRadius, maxRadius);
+        this.drawEllipsesAsync(this.ctxPurple, `rgba(161, 63, 252, 0.05)`, this.ellipseCount, minRadius, maxRadius);
+        this.drawEllipsesAsync(this.ctxRed, `rgba(255, 0, 0, 0.05)`, this.ellipseCount, minRadius, maxRadius);
     }
 
     private async drawEllipsesAsync(ctx: CanvasRenderingContext2D, color: string, ellipseCount: number, minRadius: number, maxRadius: number)
