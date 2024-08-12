@@ -1,10 +1,14 @@
 import { DrawBlackhole } from './DrawBlackhole';
-import { Component, HostListener, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, ElementRef, Renderer2, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { DrawLines } from './DrawLines';
 import { BlackholeAndStarsInteraction } from './BlackholeAndStarsInteraction';
 import { ImagesDealer } from './ImagesDealer';
 import { DrawBorealis as DrawNebulas } from './DrawBorealis';
 import { AppStatics } from '../services/AppStatics';
+import { HomeComponent } from '../home/home.component';
+import { AboutMeComponent } from '../about-me/about-me.component';
+import { ProjectsComponent } from '../projects/projects.component';
+import { ContactMeComponent } from '../contact-me/contact-me.component';
 
 @Component({
   selector: 'app-sections',
@@ -17,12 +21,14 @@ export class SectionsComponent implements OnInit
   private BlackHoleHeight!: number;
   private BlackHoleWidth!: number;
   private increasing: boolean = true;
+  private observer!: IntersectionObserver;
   private resizeTimeout: any;
 
   BSInteraction!: BlackholeAndStarsInteraction;
   FallingLinesArray: Array<DrawLines> = [];
   TwinklingLinesArray: Array<DrawLines> = [];
   @ViewChild('about') about!: ElementRef;
+  @ViewChild('aboutMeContainer', { read: ViewContainerRef }) aboutMeContainer!: ViewContainerRef;
   background!: HTMLDivElement;
   @ViewChild('bar1') bar1!: ElementRef;
   @ViewChild('bar2') bar2!: ElementRef;
@@ -34,11 +40,13 @@ export class SectionsComponent implements OnInit
   canvasFloatingObjects!: HTMLCanvasElement;
   canvasTwinkling!: HTMLCanvasElement;
   @ViewChild('contact') contact!: ElementRef;
+  @ViewChild('contactMeContainer', { read: ViewContainerRef }) contactMeContainer!: ViewContainerRef;
   divBlackhole!: HTMLDivElement;
   fps: number = 0;
   frameCount: number = 0;
   galaxiesDealer!: ImagesDealer;
   @ViewChild('home') home!: ElementRef;
+  @ViewChild('homeContainer', { read: ViewContainerRef }) homeContainer!: ViewContainerRef;
   imgGalaxies!: HTMLCanvasElement;
   isMouseOverBlackhole!: boolean;
   lastUpdateTime: number = 0;
@@ -48,12 +56,13 @@ export class SectionsComponent implements OnInit
   numberOfTwinklingStars: number = 400;
   photoBackground!: HTMLDivElement;
   @ViewChild('portfolio') portfolio!: ElementRef;
+  @ViewChild('projectsContainer', { read: ViewContainerRef }) projectsContainer!: ViewContainerRef;
   redEye!: HTMLDivElement;
   slideAnimation!: Animation;
   slideAnimationPosition!: number;
   @ViewChild('toggleButton') toggleButton!: ElementRef;
 
-  constructor(private appStatics: AppStatics, private renderer: Renderer2)
+  constructor(private appStatics: AppStatics, private renderer: Renderer2, private cfr: ComponentFactoryResolver, private el: ElementRef)
   {
   }
 
@@ -280,8 +289,38 @@ export class SectionsComponent implements OnInit
     }
   }
 
+  async loadComponent(section: string)
+  {
+    let componentFactory;
+    switch (section)
+    {
+      case 'home':
+        componentFactory = this.cfr.resolveComponentFactory(HomeComponent);
+        this.homeContainer.clear();
+        this.homeContainer.createComponent(componentFactory);
+        break;
+      case 'about-me':
+        componentFactory = this.cfr.resolveComponentFactory(AboutMeComponent);
+        this.aboutMeContainer.clear();
+        this.aboutMeContainer.createComponent(componentFactory);
+        break;
+      case 'projects':
+        componentFactory = this.cfr.resolveComponentFactory(ProjectsComponent);
+        this.projectsContainer.clear();
+        this.projectsContainer.createComponent(componentFactory);
+        break;
+      case 'contact-me':
+        componentFactory = this.cfr.resolveComponentFactory(ContactMeComponent);
+        this.contactMeContainer.clear();
+        this.contactMeContainer.createComponent(componentFactory);
+        break;
+    }
+  }
+
   ngAfterViewInit(): void
   {
+    this.observeSections();
+    this.loadComponent('home');
     // Inicjalizacja, która wymaga dostępu do elementów ViewChild
     this.HandleNavbar();
   }
@@ -293,6 +332,14 @@ export class SectionsComponent implements OnInit
 
   ngOnInit(): void
   {
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const sectionId = entry.target.id;
+          this.loadComponent(sectionId);
+        }
+      });
+    }, { threshold: 0.1 });
     this.background = document.getElementById('Background') as HTMLDivElement;
     this.blackholeContainer = document.getElementById('BlackholeContainer') as HTMLDivElement;
     this.canvasBlackhole = document.getElementById('Blackhole') as HTMLCanvasElement;
@@ -317,6 +364,11 @@ export class SectionsComponent implements OnInit
     this.AnimateAll();
     //Intervals
     this.SizeInterval();
+  }
+
+  observeSections(): void {
+    const sections = this.el.nativeElement.querySelectorAll('.section');
+    sections.forEach((section: Element) => this.observer.observe(section));
   }
 
   @HostListener('window:load')
