@@ -5,7 +5,6 @@ import { BlackholeAndStarsInteraction } from './BlackholeAndStarsInteraction';
 import { ImagesDealer } from './ImagesDealer';
 import { DrawBorealis as DrawNebulas } from './DrawBorealis';
 import { AppStatics } from '../services/AppStatics';
-import * as smoothscroll from 'smoothscroll-polyfill';
 
 @Component({
   selector: 'app-sections',
@@ -56,7 +55,6 @@ export class SectionsComponent implements OnInit
 
   constructor(private appStatics: AppStatics, private renderer: Renderer2)
   {
-    smoothscroll.polyfill();
   }
 
   BlackholeStarsInteraction()

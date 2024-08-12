@@ -43,28 +43,38 @@ export class DrawPaths
 
         // Animate line to startX, startY
         let t = 0;
+        const targetFps = 30;
+        const frameDuration = 1000 / targetFps;
+        let lastFrameTime = 0;
+
         return new Promise<void>(resolve =>
         {
-            const draw = () =>
+            const draw = (time: number) =>
             {
-                t += 0.005;
-                if (t > 1 || cancellationToken.isCancellationRequested)
+                if (time - lastFrameTime >= frameDuration)
                 {
-                    resolve();
-                    return;
-                }
-                this.controlX = this.startX + t * (this.endX - this.startX) / 2;
+                    t += 0.01;
+                    if (t > 1 || cancellationToken.isCancellationRequested)
+                    {
+                        resolve();
+                        return;
+                    }
+                    this.controlX = this.startX + t * (this.endX - this.startX) / 2;
 
-                const x = (1 - t) * (1 - t) * this.startX + 2 * (1 - t) * t * this.controlX + t * t * this.endX;
-                const y = (1 - t) * (1 - t) * this.startY + 2 * (1 - t) * t * this.controlY + t * t * this.endY;
-                this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-                this.ctx.beginPath();
-                this.ctx.moveTo(this.startX, this.startY);
-                this.ctx.quadraticCurveTo(this.controlX, this.controlY, x, y);
-                this.ctx.stroke();
+                    const x = (1 - t) * (1 - t) * this.startX + 2 * (1 - t) * t * this.controlX + t * t * this.endX;
+                    const y = (1 - t) * (1 - t) * this.startY + 2 * (1 - t) * t * this.controlY + t * t * this.endY;
+                    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(this.startX, this.startY);
+                    this.ctx.quadraticCurveTo(this.controlX, this.controlY, x, y);
+                    this.ctx.stroke();
+
+                    lastFrameTime = time;
+                }
+
                 requestAnimationFrame(draw);
             };
-            draw();
+            requestAnimationFrame(draw);
         });
     }
 

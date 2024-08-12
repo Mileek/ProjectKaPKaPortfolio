@@ -1,6 +1,4 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { ViewportScroller } from '@angular/common';
-import * as smoothscroll from 'smoothscroll-polyfill';
 
 @Component({
   selector: 'app-home',
@@ -15,15 +13,13 @@ export class HomeComponent implements OnInit
   private intervalId: any;
   //Its a stupid idea(but works). Spaces are used to make a pause in animation
   private quote: string = "We were born to inherit the stars       -       our destiny is to reach for them.";
-  private resizeTimeout: any;
   private swapIntervalId: any;
 
   Quote!: HTMLElement;
   QuoteDataText!: HTMLElement;
 
-  constructor(private viewportScroller: ViewportScroller)
+  constructor()
   {
-    smoothscroll.polyfill();
   }
 
   public ngOnInit(): void
