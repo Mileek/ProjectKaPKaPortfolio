@@ -27,7 +27,7 @@ export class DrawBorealis
 
     public drawAllColors()
     {
-        const ellipseCount = 4; // ilość elips do wygenerowania
+        const ellipseCount = 5; // ilość elips do wygenerowania
         const minRadius = 75; // minimalny promień elipsy
         const maxRadius = 375; // maksymalny promień elipsy
 

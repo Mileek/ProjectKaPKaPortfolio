@@ -1,5 +1,9 @@
 import { DrawBlackhole } from './DrawBlackhole';
-import { Component, HostListener, OnInit, ViewChild, ElementRef, Renderer2, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import
+{
+  Component, HostListener, OnInit, ViewChild, ElementRef, Renderer2,
+  ViewContainerRef, ComponentRef, EnvironmentInjector
+} from '@angular/core';
 import { DrawLines } from './DrawLines';
 import { BlackholeAndStarsInteraction } from './BlackholeAndStarsInteraction';
 import { ImagesDealer } from './ImagesDealer';
@@ -62,7 +66,8 @@ export class SectionsComponent implements OnInit
   slideAnimationPosition!: number;
   @ViewChild('toggleButton') toggleButton!: ElementRef;
 
-  constructor(private appStatics: AppStatics, private renderer: Renderer2, private cfr: ComponentFactoryResolver, private el: ElementRef)
+  constructor(private appStatics: AppStatics, private renderer: Renderer2,
+    private el: ElementRef, private injector: EnvironmentInjector)
   {
   }
 
@@ -142,42 +147,56 @@ export class SectionsComponent implements OnInit
     }
   }
 
-  DrawNebulas()
+  async DrawNebulas()
   {
-    let canvasBlue = document.getElementById(`NebulaBlue`) as HTMLCanvasElement;
-    let ctxBlue = canvasBlue.getContext('2d');
+    const canvasBlue = document.getElementById('NebulaBlue') as HTMLCanvasElement | null;
+    const canvasGreen = document.getElementById('NebulaGreen') as HTMLCanvasElement | null;
+    const canvasPurple = document.getElementById('NebulaPurple') as HTMLCanvasElement | null;
+    const canvasRed = document.getElementById('NebulaRed') as HTMLCanvasElement | null;
 
-    let canvasGreen = document.getElementById(`NebulaGreen`) as HTMLCanvasElement;
-    let ctxGreen = canvasGreen.getContext('2d');
-
-    let canvasPurple = document.getElementById(`NebulaPurple`) as HTMLCanvasElement;
-    let ctxPurple = canvasPurple.getContext('2d');
-
-    let canvasRed = document.getElementById(`NebulaRed`) as HTMLCanvasElement;
-    let ctxRed = canvasRed.getContext('2d');
-
-    canvasBlue.width = this.background.offsetWidth;
-    canvasBlue.height = this.background.offsetHeight;
-
-    canvasGreen.width = this.background.offsetWidth;
-    canvasGreen.height = this.background.offsetHeight;
-
-    canvasPurple.width = this.background.offsetWidth;
-    canvasPurple.height = this.background.offsetHeight;
-
-    canvasRed.width = this.background.offsetWidth;
-    canvasRed.height = this.background.offsetHeight;
-
-    if (ctxBlue && ctxGreen && ctxPurple && ctxRed)
+    if (!canvasBlue || !canvasGreen || !canvasPurple || !canvasRed)
     {
-      const drawNebulas = () =>
-      {
-        let nebula = new DrawNebulas(ctxBlue, ctxGreen, ctxPurple, ctxRed, this.background.offsetWidth, this.background.offsetHeight);
-        nebula.drawAllColors();
-      };
-
-      setTimeout(drawNebulas, 500); // Opóźnienie o 500 ms
+      console.error('One or more canvas elements not found');
+      return;
     }
+
+    const ctxBlue = canvasBlue.getContext('2d');
+    const ctxGreen = canvasGreen.getContext('2d');
+    const ctxPurple = canvasPurple.getContext('2d');
+    const ctxRed = canvasRed.getContext('2d');
+
+    if (!ctxBlue || !ctxGreen || !ctxPurple || !ctxRed)
+    {
+      console.error('Failed to get 2D context for one or more canvases');
+      return;
+    }
+
+    const width = this.background.offsetWidth;
+    const height = this.background.offsetHeight;
+
+    canvasBlue.width = width;
+    canvasBlue.height = height;
+    canvasGreen.width = width;
+    canvasGreen.height = height;
+    canvasPurple.width = width;
+    canvasPurple.height = height;
+    canvasRed.width = width;
+    canvasRed.height = height;
+
+    const drawNebulas = async () =>
+    {
+      try
+      {
+        const { DrawBorealis } = await import('./DrawBorealis');
+        const nebula = new DrawBorealis(ctxBlue, ctxGreen, ctxPurple, ctxRed, width, height);
+        nebula.drawAllColors();
+      } catch (error)
+      {
+        console.error('Error importing DrawBorealis module:', error);
+      }
+    };
+
+    requestAnimationFrame(() => setTimeout(drawNebulas, 500)); // Delay by 300 ms
   }
 
   DrawTwinklingStar(ctx: CanvasRenderingContext2D | null, color: string, width: number, height: number): DrawLines
@@ -291,28 +310,33 @@ export class SectionsComponent implements OnInit
 
   async loadComponent(section: string)
   {
-    let componentFactory;
+    let componentRef: ComponentRef<any>;
+
     switch (section)
     {
       case 'home':
-        componentFactory = this.cfr.resolveComponentFactory(HomeComponent);
         this.homeContainer.clear();
-        this.homeContainer.createComponent(componentFactory);
+        componentRef = this.homeContainer.createComponent(HomeComponent, {
+          environmentInjector: this.injector
+        });
         break;
       case 'about-me':
-        componentFactory = this.cfr.resolveComponentFactory(AboutMeComponent);
         this.aboutMeContainer.clear();
-        this.aboutMeContainer.createComponent(componentFactory);
+        componentRef = this.aboutMeContainer.createComponent(AboutMeComponent, {
+          environmentInjector: this.injector
+        });
         break;
       case 'projects':
-        componentFactory = this.cfr.resolveComponentFactory(ProjectsComponent);
         this.projectsContainer.clear();
-        this.projectsContainer.createComponent(componentFactory);
+        componentRef = this.projectsContainer.createComponent(ProjectsComponent, {
+          environmentInjector: this.injector
+        });
         break;
       case 'contact-me':
-        componentFactory = this.cfr.resolveComponentFactory(ContactMeComponent);
         this.contactMeContainer.clear();
-        this.contactMeContainer.createComponent(componentFactory);
+        componentRef = this.contactMeContainer.createComponent(ContactMeComponent, {
+          environmentInjector: this.injector
+        });
         break;
     }
   }
@@ -328,13 +352,17 @@ export class SectionsComponent implements OnInit
   ngOnDestroy(): void
   {
     this.slideAnimation.cancel();
+    this.disconnectObserver();
   }
 
   ngOnInit(): void
   {
-    this.observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
+    this.observer = new IntersectionObserver((entries) =>
+    {
+      entries.forEach(entry =>
+      {
+        if (entry.isIntersecting)
+        {
           const sectionId = entry.target.id;
           this.loadComponent(sectionId);
         }
@@ -366,7 +394,8 @@ export class SectionsComponent implements OnInit
     this.SizeInterval();
   }
 
-  observeSections(): void {
+  observeSections(): void
+  {
     const sections = this.el.nativeElement.querySelectorAll('.section');
     sections.forEach((section: Element) => this.observer.observe(section));
   }
@@ -670,6 +699,12 @@ export class SectionsComponent implements OnInit
     {
       this.updateBlackHoleDimensions(viewportWidth, 0.18);
     }
+  }
+
+  private disconnectObserver(): void
+  {
+    const sections = this.el.nativeElement.querySelectorAll('.section');
+    sections.forEach((section: Element) => this.observer.unobserve(section));
   }
 
   private updateBlackHoleDimensions(viewportWidth: number, widthCoeff: number, maxDiameter: number = 650): void
