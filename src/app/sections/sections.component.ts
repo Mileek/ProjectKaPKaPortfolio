@@ -155,23 +155,17 @@ export class SectionsComponent implements OnInit
 
   async DrawNebulas()
   {
-    const canvasBlue = document.getElementById('NebulaBlue') as HTMLCanvasElement | null;
-    const canvasGreen = document.getElementById('NebulaGreen') as HTMLCanvasElement | null;
-    const canvasPurple = document.getElementById('NebulaPurple') as HTMLCanvasElement | null;
-    const canvasRed = document.getElementById('NebulaRed') as HTMLCanvasElement | null;
+    const canvasIds = ['NebulaBlue', 'NebulaGreen', 'NebulaPurple', 'NebulaRed'];
+    const canvases = canvasIds.map(id => document.getElementById(id) as HTMLCanvasElement | null);
 
-    if (!canvasBlue || !canvasGreen || !canvasPurple || !canvasRed)
+    if (canvases.some(canvas => !canvas))
     {
       console.error('One or more canvas elements not found');
       return;
     }
 
-    const ctxBlue = canvasBlue.getContext('2d');
-    const ctxGreen = canvasGreen.getContext('2d');
-    const ctxPurple = canvasPurple.getContext('2d');
-    const ctxRed = canvasRed.getContext('2d');
-
-    if (!ctxBlue || !ctxGreen || !ctxPurple || !ctxRed)
+    const contexts = canvases.map(canvas => canvas!.getContext('2d'));
+    if (contexts.some(ctx => !ctx))
     {
       console.error('Failed to get 2D context for one or more canvases');
       return;
@@ -180,21 +174,18 @@ export class SectionsComponent implements OnInit
     const width = this.background.offsetWidth;
     const height = this.background.offsetHeight;
 
-    canvasBlue.width = width;
-    canvasBlue.height = height;
-    canvasGreen.width = width;
-    canvasGreen.height = height;
-    canvasPurple.width = width;
-    canvasPurple.height = height;
-    canvasRed.width = width;
-    canvasRed.height = height;
+    canvases.forEach(canvas =>
+    {
+      canvas!.width = width;
+      canvas!.height = height;
+    });
 
     const drawNebulas = async () =>
     {
       try
       {
         const { DrawBorealis } = await import('./DrawBorealis');
-        const nebula = new DrawBorealis(ctxBlue, ctxGreen, ctxPurple, ctxRed, width, height, this.numberOfNebulas);
+        const nebula = new DrawBorealis(contexts as CanvasRenderingContext2D[], width, height, this.numberOfNebulas);
         nebula.drawAllColors();
       } catch (error)
       {
@@ -202,7 +193,7 @@ export class SectionsComponent implements OnInit
       }
     };
 
-    requestAnimationFrame(() => setTimeout(drawNebulas, 500)); // Delay by 300 ms
+    requestAnimationFrame(() => setTimeout(drawNebulas, 500)); // Delay by 500 ms
   }
 
   DrawTwinklingStar(ctx: CanvasRenderingContext2D | null, color: string, width: number, height: number): DrawLines
@@ -394,7 +385,7 @@ export class SectionsComponent implements OnInit
     this.DrawBlackhole();
     this.DrawTwinklingStars(this.numberOfTwinklingStars);
     this.DrawFallingStars(this.numberOfFallingStars);
-    // this.DrawNebulas();
+    this.DrawNebulas();
     this.DrawFloatingObjects();
     this.applyMediaQueryAfterDrawLogic();
     //Create Interactions

@@ -1,7 +1,15 @@
+@use "sass:math";
+
+$primary-color: #fff;
+$animation-duration: 4s;
+$glitch-duration: 8s;
+$glitch-delay: 2s;
+$noise-steps: 30;
+
 app-home {
   margin: 0;
   padding: 0;
-  background-color: #fff;
+  background-color: $primary-color;
   overflow: hidden;
   text-align: center;
 }
@@ -13,12 +21,12 @@ app-home {
   left: 0;
   margin-left: auto;
   margin-right: auto;
-  bottom: 0;
+  bottom: 2vh;
 }
 
 .WelcomeDiv {
   position: absolute;
-  bottom: 6vh;
+  bottom: 8vh;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -31,7 +39,7 @@ app-home {
 .WelcomeQuote {
   font-size: 1.5rem;
   letter-spacing: 2px;
-  color: #fff;
+  color: $primary-color;
   text-shadow:
     -4px 0 rgba(255, 0, 255, 0.5),
     4px 0 rgba(144, 238, 144, 0.5);
@@ -41,45 +49,47 @@ app-home {
 .glitch {
   font-size: 1.5rem;
   width: auto;
-  color: #fff;
+  color: $primary-color;
   letter-spacing: 2px;
-  -webkit-animation: glitch 8s 2s infinite;
-  animation: glitch 8s 2s infinite;
+  -webkit-animation: glitch $glitch-duration $glitch-delay infinite;
+  animation: glitch $glitch-duration $glitch-delay infinite;
   padding-left: 5%;
   padding-right: 5%;
+  will-change: transform;
 }
 
-.glitch::before {
-  content: attr(data-text);
-  position: absolute;
-  left: -4px;
-  text-shadow: -8px 0 magenta;
-  background: transparent;
-  overflow: hidden;
-  margin-top: 5px;
-  -webkit-animation:
-    noise-1 1.5s linear infinite alternate-reverse,
-    glitch 4s 3.1s infinite;
-  animation:
-    noise-1 1.5s linear infinite alternate-reverse,
-    glitch 4s 3.1s infinite;
-}
-
+.glitch::before,
 .glitch::after {
   content: attr(data-text);
   position: absolute;
-  left: 4px;
-  text-shadow: -8px 0 lightgreen;
   background: transparent;
   overflow: hidden;
   margin-top: 5px;
+  will-change: transform;
+}
+
+.glitch::before {
+  left: -4px;
+  text-shadow: -8px 0 magenta;
+  -webkit-animation:
+    noise-1 1.5s linear infinite alternate-reverse,
+    glitch $glitch-duration $glitch-delay infinite;
+  animation:
+    noise-1 1.5s linear infinite alternate-reverse,
+    glitch $glitch-duration $glitch-delay infinite;
+}
+
+.glitch::after {
+  left: 4px;
+  text-shadow: -8px 0 lightgreen;
   -webkit-animation:
     noise-2 1.5s linear infinite alternate-reverse,
-    glitch 4s 3s infinite;
+    glitch $glitch-duration $glitch-delay infinite;
   animation:
     noise-2 1.5s linear infinite alternate-reverse,
-    glitch 4s 3s infinite;
+    glitch $glitch-duration $glitch-delay infinite;
 }
+
 @-webkit-keyframes glitch {
   1% {
     transform: rotateX(10deg) skewX(90deg);
@@ -88,6 +98,7 @@ app-home {
     transform: rotateX(0deg) skewX(0deg);
   }
 }
+
 @keyframes glitch {
   1% {
     transform: rotateX(10deg) skewX(90deg);
@@ -96,11 +107,9 @@ app-home {
     transform: rotateX(0deg) skewX(0deg);
   }
 }
-
 @-webkit-keyframes noise-1 {
-  $steps: 30;
-  @for $i from 1 through $steps {
-    #{percentage($i*(1/$steps))} {
+  @for $i from 1 through $noise-steps {
+    #{percentage($i * math.div(1, $noise-steps))} {
       $top: random(100);
       $bottom: random(101 - $top);
       -webkit-clip-path: inset(#{$top}px 0 #{$bottom}px 0);
@@ -110,9 +119,8 @@ app-home {
 }
 
 @keyframes noise-1 {
-  $steps: 30;
-  @for $i from 1 through $steps {
-    #{percentage($i*(1/$steps))} {
+  @for $i from 1 through $noise-steps {
+    #{percentage($i * math.div(1, $noise-steps))} {
       $top: random(100);
       $bottom: random(101 - $top);
       -webkit-clip-path: inset(#{$top}px 0 #{$bottom}px 0);
@@ -122,9 +130,8 @@ app-home {
 }
 
 @-webkit-keyframes noise-2 {
-  $steps: 30;
-  @for $i from 0 through $steps {
-    #{percentage($i*(1/$steps))} {
+  @for $i from 0 through $noise-steps {
+    #{percentage($i * math.div(1, $noise-steps))} {
       $top: random(100);
       $bottom: random(101 - $top);
       -webkit-clip-path: inset(#{$top}px 0 #{$bottom}px 0);
@@ -134,9 +141,8 @@ app-home {
 }
 
 @keyframes noise-2 {
-  $steps: 30;
-  @for $i from 0 through $steps {
-    #{percentage($i*(1/$steps))} {
+  @for $i from 0 through $noise-steps {
+    #{percentage($i * math.div(1, $noise-steps))} {
       $top: random(100);
       $bottom: random(101 - $top);
       -webkit-clip-path: inset(#{$top}px 0 #{$bottom}px 0);
@@ -160,6 +166,7 @@ app-home {
   background: repeating-linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0) 0.5%, transparent 1%);
   -webkit-animation: fudge 3s ease-in-out alternate infinite;
   animation: fudge 3s ease-in-out alternate infinite;
+  will-change: transform;
 }
 
 @-webkit-keyframes fudge {
@@ -180,24 +187,6 @@ app-home {
   }
 }
 
-@-webkit-keyframes glitch-2 {
-  1% {
-    transform: rotateX(10deg) skewX(70deg);
-  }
-  60% {
-    transform: rotateX(0deg) skewX(0deg);
-  }
-}
-
-@keyframes glitch-2 {
-  1% {
-    transform: rotateX(10deg) skewX(70deg);
-  }
-  60% {
-    transform: rotateX(0deg) skewX(0deg);
-  }
-}
-
 .Divider {
   display: flex;
   justify-content: center;
@@ -206,17 +195,18 @@ app-home {
 
 .Line {
   flex-grow: 1;
-  border-top: 1px solid #fff;
+  border-top: 1px solid $primary-color;
 }
 
 .AngleDown {
   cursor: pointer;
   margin-top: 0;
-  color: #fff;
+  color: $primary-color;
   font-size: 35px;
   padding: 0 25px;
-  -webkit-animation: UpDown 4s infinite;
-  animation: UpDown 4s infinite;
+  -webkit-animation: UpDown $animation-duration infinite;
+  animation: UpDown $animation-duration infinite;
+  will-change: transform;
 }
 
 @-webkit-keyframes UpDown {

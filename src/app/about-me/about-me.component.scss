@@ -315,11 +315,16 @@
     z-index: 1;
 }
 
+#text1 {
+    position: absolute;
+    left: 2vw;
+}
+
 #text2,
 .border-blur2 {
     position: absolute;
     top: 40vh;
-    right: 2vw;
+    right: 5vw;
 }
 
 #text3 {
@@ -366,7 +371,7 @@
     right: 10vw;
 }
 #svgIcon3 {
-    top: 73vh;
+    top: 72vh;
     left: 20vw;
 }
 #svgIcon4 {

@@ -18,7 +18,6 @@ body {
     position: relative;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
 }
-
 .item {
     width: 10vw;
     height: 33vh;
@@ -29,14 +28,12 @@ body {
     z-index: 1;
     background-position: center;
     background-size: cover;
-    cursor: hand;
+    cursor: pointer;
     box-shadow: 0 20px 30px rgba(255, 255, 255, 0.3) inset;
     transition:
         transform 0.1s,
         left 0.6s,
-        top 0.6s,
-        width 0.6s,
-        height 0.6s;
+        top 0.6s;
 
     &:nth-child(1),
     &:nth-child(2) {
@@ -60,7 +57,6 @@ body {
         opacity: 0.95;
         -webkit-filter: blur(0.1px);
         filter: blur(0.1px);
-        cursor: pointer;
 
         & .caption {
             position: absolute;
@@ -68,18 +64,25 @@ body {
             background: #0c1022;
             padding: 0.2rem;
             color: white;
-            text-wrap: wrap;
             top: 15%;
             font-size: 12px;
             text-shadow: 0 3px 12px rgba(0, 0, 0, 0.7);
         }
 
         &:hover {
-            opacity: 0.95;
             -webkit-filter: blur(0);
             filter: blur(0);
             transform: translateY(-55%) scale(1.03) rotate(-3deg);
-            transition: transform filter 0.6s ease-in-out;
+            transition:
+                transform 0.6s ease-in-out,
+                -webkit-filter 0.6s ease-in-out;
+            transition:
+                transform 0.6s ease-in-out,
+                filter 0.6s ease-in-out;
+            transition:
+                transform 0.6s ease-in-out,
+                filter 0.6s ease-in-out,
+                -webkit-filter 0.6s ease-in-out;
         }
     }
 
@@ -91,36 +94,12 @@ body {
         left: calc($cardsStart + #{$cardsDistance * 2});
     }
 
-    &:nth-child(6) {
-        left: calc($cardsStart + #{$cardsDistance * 3});
-        cursor: pointer;
-        opacity: 0;
-        pointer-events: none;
-    }
-
-    &:nth-child(7) {
-        left: calc($cardsStart + #{$cardsDistance * 4});
-        cursor: pointer;
-        opacity: 0;
-        pointer-events: none;
-    }
-    &:nth-child(8) {
-        left: calc($cardsStart + #{$cardsDistance * 5});
-        cursor: pointer;
-        opacity: 0;
-        pointer-events: none;
-    }
-    &:nth-child(9) {
-        left: calc($cardsStart + #{$cardsDistance * 6});
-        cursor: pointer;
-        opacity: 0;
-        pointer-events: none;
-    }
-    &:nth-child(10) {
-        left: calc($cardsStart + #{$cardsDistance * 7});
-        cursor: pointer;
-        opacity: 0;
-        pointer-events: none;
+    @for $i from 6 through 10 {
+        &:nth-child(#{$i}) {
+            left: calc($cardsStart + #{$cardsDistance * ($i - 1)});
+            opacity: 0;
+            pointer-events: none;
+        }
     }
 }
 
@@ -136,19 +115,14 @@ body {
     opacity: 0;
     margin: 5px;
     letter-spacing: 0.5px;
-
     display: none;
 
     & .title {
         font-size: 32px;
-        // margin-top: 40px;
         padding: 15px;
-        letter-spacing: 0.5px;
         color: white;
-        z-index: 2;
-        width: auto;
-        position: relative;
         text-align: center;
+        z-index: 2;
     }
 
     & .title::after {
@@ -157,7 +131,6 @@ body {
         width: 65%;
         border-bottom: 1px solid rgba(255, 255, 255, 0.3);
         margin: 0 auto;
-        position: relative;
         -webkit-animation: neonTextGlowWhite 4s infinite;
         animation: neonTextGlowWhite 4s infinite;
         top: 10px;
@@ -167,12 +140,12 @@ body {
         padding: 5px;
         text-align: justify;
         line-height: 1.7;
-        z-index: 10;
+        z-index: 2;
     }
 
     & button {
-        width: -moz-fit-content;
         width: -webkit-fit-content;
+        width: -moz-fit-content;
         width: fit-content;
         background-color: rgba(255, 255, 255, 0.5);
         font-weight: 600;
@@ -192,7 +165,6 @@ body {
         background-color: rgba(255, 255, 255, 0.8);
     }
 }
-
 .box1 {
     position: relative;
     background: transparent;
@@ -204,7 +176,8 @@ body {
     overflow: hidden;
 }
 
-.box1::after {
+.box1::after,
+.box1::before {
     content: "";
     position: absolute;
     width: 100vw;
@@ -215,10 +188,6 @@ body {
 }
 
 .box1::before {
-    content: "";
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
     background-image: conic-gradient(#fff700, transparent, transparent, transparent);
     -webkit-animation: animate-reverse 8s linear infinite;
     animation: animate-reverse 8s linear infinite;
@@ -241,6 +210,7 @@ body {
         transform: rotate(360deg);
     }
 }
+
 @-webkit-keyframes animate-reverse {
     0% {
         transform: rotate(360deg);
@@ -249,6 +219,7 @@ body {
         transform: rotate(0deg);
     }
 }
+
 @keyframes animate-reverse {
     0% {
         transform: rotate(360deg);
@@ -297,13 +268,12 @@ body {
         filter: blur(0);
     }
 }
+
 @-webkit-keyframes neonTextGlowWhite {
     from {
         box-shadow:
             0 0 1px #fff,
             0 0 2px #fff,
-            0 0 3px #ddd,
-            0 0 3px #ddd,
             0 0 3px #ddd,
             0 0 4px #bbb,
             0 0 5px #bbb,
@@ -317,8 +287,6 @@ body {
         box-shadow:
             0 0 2px #fff,
             0 0 3px #fff,
-            0 0 4px #ddd,
-            0 0 4px #ddd,
             0 0 4px #ddd,
             0 0 5px #bbb,
             0 0 6px #bbb,
@@ -329,13 +297,12 @@ body {
             0 0 12px #555;
     }
 }
+
 @keyframes neonTextGlowWhite {
     from {
         box-shadow:
             0 0 1px #fff,
             0 0 2px #fff,
-            0 0 3px #ddd,
-            0 0 3px #ddd,
             0 0 3px #ddd,
             0 0 4px #bbb,
             0 0 5px #bbb,
@@ -349,8 +316,6 @@ body {
         box-shadow:
             0 0 2px #fff,
             0 0 3px #fff,
-            0 0 4px #ddd,
-            0 0 4px #ddd,
             0 0 4px #ddd,
             0 0 5px #bbb,
             0 0 6px #bbb,
@@ -363,77 +328,40 @@ body {
 }
 
 @-webkit-keyframes neon-border {
-    0% {
+    0%,
+    100% {
         box-shadow:
             0 0 10px rgba(59, 126, 117, 0.6),
             0 0 20px rgba(59, 126, 117, 0.6),
             0 0 40px rgba(59, 126, 117, 0.6),
-            0 0 80px rgba(59, 126, 117, 0.6),
-            0 0 160px rgba(59, 126, 117, 0.6),
-            0 0 180px rgba(59, 126, 117, 0.6),
-            0 0 200px rgba(59, 126, 117, 0.6),
-            0 0 300px rgba(59, 126, 117, 0.6);
+            0 0 80px rgba(59, 126, 117, 0.6);
     }
     50% {
         box-shadow:
             0 0 20px rgba(59, 126, 117, 0.6),
             0 0 40px rgba(59, 126, 117, 0.6),
             0 0 60px rgba(59, 126, 117, 0.6),
-            0 0 100px rgba(59, 126, 117, 0.6),
-            0 0 200px rgba(59, 126, 117, 0.6),
-            0 0 220px rgba(59, 126, 117, 0.6),
-            0 0 240px rgba(59, 126, 117, 0.6),
-            0 0 400px rgba(59, 126, 117, 0.6);
-    }
-    100% {
-        box-shadow:
-            0 0 10px rgba(59, 126, 117, 0.6),
-            0 0 20px rgba(59, 126, 117, 0.6),
-            0 0 40px rgba(59, 126, 117, 0.6),
-            0 0 80px rgba(59, 126, 117, 0.6),
-            0 0 160px rgba(59, 126, 117, 0.6),
-            0 0 180px rgba(59, 126, 117, 0.6),
-            0 0 200px rgba(59, 126, 117, 0.6),
-            0 0 300px rgba(59, 126, 117, 0.6);
+            0 0 100px rgba(59, 126, 117, 0.6);
     }
 }
 
 @keyframes neon-border {
-    0% {
+    0%,
+    100% {
         box-shadow:
             0 0 10px rgba(59, 126, 117, 0.6),
             0 0 20px rgba(59, 126, 117, 0.6),
             0 0 40px rgba(59, 126, 117, 0.6),
-            0 0 80px rgba(59, 126, 117, 0.6),
-            0 0 160px rgba(59, 126, 117, 0.6),
-            0 0 180px rgba(59, 126, 117, 0.6),
-            0 0 200px rgba(59, 126, 117, 0.6),
-            0 0 300px rgba(59, 126, 117, 0.6);
+            0 0 80px rgba(59, 126, 117, 0.6);
     }
     50% {
         box-shadow:
             0 0 20px rgba(59, 126, 117, 0.6),
             0 0 40px rgba(59, 126, 117, 0.6),
             0 0 60px rgba(59, 126, 117, 0.6),
-            0 0 100px rgba(59, 126, 117, 0.6),
-            0 0 200px rgba(59, 126, 117, 0.6),
-            0 0 220px rgba(59, 126, 117, 0.6),
-            0 0 240px rgba(59, 126, 117, 0.6),
-            0 0 400px rgba(59, 126, 117, 0.6);
-    }
-    100% {
-        box-shadow:
-            0 0 10px rgba(59, 126, 117, 0.6),
-            0 0 20px rgba(59, 126, 117, 0.6),
-            0 0 40px rgba(59, 126, 117, 0.6),
-            0 0 80px rgba(59, 126, 117, 0.6),
-            0 0 160px rgba(59, 126, 117, 0.6),
-            0 0 180px rgba(59, 126, 117, 0.6),
-            0 0 200px rgba(59, 126, 117, 0.6),
-            0 0 300px rgba(59, 126, 117, 0.6);
+            0 0 100px rgba(59, 126, 117, 0.6);
     }
 }
-
 .btnLeft,
 .btnRight {
     position: absolute;
@@ -445,7 +373,7 @@ body {
     -ms-user-select: none;
     user-select: none;
     background-color: #0c1022;
-    color: rgb(255, 255, 255);
+    color: #fff;
     border: 3px solid rgba(59, 126, 117, 0.6);
     width: 65px;
     height: 65px;
@@ -475,6 +403,19 @@ body {
     left: 60%;
 }
 
+#imageLast,
+#image0,
+#image1,
+#image2,
+#image3,
+#image4,
+#image5,
+#image6,
+#image7 {
+    background-size: cover;
+    background-position: center;
+}
+
 #imageLast {
     background-image: url("/assets/images/projects/CyberpunkImage1.webp");
 }
@@ -498,12 +439,15 @@ body {
 #image4 {
     background-image: url("/assets/images/projects/CyberpunkImage6.webp");
 }
+
 #image5 {
     background-image: url("/assets/images/projects/CyberpunkImage7.webp");
 }
+
 #image6 {
     background-image: url("/assets/images/projects/CyberpunkImage8.webp");
 }
+
 #image7 {
     background-image: url("/assets/images/projects/CyberpunkImage9.webp");
 }
@@ -533,13 +477,29 @@ body {
     }
 }
 
+@keyframes neon-border {
+    0%,
+    100% {
+        box-shadow:
+            0 0 10px rgba(59, 126, 117, 0.6),
+            0 0 20px rgba(59, 126, 117, 0.6);
+    }
+    50% {
+        box-shadow:
+            0 0 20px rgba(59, 126, 117, 0.6),
+            0 0 40px rgba(59, 126, 117, 0.6);
+    }
+}
+
 @media (width > 650px) and (width < 900px) {
     .content {
         width: 52vw;
-        & .title {
+
+        .title {
             font-size: 22px;
         }
-        & button {
+
+        button {
             font-size: 0.7rem;
         }
     }
@@ -556,48 +516,15 @@ body {
         width: 15vw;
         height: 33vh;
 
-        &:nth-child(3) {
-            cursor: pointer;
-        }
-        &:nth-child(4) {
-            left: calc($cardsStart + #{$mediumCardsDistance});
-            cursor: pointer;
-        }
-        &:nth-child(5) {
-            left: calc($cardsStart + #{$mediumCardsDistance * 2});
-            cursor: pointer;
-            pointer-events: none;
-            opacity: 0;
-        }
-        &:nth-child(6) {
-            left: calc($cardsStart + #{$mediumCardsDistance * 3});
-            cursor: pointer;
-            pointer-events: none;
-            opacity: 0;
-        }
-        &:nth-child(7) {
-            left: calc($cardsStart + #{$mediumCardsDistance * 4});
-            cursor: pointer;
-            opacity: 0;
-            pointer-events: none;
-        }
-        &:nth-child(8) {
-            left: calc($cardsStart + #{$mediumCardsDistance * 5});
-            cursor: pointer;
-            pointer-events: none;
-            opacity: 0;
-        }
-        &:nth-child(9) {
-            left: calc($cardsStart + #{$mediumCardsDistance * 6});
-            cursor: pointer;
-            pointer-events: none;
-            opacity: 0;
-        }
-        &:nth-child(10) {
-            left: calc($cardsStart + #{$mediumCardsDistance * 7});
-            cursor: pointer;
-            pointer-events: none;
-            opacity: 0;
+        @for $i from 3 through 10 {
+            &:nth-child(#{$i}) {
+                cursor: pointer;
+                @if $i > 3 {
+                    left: calc($cardsStart + #{$mediumCardsDistance * ($i - 4)});
+                    pointer-events: none;
+                    opacity: 0;
+                }
+            }
         }
     }
 }
@@ -606,7 +533,7 @@ body {
     .btnLeft,
     .btnRight {
         position: absolute;
-        left: 28% + $cardsStart;
+        left: calc(28% + #{$cardsStart});
         z-index: 5;
         -webkit-user-select: none;
         -moz-user-select: none;
@@ -616,7 +543,7 @@ body {
         color: rgb(0, 0, 0);
         border: 3px solid rgba(59, 126, 117, 0.6);
         width: 65px;
-        height: 65px; /* Dodaj wysokość, aby była równa szerokości */
+        height: 65px;
         font-size: 1.8rem;
         border-radius: 50%;
         cursor: pointer;
@@ -640,61 +567,31 @@ body {
         width: 68vw;
         padding-bottom: 0;
         letter-spacing: 0;
-        & .title {
+
+        .title {
             font-size: 18px;
         }
-        & button {
+
+        button {
             font-size: 0.7rem;
         }
     }
+
     .item {
         width: 25vw;
         height: 33vh;
 
         &:nth-child(3) {
-            left: 14% + $cardsStart;
+            left: calc(14% + #{$cardsStart});
         }
-        &:nth-child(4) {
-            left: calc(14% + $cardsStart + #{$smallCardsDistance});
-            cursor: pointer;
-            pointer-events: none;
-            opacity: 0;
-        }
-        &:nth-child(5) {
-            left: calc(14% + $cardsStart + #{$smallCardsDistance * 2});
-            cursor: pointer;
-            opacity: 0;
-            pointer-events: none;
-        }
-        &:nth-child(6) {
-            left: calc(14% + $cardsStart + #{$smallCardsDistance * 3});
-            cursor: pointer;
-            opacity: 0;
-            pointer-events: none;
-        }
-        &:nth-child(7) {
-            left: calc(14% + $cardsStart + #{$smallCardsDistance * 4});
-            cursor: pointer;
-            opacity: 0;
-            pointer-events: none;
-        }
-        &:nth-child(8) {
-            left: calc(14% + $cardsStart + #{$smallCardsDistance * 5});
-            cursor: pointer;
-            opacity: 0;
-            pointer-events: none;
-        }
-        &:nth-child(9) {
-            left: calc(14% + $cardsStart + #{$smallCardsDistance * 6});
-            cursor: pointer;
-            opacity: 0;
-            pointer-events: none;
-        }
-        &:nth-child(10) {
-            left: calc(14% + $cardsStart + #{$smallCardsDistance * 7});
-            cursor: pointer;
-            opacity: 0;
-            pointer-events: none;
+
+        @for $i from 4 through 10 {
+            &:nth-child(#{$i}) {
+                left: calc(14% + #{$cardsStart} + #{$smallCardsDistance * ($i - 3)});
+                cursor: pointer;
+                pointer-events: none;
+                opacity: 0;
+            }
         }
     }
 }

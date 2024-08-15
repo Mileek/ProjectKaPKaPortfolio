@@ -1,17 +1,19 @@
+@use "sass:math";
+
 $formWidth: 80vw;
 $gradientWidth: 8px;
 $gradientSmallWidth: 4px;
 
 @mixin gradient-background($width) {
     background:
-        linear-gradient(to right, #f2e900 $width, transparent 4px) 0 0,
-        linear-gradient(to right, #f2e900 $width, transparent 4px) 0 100%,
-        linear-gradient(to left, #f2e900 $width, transparent 4px) 100% 0,
-        linear-gradient(to left, #f2e900 $width, transparent 4px) 100% 100%,
-        linear-gradient(to bottom, #f2e900 $width, transparent 4px) 0 0,
-        linear-gradient(to bottom, #f2e900 $width, transparent 4px) 100% 0,
-        linear-gradient(to top, #f2e900 $width, transparent 4px) 0 100%,
-        linear-gradient(to top, #f2e900 $width, transparent 4px) 100% 100%;
+        linear-gradient(to right, #f2e900 $width, transparent math.div(4px, 1)) 0 0,
+        linear-gradient(to right, #f2e900 $width, transparent math.div(4px, 1)) 0 100%,
+        linear-gradient(to left, #f2e900 $width, transparent math.div(4px, 1)) 100% 0,
+        linear-gradient(to left, #f2e900 $width, transparent math.div(4px, 1)) 100% 100%,
+        linear-gradient(to bottom, #f2e900 $width, transparent math.div(4px, 1)) 0 0,
+        linear-gradient(to bottom, #f2e900 $width, transparent math.div(4px, 1)) 100% 0,
+        linear-gradient(to top, #f2e900 $width, transparent math.div(4px, 1)) 0 100%,
+        linear-gradient(to top, #f2e900 $width, transparent math.div(4px, 1)) 100% 100%;
     background-color: rgba(255, 255, 255, 0.4);
     background-repeat: no-repeat;
     background-size: 150px 150px;
@@ -65,39 +67,6 @@ $gradientSmallWidth: 4px;
         -webkit-animation: neonGlowRed 2.2s linear infinite alternate;
         animation: neonGlowRed 2.2s linear infinite alternate;
         font-display: swap;
-    }
-}
-
-@-webkit-keyframes neonGlowRed {
-    from {
-        text-shadow:
-            0 0 10px #ff6666,
-            0 0 15px #ff6666,
-            0 0 30px #ff3333,
-            0 0 30px #ff3333,
-            0 0 30px #ff3333,
-            0 0 40px #ff3333,
-            0 0 50px #ff3333,
-            0 0 60px #ff3333,
-            0 0 70px #ff3333,
-            0 0 80px #ff3333,
-            0 0 90px #ff3333,
-            0 0 100px #ff1a1a;
-    }
-    to {
-        text-shadow:
-            0 0 20px #ff9999,
-            0 0 30px #ff9999,
-            0 0 40px #ff6666,
-            0 0 40px #ff6666,
-            0 0 40px #ff6666,
-            0 0 50px #ff6666,
-            0 0 60px #ff6666,
-            0 0 70px #ff6666,
-            0 0 80px #ff6666,
-            0 0 90px #ff6666,
-            0 0 100px #ff4d4d,
-            0 0 120px #ff1a1a;
     }
 }
 

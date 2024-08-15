@@ -124,6 +124,7 @@ $background: linear-gradient(
 #NebulaRed {
   position: absolute;
   z-index: 2;
+  filter: blur(30px);
 }
 
 #FloatingObjects {
