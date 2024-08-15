@@ -5,9 +5,10 @@
     "ng": "ng",
     "start": "ng serve",
     "start and open": "ng serve --open",
-    "build": "ng build",
+    "build": "ng build --configuration production && npm run postbuild",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "postbuild": "cpx src/.htaccess dist/ka-pka-portfolio/"
   },
   "private": true,
   "dependencies": {
@@ -28,9 +29,7 @@
     "matter-js": "^0.19.0",
     "orbit-controls": "^1.2.4",
     "rxjs": "~7.8.1",
-    "three": "^0.164.1",
-    "tslib": "^2.6.2",
-    "zone.js": "^0.14.6"
+    "three": "^0.164.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.3.7",
@@ -45,6 +44,7 @@
     "karma-coverage": "~2.2.1",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.4.5"
+    "typescript": "~5.4.5",
+    "cpx": "^1.5.0"
   }
 }
