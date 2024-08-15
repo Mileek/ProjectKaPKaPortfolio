@@ -226,14 +226,14 @@ export class SectionsComponent implements OnInit
   {
     const ctx = this.canvasTwinkling.getContext('2d');
     const width = this.background.offsetWidth;
-    const height = this.background.offsetHeight + 1500;
+    const height = this.background.offsetHeight + (window.innerHeight * 0.5);
     this.canvasTwinkling.width = width;
     this.canvasTwinkling.height = height;
     this.TwinklingLinesArray = [];
 
     let i = 0;
     let lastTime = performance.now();
-    const delay = 60;
+    const delay = 100;
     const targetFPS = 30;
     const frameDuration = 1000 / targetFPS;
     let lastFrameTime = 0;
@@ -373,7 +373,7 @@ export class SectionsComponent implements OnInit
           this.loadComponent(sectionId);
         }
       });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.05 });
     this.background = document.getElementById('Background') as HTMLDivElement;
     this.blackholeContainer = document.getElementById('BlackholeContainer') as HTMLDivElement;
     this.canvasBlackhole = document.getElementById('Blackhole') as HTMLCanvasElement;
@@ -530,14 +530,14 @@ export class SectionsComponent implements OnInit
     const frameDuration30 = 1000 / targetFPS30;
     let lastFrameTime30 = 0;
 
-    const targetFPS20 = 20;
-    const frameDuration20 = 1000 / targetFPS20;
-    let lastFrameTime20 = 0;
+    const targetFPS18 = 18;
+    const frameDuration20 = 1000 / targetFPS18;
+    let lastFrameTime18 = 0;
 
     const animate = (currentTime: number) =>
     {
       const deltaTime30 = currentTime - lastFrameTime30;
-      const deltaTime20 = currentTime - lastFrameTime20;
+      const deltaTime18 = currentTime - lastFrameTime18;
 
       const width = this.background.offsetWidth;
       const height = this.background.offsetHeight;
@@ -559,15 +559,15 @@ export class SectionsComponent implements OnInit
         this.AnimateFloatingObjects(width, height);
       }
 
-      if (deltaTime20 >= frameDuration20)
+      if (deltaTime18 >= frameDuration20)
       {
-        lastFrameTime20 = currentTime;
+        lastFrameTime18 = currentTime;
         const blackholeBlurRingCtx = this.canvasBlackholeBlurRing.getContext('2d');
         const blackholeRingCtx = this.canvasBlackholeRing.getContext('2d');
         const blackholeBendingCtx = this.canvasBlackholeBending.getContext('2d');
         const blackholeSmallerRingCtx = this.canvasBlackholeSmallerRing.getContext('2d');
 
-        // Clear and redraw animations at 20 FPS
+        // Clear and redraw animations at 18 FPS
         this.AnimateBlackholeBlurRing(blackholeBlurRingCtx, width, height);
         this.AnimateBlackholeRing(blackholeRingCtx, width, height);
         this.AnimateBlackholeBending(blackholeBendingCtx, width, height);
@@ -789,7 +789,7 @@ export class SectionsComponent implements OnInit
     if (viewportWidth <= 480)
     {
       this.updateBlackHoleDimensions(viewportWidth, 0.28);
-      this.numberOfTwinklingStars = 100;
+      this.numberOfTwinklingStars = 125;
       this.numberOfFallingStars = 2;
       this.numberOfMeteors = 2;
       this.numberOfNebulas = 0;

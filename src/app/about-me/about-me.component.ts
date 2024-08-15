@@ -195,7 +195,7 @@ export class AboutMeComponent implements OnInit
 
   animateStars(): void
   {
-    const targetFps = 30;
+    const targetFps = 10;
     const frameDuration = 1000 / targetFps;
     let lastFrameTime = 0;
 

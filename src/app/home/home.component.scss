@@ -58,11 +58,11 @@ app-home {
   overflow: hidden;
   margin-top: 5px;
   -webkit-animation:
-    noise-1 2s linear infinite alternate-reverse,
-    glitch 6s 3.1s infinite;
+    noise-1 1.5s linear infinite alternate-reverse,
+    glitch 4s 3.1s infinite;
   animation:
-    noise-1 2s linear infinite alternate-reverse,
-    glitch 6s 3.1s infinite;
+    noise-1 1.5s linear infinite alternate-reverse,
+    glitch 4s 3.1s infinite;
 }
 
 .glitch::after {
@@ -74,11 +74,11 @@ app-home {
   overflow: hidden;
   margin-top: 5px;
   -webkit-animation:
-    noise-2 2s linear infinite alternate-reverse,
-    glitch 6s 3s infinite;
+    noise-2 1.5s linear infinite alternate-reverse,
+    glitch 4s 3s infinite;
   animation:
-    noise-2 2s linear infinite alternate-reverse,
-    glitch 6s 3s infinite;
+    noise-2 1.5s linear infinite alternate-reverse,
+    glitch 4s 3s infinite;
 }
 @-webkit-keyframes glitch {
   1% {
@@ -158,8 +158,8 @@ app-home {
   top: 0;
   left: 0;
   background: repeating-linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0) 0.5%, transparent 1%);
-  -webkit-animation: fudge 4s ease-in-out alternate infinite;
-  animation: fudge 4s ease-in-out alternate infinite;
+  -webkit-animation: fudge 3s ease-in-out alternate infinite;
+  animation: fudge 3s ease-in-out alternate infinite;
 }
 
 @-webkit-keyframes fudge {

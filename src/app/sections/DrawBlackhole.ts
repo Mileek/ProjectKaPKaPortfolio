@@ -29,7 +29,7 @@ export class DrawBlackhole
   defaultHeight: number;
   defaultWidth: number;
   drawSatellite: boolean = true;
-  maxGravitationalPull: number = 0.2;
+  maxGravitationalPull: number = 0.18;
   public mouseOnSizeIncrement: number = 0;
 
   constructor(width: number, height: number, centerOffsetX: number, centerOffsetY: number,
@@ -105,13 +105,6 @@ export class DrawBlackhole
   AnimateBlackholeSmallerRing(ctx: CanvasRenderingContext2D)
   {
     this.drawSmallerRing(ctx);
-  }
-
-  public GetBlackholeCenterPoint(): Point
-  {
-    const x = this.blackholeRadius * Math.cos(this.angle) + this.centerOffsetX;
-    const y = this.blackholeRadius * Math.sin(this.angle) + this.centerOffsetY;
-    return { x, y };
   }
 
   public GetRandomPointInsideBlackhole(): Point
@@ -194,7 +187,6 @@ export class DrawBlackhole
 
     ctx.beginPath();
     ctx.ellipse(posX, posY, this.width, this.height, 0, 0, 2 * Math.PI, false);
-    ctx.fillStyle = "#000000ce";
     ctx.fill();
     ctx.stroke();
   }
@@ -206,7 +198,6 @@ export class DrawBlackhole
 
     ctx.beginPath();
     ctx.ellipse(posX, posY, this.width, this.height, 0, 0, 2 * Math.PI, false);
-    ctx.fillStyle = "transparent";
     ctx.fill();
 
     const gradient = ctx.createLinearGradient(posX, posY - this.height, posX, posY + this.height);
@@ -215,7 +206,6 @@ export class DrawBlackhole
 
     ctx.lineWidth = this.blurRingWidth;
     ctx.strokeStyle = gradient;
-    ctx.lineCap = "round";
     ctx.stroke();
   }
 
@@ -236,7 +226,6 @@ export class DrawBlackhole
     ctx.beginPath();
     ctx.arc(posX, posY, this.height * 0.12, 0, 2 * Math.PI, false);
     ctx.fillStyle = gradient;
-    ctx.globalAlpha = 0.9;
     ctx.fill();
     ctx.stroke();
   }
@@ -257,7 +246,6 @@ export class DrawBlackhole
 
     ctx.lineWidth = 25;
     ctx.strokeStyle = gradient;
-    ctx.lineCap = "round";
     ctx.stroke();
   }
 
@@ -280,7 +268,6 @@ export class DrawBlackhole
     ctx.fill();
     ctx.lineWidth = 5;
     ctx.strokeStyle = '#ffffff';
-    ctx.lineCap = "round";
     ctx.stroke();
   }
 
@@ -288,9 +275,9 @@ export class DrawBlackhole
   {
     ctx.lineWidth = 1;
     ctx.strokeStyle = '#00000000';
-    ctx.lineCap = "butt";
+    // ctx.lineCap = "butt";
     ctx.fillStyle = '#00000000';
     ctx.globalAlpha = 1;
-    ctx.globalCompositeOperation = "source-over";
+    // ctx.globalCompositeOperation = "source-over";
   }
 }

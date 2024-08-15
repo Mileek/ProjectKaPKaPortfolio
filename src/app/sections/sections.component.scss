@@ -91,6 +91,9 @@ $background: linear-gradient(
   margin: auto;
   z-index: 5;
 }
+#Blackhole {
+  fill: #000000ce;
+}
 
 #BlackholeBlurRing {
   -webkit-filter: blur(18px);
@@ -104,6 +107,7 @@ $background: linear-gradient(
 #BlackholeSatellite {
   -webkit-filter: blur(10px);
   filter: blur(10px);
+  opacity: 0.9;
 }
 #BlackholeSmallerRing {
   -webkit-filter: blur(4px);
