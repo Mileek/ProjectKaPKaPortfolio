@@ -173,7 +173,6 @@ export class DrawBlackhole
     ctx.beginPath();
     ctx.ellipse(posX, posY, this.width * this.bendingWidthCoeff, this.bendingHeight, 0, 0, 2 * Math.PI, false);
     ctx.fillStyle = gradient;
-    ctx.filter = "blur(6px)";
     ctx.globalAlpha = 0.5;
     ctx.fill();
     ctx.stroke();
@@ -183,7 +182,6 @@ export class DrawBlackhole
     ctx.ellipse(posX, posY, this.width * this.bendingWidthCoeff, this.bendingHeight, 0, Math.PI, 2 * Math.PI, true);
     ctx.lineWidth = 5;
     ctx.strokeStyle = 'white';
-    ctx.filter = "blur(6px)";
     ctx.stroke();
 
     this.resetContext(ctx);
@@ -199,8 +197,6 @@ export class DrawBlackhole
     ctx.fillStyle = "#000000ce";
     ctx.fill();
     ctx.stroke();
-
-    // this.resetContext(ctx);
   }
 
   private drawBlurRing(ctx: CanvasRenderingContext2D): void
@@ -220,10 +216,7 @@ export class DrawBlackhole
     ctx.lineWidth = this.blurRingWidth;
     ctx.strokeStyle = gradient;
     ctx.lineCap = "round";
-    ctx.filter = "blur(18px)";
     ctx.stroke();
-
-    // this.resetContext();
   }
 
   private drawFirstSatellite(ctx: CanvasRenderingContext2D): void
@@ -243,12 +236,9 @@ export class DrawBlackhole
     ctx.beginPath();
     ctx.arc(posX, posY, this.height * 0.12, 0, 2 * Math.PI, false);
     ctx.fillStyle = gradient;
-    ctx.filter = "blur(10px)";
     ctx.globalAlpha = 0.9;
     ctx.fill();
     ctx.stroke();
-
-    // this.resetContext();
   }
 
   private drawRing(ctx: CanvasRenderingContext2D): void
@@ -268,10 +258,7 @@ export class DrawBlackhole
     ctx.lineWidth = 25;
     ctx.strokeStyle = gradient;
     ctx.lineCap = "round";
-    ctx.filter = "blur(12px)";
     ctx.stroke();
-
-    // this.resetContext();
   }
 
   private drawSmallerRing(ctx: CanvasRenderingContext2D): void
@@ -294,10 +281,7 @@ export class DrawBlackhole
     ctx.lineWidth = 5;
     ctx.strokeStyle = '#ffffff';
     ctx.lineCap = "round";
-    ctx.filter = "blur(4px)";
     ctx.stroke();
-
-    // this.resetContext();
   }
 
   private resetContext(ctx: CanvasRenderingContext2D)
@@ -305,7 +289,6 @@ export class DrawBlackhole
     ctx.lineWidth = 1;
     ctx.strokeStyle = '#00000000';
     ctx.lineCap = "butt";
-    // ctx.filter = "none";
     ctx.fillStyle = '#00000000';
     ctx.globalAlpha = 1;
     ctx.globalCompositeOperation = "source-over";

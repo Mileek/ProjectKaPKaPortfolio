@@ -57,6 +57,7 @@
     justify-content: center;
     align-items: center;
     opacity: 0;
+    -webkit-filter: blur(100px);
     filter: blur(100px);
 }
 
@@ -70,6 +71,7 @@
     justify-content: center;
     align-items: center;
     opacity: 0;
+    -webkit-filter: blur(100px);
     filter: blur(100px);
 }
 
@@ -83,6 +85,7 @@
     justify-content: center;
     align-items: center;
     opacity: 0;
+    -webkit-filter: blur(100px);
     filter: blur(100px);
 }
 .border-blur4 {
@@ -95,6 +98,7 @@
     justify-content: center;
     align-items: center;
     opacity: 0;
+    -webkit-filter: blur(100px);
     filter: blur(100px);
 }
 .border-blur5 {
@@ -107,6 +111,7 @@
     justify-content: center;
     align-items: center;
     opacity: 0;
+    -webkit-filter: blur(100px);
     filter: blur(100px);
 }
 
@@ -139,7 +144,9 @@
     width: 100vw;
     height: 100vh;
     background-image: conic-gradient(transparent, transparent, transparent, #ff00ff);
+    -webkit-animation: animate 6s linear infinite;
     animation: animate 6s linear infinite;
+    -webkit-animation-delay: -3s;
     animation-delay: -3s;
 }
 
@@ -150,6 +157,7 @@
     width: 100vw;
     height: 100vh;
     background-image: conic-gradient(transparent, transparent, transparent, #00c8ff);
+    -webkit-animation: animate 6s linear infinite;
     animation: animate 6s linear infinite;
 }
 
@@ -167,7 +175,9 @@
     width: 100vw;
     height: 100vh;
     background-image: conic-gradient(transparent, transparent, transparent, #f6ff00);
+    -webkit-animation: animate 4s linear infinite;
     animation: animate 4s linear infinite;
+    -webkit-animation-delay: -2s;
     animation-delay: -2s;
 }
 
@@ -178,6 +188,7 @@
     width: 100vw;
     height: 100vh;
     background-image: conic-gradient(transparent, transparent, transparent, #ff0000);
+    -webkit-animation: animate 4s linear infinite;
     animation: animate 4s linear infinite;
 }
 
@@ -195,7 +206,9 @@
     width: 100vw;
     height: 100vh;
     background-image: conic-gradient(transparent, transparent, transparent, #7700ff);
+    -webkit-animation: animate 8s linear infinite;
     animation: animate 8s linear infinite;
+    -webkit-animation-delay: -4s;
     animation-delay: -4s;
 }
 
@@ -206,6 +219,7 @@
     width: 100vw;
     height: 100vh;
     background-image: conic-gradient(transparent, transparent, transparent, #48ff00);
+    -webkit-animation: animate 8s linear infinite;
     animation: animate 8s linear infinite;
 }
 
@@ -223,7 +237,9 @@
     width: 100vw;
     height: 100vh;
     background-image: conic-gradient(transparent, transparent, transparent, #00ffbf);
+    -webkit-animation: animate 5s linear infinite;
     animation: animate 5s linear infinite;
+    -webkit-animation-delay: -3s;
     animation-delay: -3s;
 }
 
@@ -234,6 +250,7 @@
     width: 100vw;
     height: 100vh;
     background-image: conic-gradient(transparent, transparent, transparent, #ff00e1);
+    -webkit-animation: animate 5s linear infinite;
     animation: animate 5s linear infinite;
 }
 
@@ -251,7 +268,9 @@
     width: 100vw;
     height: 100vh;
     background-image: conic-gradient(transparent, transparent, transparent, #ffffff);
+    -webkit-animation: animate 2s linear infinite;
     animation: animate 2s linear infinite;
+    -webkit-animation-delay: -1s;
     animation-delay: -1s;
 }
 
@@ -262,7 +281,17 @@
     width: 100vw;
     height: 100vh;
     background-image: conic-gradient(transparent, transparent, transparent, #6b6b6b);
+    -webkit-animation: animate 2s linear infinite;
     animation: animate 2s linear infinite;
+}
+
+@-webkit-keyframes animate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes animate {
@@ -371,6 +400,7 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     margin: 0 auto;
     position: relative;
+    -webkit-animation: neonTextGlowWhite 4s infinite;
     animation: neonTextGlowWhite 4s infinite;
     top: 10px;
 }
@@ -382,6 +412,39 @@
     z-index: 2;
     position: relative;
     text-align: justify;
+}
+
+@-webkit-keyframes neonTextGlowWhite {
+    from {
+        box-shadow:
+            0 0 1px #fff,
+            0 0 2px #fff,
+            0 0 3px #ddd,
+            0 0 3px #ddd,
+            0 0 3px #ddd,
+            0 0 4px #bbb,
+            0 0 5px #bbb,
+            0 0 6px #999,
+            0 0 7px #999,
+            0 0 8px #777,
+            0 0 9px #777,
+            0 0 10px #555;
+    }
+    to {
+        box-shadow:
+            0 0 2px #fff,
+            0 0 3px #fff,
+            0 0 4px #ddd,
+            0 0 4px #ddd,
+            0 0 4px #ddd,
+            0 0 5px #bbb,
+            0 0 6px #bbb,
+            0 0 7px #999,
+            0 0 8px #999,
+            0 0 9px #777,
+            0 0 10px #777,
+            0 0 12px #555;
+    }
 }
 
 @keyframes neonTextGlowWhite {

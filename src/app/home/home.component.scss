@@ -43,6 +43,7 @@ app-home {
   width: auto;
   color: #fff;
   letter-spacing: 2px;
+  -webkit-animation: glitch 8s 2s infinite;
   animation: glitch 8s 2s infinite;
   padding-left: 5%;
   padding-right: 5%;
@@ -56,6 +57,9 @@ app-home {
   background: transparent;
   overflow: hidden;
   margin-top: 5px;
+  -webkit-animation:
+    noise-1 2s linear infinite alternate-reverse,
+    glitch 6s 3.1s infinite;
   animation:
     noise-1 2s linear infinite alternate-reverse,
     glitch 6s 3.1s infinite;
@@ -69,9 +73,20 @@ app-home {
   background: transparent;
   overflow: hidden;
   margin-top: 5px;
+  -webkit-animation:
+    noise-2 2s linear infinite alternate-reverse,
+    glitch 6s 3s infinite;
   animation:
     noise-2 2s linear infinite alternate-reverse,
     glitch 6s 3s infinite;
+}
+@-webkit-keyframes glitch {
+  1% {
+    transform: rotateX(10deg) skewX(90deg);
+  }
+  60% {
+    transform: rotateX(0deg) skewX(0deg);
+  }
 }
 @keyframes glitch {
   1% {
@@ -82,12 +97,37 @@ app-home {
   }
 }
 
+@-webkit-keyframes noise-1 {
+  $steps: 30;
+  @for $i from 1 through $steps {
+    #{percentage($i*(1/$steps))} {
+      $top: random(100);
+      $bottom: random(101 - $top);
+      -webkit-clip-path: inset(#{$top}px 0 #{$bottom}px 0);
+      clip-path: inset(#{$top}px 0 #{$bottom}px 0);
+    }
+  }
+}
+
 @keyframes noise-1 {
   $steps: 30;
   @for $i from 1 through $steps {
     #{percentage($i*(1/$steps))} {
       $top: random(100);
       $bottom: random(101 - $top);
+      -webkit-clip-path: inset(#{$top}px 0 #{$bottom}px 0);
+      clip-path: inset(#{$top}px 0 #{$bottom}px 0);
+    }
+  }
+}
+
+@-webkit-keyframes noise-2 {
+  $steps: 30;
+  @for $i from 0 through $steps {
+    #{percentage($i*(1/$steps))} {
+      $top: random(100);
+      $bottom: random(101 - $top);
+      -webkit-clip-path: inset(#{$top}px 0 #{$bottom}px 0);
       clip-path: inset(#{$top}px 0 #{$bottom}px 0);
     }
   }
@@ -99,6 +139,7 @@ app-home {
     #{percentage($i*(1/$steps))} {
       $top: random(100);
       $bottom: random(101 - $top);
+      -webkit-clip-path: inset(#{$top}px 0 #{$bottom}px 0);
       clip-path: inset(#{$top}px 0 #{$bottom}px 0);
     }
   }
@@ -117,7 +158,17 @@ app-home {
   top: 0;
   left: 0;
   background: repeating-linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0) 0.5%, transparent 1%);
+  -webkit-animation: fudge 4s ease-in-out alternate infinite;
   animation: fudge 4s ease-in-out alternate infinite;
+}
+
+@-webkit-keyframes fudge {
+  from {
+    transform: translate(0px, 0px);
+  }
+  to {
+    transform: translate(0px, 2%);
+  }
 }
 
 @keyframes fudge {
@@ -126,6 +177,15 @@ app-home {
   }
   to {
     transform: translate(0px, 2%);
+  }
+}
+
+@-webkit-keyframes glitch-2 {
+  1% {
+    transform: rotateX(10deg) skewX(70deg);
+  }
+  60% {
+    transform: rotateX(0deg) skewX(0deg);
   }
 }
 
@@ -155,7 +215,18 @@ app-home {
   color: #fff;
   font-size: 35px;
   padding: 0 25px;
+  -webkit-animation: UpDown 4s infinite;
   animation: UpDown 4s infinite;
+}
+
+@-webkit-keyframes UpDown {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 @keyframes UpDown {

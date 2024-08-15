@@ -394,7 +394,7 @@ export class SectionsComponent implements OnInit
     this.DrawBlackhole();
     this.DrawTwinklingStars(this.numberOfTwinklingStars);
     this.DrawFallingStars(this.numberOfFallingStars);
-    this.DrawNebulas();
+    // this.DrawNebulas();
     this.DrawFloatingObjects();
     this.applyMediaQueryAfterDrawLogic();
     //Create Interactions
