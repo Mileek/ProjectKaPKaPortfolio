@@ -39,6 +39,11 @@ export class SectionsComponent implements OnInit
   blackhole!: DrawBlackhole;
   blackholeContainer!: HTMLDivElement;
   canvasBlackhole!: HTMLCanvasElement;
+  canvasBlackholeBending!: HTMLCanvasElement;
+  canvasBlackholeBlurRing!: HTMLCanvasElement;
+  canvasBlackholeRing!: HTMLCanvasElement;
+  canvasBlackholeSatellite!: HTMLCanvasElement;
+  canvasBlackholeSmallerRing!: HTMLCanvasElement;
   canvasFalling!: HTMLCanvasElement;
   canvasFloatingObjects!: HTMLCanvasElement;
   canvasTwinkling!: HTMLCanvasElement;
@@ -79,13 +84,13 @@ export class SectionsComponent implements OnInit
 
   DrawBlackhole(): void
   {
-    var ctx = this.canvasBlackhole.getContext('2d');
+    // var ctx = this.canvasBlackhole.getContext('2d');
 
-    if (ctx)
-    {
-      this.blackhole = new DrawBlackhole(ctx, this.BlackHoleWidth, this.BlackHoleHeight,
-        this.blackholeContainer.offsetWidth / 2, this.blackholeContainer.offsetHeight * 0.3, this.drawSatellite);
-    }
+    // if (ctx)
+    // {
+    this.blackhole = new DrawBlackhole(this.BlackHoleWidth, this.BlackHoleHeight,
+      this.blackholeContainer.offsetWidth / 2, this.blackholeContainer.offsetHeight * 0.3, this.drawSatellite);
+    //}
   }
 
   DrawFPS()
@@ -372,6 +377,11 @@ export class SectionsComponent implements OnInit
     this.background = document.getElementById('Background') as HTMLDivElement;
     this.blackholeContainer = document.getElementById('BlackholeContainer') as HTMLDivElement;
     this.canvasBlackhole = document.getElementById('Blackhole') as HTMLCanvasElement;
+    this.canvasBlackholeBending = document.getElementById('BlackholeBending') as HTMLCanvasElement;
+    this.canvasBlackholeRing = document.getElementById('BlackholeRing') as HTMLCanvasElement;
+    this.canvasBlackholeBlurRing = document.getElementById('BlackholeBlurRing') as HTMLCanvasElement;
+    this.canvasBlackholeSatellite = document.getElementById('BlackholeSatellite') as HTMLCanvasElement;
+    this.canvasBlackholeSmallerRing = document.getElementById('BlackholeSmallerRing') as HTMLCanvasElement;
     this.canvasTwinkling = document.getElementById('TwinklingStars') as HTMLCanvasElement;
     this.canvasFalling = document.getElementById('FallingStars') as HTMLCanvasElement;
     this.imgGalaxies = document.getElementById('Galaxies') as HTMLCanvasElement;
@@ -410,16 +420,16 @@ export class SectionsComponent implements OnInit
   @HostListener('mousedown', ['$event'])
   onMouseDown(event: MouseEvent): void
   {
-    var mouseX = event.clientX - this.canvasBlackhole.getBoundingClientRect().left;
-    var mouseY = event.clientY - this.canvasBlackhole.getBoundingClientRect().top;
+    var mouseX = event.clientX - this.blackholeContainer.getBoundingClientRect().left;
+    var mouseY = event.clientY - this.blackholeContainer.getBoundingClientRect().top;
     this.galaxiesDealer.MeteorInteractionMouseDown(mouseX, mouseY);
   }
 
   @HostListener('mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void
   {
-    var mouseX = event.clientX - this.canvasBlackhole.getBoundingClientRect().left;
-    var mouseY = event.clientY - this.canvasBlackhole.getBoundingClientRect().top;
+    var mouseX = event.clientX - this.blackholeContainer.getBoundingClientRect().left;
+    var mouseY = event.clientY - this.blackholeContainer.getBoundingClientRect().top;
     this.isMouseOverBlackhole = this.blackhole.IsPointInEllipse(mouseX, mouseY);
     this.galaxiesDealer.SetMousePosition(mouseX, mouseY);
   }
@@ -427,8 +437,8 @@ export class SectionsComponent implements OnInit
   @HostListener('mouseup', ['$event'])
   onMouseUp(event: MouseEvent): void
   {
-    var mouseX = event.clientX - this.canvasBlackhole.getBoundingClientRect().left;
-    var mouseY = event.clientY - this.canvasBlackhole.getBoundingClientRect().top;
+    var mouseX = event.clientX - this.blackholeContainer.getBoundingClientRect().left;
+    var mouseY = event.clientY - this.blackholeContainer.getBoundingClientRect().top;
     this.galaxiesDealer.MeteorInteractionMouseUp(mouseX, mouseY);
   }
 
@@ -516,29 +526,52 @@ export class SectionsComponent implements OnInit
 
   private AnimateAll()
   {
-    const targetFPS = 30;
-    const frameDuration = 1000 / targetFPS;
-    let lastFrameTime = 0;
+    const targetFPS30 = 30;
+    const frameDuration30 = 1000 / targetFPS30;
+    let lastFrameTime30 = 0;
+
+    const targetFPS20 = 20;
+    const frameDuration20 = 1000 / targetFPS20;
+    let lastFrameTime20 = 0;
 
     const animate = (currentTime: number) =>
     {
-      const deltaTime = currentTime - lastFrameTime;
+      const deltaTime30 = currentTime - lastFrameTime30;
+      const deltaTime20 = currentTime - lastFrameTime20;
 
-      if (deltaTime >= frameDuration)
+      const width = this.background.offsetWidth;
+      const height = this.background.offsetHeight;
+
+      if (deltaTime30 >= frameDuration30)
       {
-        lastFrameTime = currentTime;
-        const width = this.background.offsetWidth;
-        const height = this.background.offsetHeight;
+        lastFrameTime30 = currentTime;
         const blackholeCtx = this.canvasBlackhole.getContext('2d');
+        const blackholeSatelliteCtx = this.canvasBlackholeSatellite.getContext('2d');
         const fallingCtx = this.canvasFalling.getContext('2d');
         const twinklingCtx = this.canvasTwinkling.getContext('2d');
 
-        // Clear and redraw all animations
+        // Clear and redraw animations at 30 FPS
         this.AnimateBlackhole(blackholeCtx, width, height);
+        this.AnimateBlackholeSatellite(blackholeSatelliteCtx, width, height);
         this.AnimateBlackholeAndStarsInteraction(twinklingCtx, width, height);
         this.AnimateFallingStars(fallingCtx, width, height);
         this.AnimateTwinklingStars(twinklingCtx, width, height);
         this.AnimateFloatingObjects(width, height);
+      }
+
+      if (deltaTime20 >= frameDuration20)
+      {
+        lastFrameTime20 = currentTime;
+        const blackholeBlurRingCtx = this.canvasBlackholeBlurRing.getContext('2d');
+        const blackholeRingCtx = this.canvasBlackholeRing.getContext('2d');
+        const blackholeBendingCtx = this.canvasBlackholeBending.getContext('2d');
+        const blackholeSmallerRingCtx = this.canvasBlackholeSmallerRing.getContext('2d');
+
+        // Clear and redraw animations at 20 FPS
+        this.AnimateBlackholeBlurRing(blackholeBlurRingCtx, width, height);
+        this.AnimateBlackholeRing(blackholeRingCtx, width, height);
+        this.AnimateBlackholeBending(blackholeBendingCtx, width, height);
+        this.AnimateBlackholeSmallerRing(blackholeSmallerRingCtx, width, height);
       }
 
       requestAnimationFrame(animate);
@@ -558,7 +591,7 @@ export class SectionsComponent implements OnInit
     if (ctx)
     {
       ctx.clearRect(0, 0, width, height);
-      this.blackhole.AnimateBlackholeElements();
+      this.blackhole.AnimateBlackHole(ctx);
     }
   }
 
@@ -574,6 +607,81 @@ export class SectionsComponent implements OnInit
         this.BSInteraction.addStar(this.DrawTwinklingStar(ctx, color, width, height));
       }
       this.BSInteraction.ReGenerateStar = 0;
+    }
+  }
+
+  private AnimateBlackholeBending(ctx: CanvasRenderingContext2D | null, width: number, height: number)
+  {
+    if (this.canvasBlackholeBending.width !== width || this.canvasBlackholeBending.height !== height)
+    {
+      this.canvasBlackholeBending.width = width;
+      this.canvasBlackholeBending.height = height;
+    }
+
+    if (ctx)
+    {
+      ctx.clearRect(0, 0, width, height);
+      this.blackhole.AnimateBlackholeBending(ctx);
+    }
+  }
+
+  private AnimateBlackholeBlurRing(ctx: CanvasRenderingContext2D | null, width: number, height: number)
+  {
+    if (this.canvasBlackholeBlurRing.width !== width || this.canvasBlackholeBlurRing.height !== height)
+    {
+      this.canvasBlackholeBlurRing.width = width;
+      this.canvasBlackholeBlurRing.height = height;
+    }
+
+    if (ctx)
+    {
+      ctx.clearRect(0, 0, width, height);
+      this.blackhole.AnimateBlackholeBlurRing(ctx);
+    }
+  }
+
+  private AnimateBlackholeRing(ctx: CanvasRenderingContext2D | null, width: number, height: number)
+  {
+    if (this.canvasBlackholeRing.width !== width || this.canvasBlackholeRing.height !== height)
+    {
+      this.canvasBlackholeRing.width = width;
+      this.canvasBlackholeRing.height = height;
+    }
+
+    if (ctx)
+    {
+      ctx.clearRect(0, 0, width, height);
+      this.blackhole.AnimateBlackholeRing(ctx);
+    }
+  }
+
+  private AnimateBlackholeSatellite(ctx: CanvasRenderingContext2D | null, width: number, height: number)
+  {
+    if (this.canvasBlackholeSatellite.width !== width || this.canvasBlackholeSatellite.height !== height)
+    {
+      this.canvasBlackholeSatellite.width = width;
+      this.canvasBlackholeSatellite.height = height;
+    }
+
+    if (ctx)
+    {
+      ctx.clearRect(0, 0, width, height);
+      this.blackhole.AnimateBlackholeSatellite(ctx);
+    }
+  }
+
+  private AnimateBlackholeSmallerRing(ctx: CanvasRenderingContext2D | null, width: number, height: number)
+  {
+    if (this.canvasBlackholeSmallerRing.width !== width || this.canvasBlackholeSmallerRing.height !== height)
+    {
+      this.canvasBlackholeSmallerRing.width = width;
+      this.canvasBlackholeSmallerRing.height = height;
+    }
+
+    if (ctx)
+    {
+      ctx.clearRect(0, 0, width, height);
+      this.blackhole.AnimateBlackholeSmallerRing(ctx);
     }
   }
 

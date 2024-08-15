@@ -26,18 +26,16 @@ export class DrawBlackhole
   public bendingWidthCoeff: number = 1.7;
   public birthSizeIncrement: number = 0.6;
   public blurRingWidth: number = 150;
-  ctx: CanvasRenderingContext2D;
   defaultHeight: number;
   defaultWidth: number;
   drawSatellite: boolean = true;
   maxGravitationalPull: number = 0.2;
   public mouseOnSizeIncrement: number = 0;
 
-  constructor(ctx: CanvasRenderingContext2D, width: number, height: number, centerOffsetX: number, centerOffsetY: number,
+  constructor(width: number, height: number, centerOffsetX: number, centerOffsetY: number,
     drawSatellite: boolean = true, angleIncrement: number = 0.2,)
   {
     this.angle = Math.random() * 360;
-    this.ctx = ctx;
     this.defaultWidth = width;
     this.width = 0;
     this.defaultHeight = height;
@@ -60,15 +58,9 @@ export class DrawBlackhole
     this._gravitationalPull = value;
   }
 
-  public AnimateBlackholeElements(): void
+  public AnimateBlackHole(ctx: CanvasRenderingContext2D)
   {
-    this.drawBlackhole();
-    this.drawBlurRing();
-    this.drawRing();
-    this.drawFirstSatellite();
-    this.drawSmallerRing();
-    this.drawBending();
-
+    this.drawBlackhole(ctx);
     this.angle += this.angleIncrement;
     if (this.height < this.defaultHeight && !this.isReachedHeight)
     {
@@ -88,6 +80,31 @@ export class DrawBlackhole
     this.width += this.mouseOnSizeIncrement;
     this.height += this.mouseOnSizeIncrement;
     this.gravitationalPull = (this.width / this.defaultWidth) * (this.height / this.defaultHeight) * this.maxGravitationalPull;
+  }
+
+  public AnimateBlackholeBending(ctx: CanvasRenderingContext2D)
+  {
+    this.drawBending(ctx);
+  }
+
+  public AnimateBlackholeBlurRing(ctx: CanvasRenderingContext2D)
+  {
+    this.drawBlurRing(ctx);
+  }
+
+  AnimateBlackholeRing(ctx: CanvasRenderingContext2D)
+  {
+    this.drawRing(ctx);
+  }
+
+  AnimateBlackholeSatellite(ctx: CanvasRenderingContext2D)
+  {
+    this.drawFirstSatellite(ctx);
+  }
+
+  AnimateBlackholeSmallerRing(ctx: CanvasRenderingContext2D)
+  {
+    this.drawSmallerRing(ctx);
   }
 
   public GetBlackholeCenterPoint(): Point
@@ -146,70 +163,70 @@ export class DrawBlackhole
     return this.height - subtractCoeff < 0 || this.width - subtractCoeff < 0;
   }
 
-  private drawBending(): void
+  private drawBending(ctx: CanvasRenderingContext2D): void
   {
     const posX = this.blackholeRadius + this.centerOffsetX;
     const posY = this.blackholeRadius + this.centerOffsetY + this.width * 0.22;
-    const gradient = this.ctx.createRadialGradient(posX, posY, 0, posX, posY, 40);
+    const gradient = ctx.createRadialGradient(posX, posY, 0, posX, posY, 40);
     gradient.addColorStop(1, '#006eff');
 
-    this.ctx.beginPath();
-    this.ctx.ellipse(posX, posY, this.width * this.bendingWidthCoeff, this.bendingHeight, 0, 0, 2 * Math.PI, false);
-    this.ctx.fillStyle = gradient;
-    this.ctx.filter = "blur(12px)";
-    this.ctx.globalAlpha = 0.5;
-    this.ctx.fill();
-    this.ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(posX, posY, this.width * this.bendingWidthCoeff, this.bendingHeight, 0, 0, 2 * Math.PI, false);
+    ctx.fillStyle = gradient;
+    ctx.filter = "blur(6px)";
+    ctx.globalAlpha = 0.5;
+    ctx.fill();
+    ctx.stroke();
 
-    this.resetContext();
-    this.ctx.beginPath();
-    this.ctx.ellipse(posX, posY, this.width * this.bendingWidthCoeff, this.bendingHeight, 0, Math.PI, 2 * Math.PI, true);
-    this.ctx.lineWidth = 5;
-    this.ctx.strokeStyle = 'white';
-    this.ctx.filter = "blur(6px)";
-    this.ctx.stroke();
+    this.resetContext(ctx);
+    ctx.beginPath();
+    ctx.ellipse(posX, posY, this.width * this.bendingWidthCoeff, this.bendingHeight, 0, Math.PI, 2 * Math.PI, true);
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = 'white';
+    ctx.filter = "blur(6px)";
+    ctx.stroke();
 
-    this.resetContext();
+    this.resetContext(ctx);
   }
 
-  private drawBlackhole(): void
+  private drawBlackhole(ctx: CanvasRenderingContext2D): void
   {
     const posX = this.blackholeRadius * Math.cos(this.angle) + this.centerOffsetX;
     const posY = this.blackholeRadius * Math.sin(this.angle) + this.centerOffsetY;
 
-    this.ctx.beginPath();
-    this.ctx.ellipse(posX, posY, this.width, this.height, 0, 0, 2 * Math.PI, false);
-    this.ctx.fillStyle = "#000000ce";
-    this.ctx.fill();
-    this.ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(posX, posY, this.width, this.height, 0, 0, 2 * Math.PI, false);
+    ctx.fillStyle = "#000000ce";
+    ctx.fill();
+    ctx.stroke();
 
-    this.resetContext();
+    // this.resetContext(ctx);
   }
 
-  private drawBlurRing(): void
+  private drawBlurRing(ctx: CanvasRenderingContext2D): void
   {
     const posX = this.blackholeRadius * Math.cos(this.angle) + this.centerOffsetX;
     const posY = this.blackholeRadius * Math.sin(this.angle) + this.centerOffsetY;
 
-    this.ctx.beginPath();
-    this.ctx.ellipse(posX, posY, this.width, this.height, 0, 0, 2 * Math.PI, false);
-    this.ctx.fillStyle = "transparent";
-    this.ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(posX, posY, this.width, this.height, 0, 0, 2 * Math.PI, false);
+    ctx.fillStyle = "transparent";
+    ctx.fill();
 
-    const gradient = this.ctx.createLinearGradient(posX, posY - this.height, posX, posY + this.height);
+    const gradient = ctx.createLinearGradient(posX, posY - this.height, posX, posY + this.height);
     gradient.addColorStop(0.5, '#006eff');
     gradient.addColorStop(1, '#2e3b85');
 
-    this.ctx.lineWidth = this.blurRingWidth;
-    this.ctx.strokeStyle = gradient;
-    this.ctx.lineCap = "round";
-    this.ctx.filter = "blur(18px)";
-    this.ctx.stroke();
+    ctx.lineWidth = this.blurRingWidth;
+    ctx.strokeStyle = gradient;
+    ctx.lineCap = "round";
+    ctx.filter = "blur(18px)";
+    ctx.stroke();
 
-    this.resetContext();
+    // this.resetContext();
   }
 
-  private drawFirstSatellite(): void
+  private drawFirstSatellite(ctx: CanvasRenderingContext2D): void
   {
     if (!this.drawSatellite)
     {
@@ -219,45 +236,45 @@ export class DrawBlackhole
     const posX = this.width * Math.cos(this.angle) + this.centerOffsetX;
     const posY = this.height * Math.sin(this.angle) + this.centerOffsetY;
 
-    const gradient = this.ctx.createRadialGradient(posX, posY, 0, posX, posY, 40);
+    const gradient = ctx.createRadialGradient(posX, posY, 0, posX, posY, 40);
     gradient.addColorStop(0.5, '#d400ffaa');
     gradient.addColorStop(1, '#ff0000aa');
 
-    this.ctx.beginPath();
-    this.ctx.arc(posX, posY, this.height * 0.12, 0, 2 * Math.PI, false);
-    this.ctx.fillStyle = gradient;
-    this.ctx.filter = "blur(10px)";
-    this.ctx.globalAlpha = 0.9;
-    this.ctx.fill();
-    this.ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(posX, posY, this.height * 0.12, 0, 2 * Math.PI, false);
+    ctx.fillStyle = gradient;
+    ctx.filter = "blur(10px)";
+    ctx.globalAlpha = 0.9;
+    ctx.fill();
+    ctx.stroke();
 
-    this.resetContext();
+    // this.resetContext();
   }
 
-  private drawRing(): void
+  private drawRing(ctx: CanvasRenderingContext2D): void
   {
     const posX = this.blackholeRadius * Math.cos(this.angle) + this.centerOffsetX;
     const posY = this.blackholeRadius * Math.sin(this.angle) + this.centerOffsetY;
 
-    this.ctx.beginPath();
-    this.ctx.ellipse(posX, posY, this.width, this.height, 0, 0, 2 * Math.PI, false);
-    this.ctx.fillStyle = "transparent";
-    this.ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(posX, posY, this.width, this.height, 0, 0, 2 * Math.PI, false);
+    ctx.fillStyle = "transparent";
+    ctx.fill();
 
-    const gradient = this.ctx.createLinearGradient(posX, posY - this.height, posX, posY + this.height);
+    const gradient = ctx.createLinearGradient(posX, posY - this.height, posX, posY + this.height);
     gradient.addColorStop(0.5, '#d400ff65');
     gradient.addColorStop(1, '#e761eb65');
 
-    this.ctx.lineWidth = 25;
-    this.ctx.strokeStyle = gradient;
-    this.ctx.lineCap = "round";
-    this.ctx.filter = "blur(12px)";
-    this.ctx.stroke();
+    ctx.lineWidth = 25;
+    ctx.strokeStyle = gradient;
+    ctx.lineCap = "round";
+    ctx.filter = "blur(12px)";
+    ctx.stroke();
 
-    this.resetContext();
+    // this.resetContext();
   }
 
-  private drawSmallerRing(): void
+  private drawSmallerRing(ctx: CanvasRenderingContext2D): void
   {
     const subtractCoeff = 45;
     if (this.IsSmallerRingNegative(subtractCoeff))
@@ -270,27 +287,27 @@ export class DrawBlackhole
 
     const smallHeight = this.height - subtractCoeff;
     const smallWidth = this.width - subtractCoeff;
-    this.ctx.beginPath();
-    this.ctx.ellipse(posX, posY, smallHeight, smallWidth, 0, 0, 2 * Math.PI, false);
-    this.ctx.fillStyle = "transparent";
-    this.ctx.fill();
-    this.ctx.lineWidth = 5;
-    this.ctx.strokeStyle = '#ffffff';
-    this.ctx.lineCap = "round";
-    this.ctx.filter = "blur(4px)";
-    this.ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(posX, posY, smallHeight, smallWidth, 0, 0, 2 * Math.PI, false);
+    ctx.fillStyle = "transparent";
+    ctx.fill();
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineCap = "round";
+    ctx.filter = "blur(4px)";
+    ctx.stroke();
 
-    this.resetContext();
+    // this.resetContext();
   }
 
-  private resetContext()
+  private resetContext(ctx: CanvasRenderingContext2D)
   {
-    this.ctx.lineWidth = 1;
-    this.ctx.strokeStyle = '#00000000';
-    this.ctx.lineCap = "butt";
-    this.ctx.filter = "none";
-    this.ctx.fillStyle = '#00000000';
-    this.ctx.globalAlpha = 1;
-    this.ctx.globalCompositeOperation = "source-over";
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = '#00000000';
+    ctx.lineCap = "butt";
+    // ctx.filter = "none";
+    ctx.fillStyle = '#00000000';
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = "source-over";
   }
 }

@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { FormsModule } from '@angular/forms';
-import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { AppComponent } from './app.component';
 import { CommonModule } from '@angular/common';
@@ -50,11 +49,7 @@ const routes: Routes = [
     HttpClientModule,
     AngularSvgIconModule.forRoot(),
     FontAwesomeModule,
-    FormsModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      registrationStrategy: 'registerWhenStable:30000'
-    })
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

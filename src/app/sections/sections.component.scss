@@ -64,7 +64,12 @@ $background: linear-gradient(
   z-index: 2;
 }
 
-#Blackhole {
+#Blackhole,
+#BlackholeBlurRing,
+#BlackholeRing,
+#BlackholeSatellite,
+#BlackholeSmallerRing,
+#BlackholeBending {
   position: absolute;
   top: 0;
   bottom: 0;
