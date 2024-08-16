@@ -416,42 +416,6 @@ body {
     background-position: center;
 }
 
-#imageLast {
-    background-image: url("/assets/images/projects/CyberpunkImage1.webp");
-}
-
-#image0 {
-    background-image: url("/assets/images/projects/CyberpunkImage2.webp");
-}
-
-#image1 {
-    background-image: url("/assets/images/projects/CyberpunkImage3.webp");
-}
-
-#image2 {
-    background-image: url("/assets/images/projects/CyberpunkImage4.webp");
-}
-
-#image3 {
-    background-image: url("/assets/images/projects/CyberpunkImage5.webp");
-}
-
-#image4 {
-    background-image: url("/assets/images/projects/CyberpunkImage6.webp");
-}
-
-#image5 {
-    background-image: url("/assets/images/projects/CyberpunkImage7.webp");
-}
-
-#image6 {
-    background-image: url("/assets/images/projects/CyberpunkImage8.webp");
-}
-
-#image7 {
-    background-image: url("/assets/images/projects/CyberpunkImage9.webp");
-}
-
 .sliderContainer {
     display: flex;
     justify-content: space-between;
@@ -749,5 +713,77 @@ $glitch-interval: $glitch-duration / $glitch-frequency;
         &::before {
             background: #00f;
         }
+    }
+}
+
+//Images
+#image0 {
+    background-image: url("/assets/images/projects/desktop/CyberpunkImage2.webp");
+}
+
+#image1 {
+    background-image: url("/assets/images/projects/desktop/CyberpunkImage3.webp");
+}
+
+#image2 {
+    background-image: url("/assets/images/projects/desktop/CyberpunkImage4.webp");
+}
+
+#image3 {
+    background-image: url("/assets/images/projects/desktop/CyberpunkImage5.webp");
+}
+
+#image4 {
+    background-image: url("/assets/images/projects/desktop/CyberpunkImage6.webp");
+}
+
+#image5 {
+    background-image: url("/assets/images/projects/desktop/CyberpunkImage7.webp");
+}
+
+#image6 {
+    background-image: url("/assets/images/projects/desktop/CyberpunkImage8.webp");
+}
+
+#image7 {
+    background-image: url("/assets/images/projects/desktop/CyberpunkImage9.webp");
+}
+
+/* Media query for mobile devices */
+@media (max-width: 800px) {
+    #imageLast {
+        background-image: url("/assets/images/projects/mobile/CyberpunkImage1.webp");
+    }
+
+    #image0 {
+        background-image: url("/assets/images/projects/mobile/CyberpunkImage2.webp");
+    }
+
+    #image1 {
+        background-image: url("/assets/images/projects/mobile/CyberpunkImage3.webp");
+    }
+
+    #image2 {
+        background-image: url("/assets/images/projects/mobile/CyberpunkImage4.webp");
+    }
+
+    #image3 {
+        background-image: url("/assets/images/projects/mobile/CyberpunkImage5.webp");
+    }
+
+    #image4 {
+        background-image: url("/assets/images/projects/mobile/CyberpunkImage6.webp");
+    }
+
+    #image5 {
+        background-image: url("/assets/images/projects/mobile/CyberpunkImage7.webp");
+    }
+
+    #image6 {
+        background-image: url("/assets/images/projects/mobile/CyberpunkImage8.webp");
+    }
+
+    #image7 {
+        background-image: url("/assets/images/projects/mobile/CyberpunkImage9.webp");
     }
 }

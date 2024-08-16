@@ -8,7 +8,9 @@
     "build": "ng build --configuration production && npm run postbuild",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "postbuild": "cpx src/.htaccess dist/ka-pka-portfolio/"
+    "postbuild": "cpx src/.htaccess dist/ka-pka-portfolio/",
+    "optimize-images": "node optimize-images.js",
+    "resize-images": "node resize-images.js"
   },
   "private": true,
   "dependencies": {
@@ -45,6 +47,9 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.4.5",
-    "cpx": "^1.5.0"
+    "cpx": "^1.5.0",
+    "imagemin": "^8.0.0",
+    "imagemin-webp": "^7.0.0",
+    "sharp": "^0.31.3"
   }
 }

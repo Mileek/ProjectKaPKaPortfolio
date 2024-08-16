@@ -23,6 +23,7 @@ export class SectionsComponent implements OnInit
 {
   private BlackHoleHeight!: number;
   private BlackHoleWidth!: number;
+  private componentCache: { [key: string]: ComponentRef<any> } = {};
   private increasing: boolean = true;
   private observer!: IntersectionObserver;
   private resizeTimeout: any;
@@ -225,7 +226,7 @@ export class SectionsComponent implements OnInit
     let i = 0;
     let lastTime = performance.now();
     const delay = 100;
-    const targetFPS = 30;
+    const targetFPS = 15;
     const frameDuration = 1000 / targetFPS;
     let lastFrameTime = 0;
 
@@ -307,7 +308,12 @@ export class SectionsComponent implements OnInit
 
   async loadComponent(section: string)
   {
-    let componentRef: ComponentRef<any>;
+    if (this.componentCache[section])
+    {
+      return; // Komponent już załadowany, nie rób nic
+    }
+
+    let componentRef: ComponentRef<any> | null = null;
 
     switch (section)
     {
@@ -335,6 +341,14 @@ export class SectionsComponent implements OnInit
           environmentInjector: this.injector
         });
         break;
+      default:
+        console.warn(`Unknown section: ${section}`);
+        return;
+    }
+
+    if (componentRef)
+    {
+      this.componentCache[section] = componentRef; // Zapisz referencję do załadowanego komponentu
     }
   }
 
