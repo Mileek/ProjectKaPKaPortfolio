@@ -1,22 +1,28 @@
+// Variables
 $blue: rgb(12, 57, 78);
 $purple: rgb(48, 12, 78);
 $green: rgb(9, 65, 16);
 $purple2: #4c203d;
 $navbar-height: 50px;
-$navbar-backgroud-color: rgba(0, 0, 0, 0.333);
+$navbar-background-color: rgba(0, 0, 0, 0.333);
+$fade-in-duration: 6s;
+$glitch-steps: 20;
+$glitch-color1: #ff00c1;
+$glitch-color2: #00fff9;
+$glitch-color3: #ff00a0;
 
-.fps-counter {
-  position: absolute;
-  top: 100px;
-  z-index: 10;
-  font-size: 42px;
-  left: 100px;
-  color: white;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 5px;
-  border-radius: 5px;
+// Mixin for blur
+@mixin blur($amount) {
+  -webkit-filter: blur($amount);
+  filter: blur($amount);
 }
 
+// Mixin for fadeIn animation
+@mixin fadeIn($duration) {
+  animation: fadeIn $duration forwards;
+}
+
+// Background gradient
 $background: linear-gradient(
   75deg,
   #000000,
@@ -68,7 +74,7 @@ $background: linear-gradient(
   }
 }
 
-//Animations etc.
+// Animations etc.
 #TwinklingStars,
 #FallingStars {
   position: absolute;
@@ -91,7 +97,7 @@ $background: linear-gradient(
   margin: auto;
   z-index: 5;
   opacity: 0;
-  animation: fadeIn 6s forwards; /* Dodanie animacji */
+  @include fadeIn($fade-in-duration);
 }
 
 @keyframes fadeIn {
@@ -102,31 +108,30 @@ $background: linear-gradient(
     opacity: 1;
   }
 }
+
 #Blackhole {
   fill: #000000ce;
 }
 
-#BlackholeBlurRing {
-  -webkit-filter: blur(12px);
-  filter: blur(12px);
+#BlackholeBlurRing,
+#BlackholeRing,
+#BlackholeSatellite,
+#BlackholeSmallerRing,
+#BlackholeBending {
+  @include blur(12px);
 }
 
-#BlackholeRing {
-  -webkit-filter: blur(12px);
-  filter: blur(12px);
-}
 #BlackholeSatellite {
-  -webkit-filter: blur(10px);
-  filter: blur(10px);
+  @include blur(10px);
   opacity: 0.9;
 }
+
 #BlackholeSmallerRing {
-  -webkit-filter: blur(4px);
-  filter: blur(4px);
+  @include blur(4px);
 }
+
 #BlackholeBending {
-  -webkit-filter: blur(6px);
-  filter: blur(6px);
+  @include blur(6px);
 }
 
 #NebulaBlue,
@@ -135,7 +140,7 @@ $background: linear-gradient(
 #NebulaRed {
   position: absolute;
   z-index: 2;
-  filter: blur(30px);
+  @include blur(30px);
 }
 
 #FloatingObjects {
@@ -152,7 +157,7 @@ $background: linear-gradient(
   z-index: 10;
   position: relative;
   width: 100%;
-  height: 100vh; // 100% wysokości okna przeglądarki
+  height: 100vh;
   scroll-snap-align: start;
 }
 
@@ -160,63 +165,7 @@ $background: linear-gradient(
   height: 200vh;
 }
 
-//naw right bottom
-.StickyUpNav {
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  bottom: 5px;
-  right: 0px;
-  z-index: 10;
-}
-
-.AngleUp {
-  cursor: pointer;
-  color: #fff;
-  font-size: 35px;
-  padding: 0 15px;
-}
-
-.AnglesUp {
-  cursor: pointer;
-  color: #fff;
-  font-size: 35px;
-  padding: 0 15px;
-}
-
-.AnglesUp:hover,
-.AngleUp:hover {
-  -webkit-animation: UpDown 2s infinite;
-  animation: UpDown 2s infinite;
-}
-
-#navUp,
-#navDoubleUp {
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-}
-
-@-webkit-keyframes UpDown {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-
-@keyframes UpDown {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-
-//Navbar
+// Navbar
 .navbar {
   display: flex;
   position: fixed;
@@ -262,15 +211,15 @@ $background: linear-gradient(
       }
     }
   }
+
   .navbar-right {
     flex: 0 0 auto;
-    // min-width: 42%;
     padding-right: 2.4rem;
     position: relative;
     justify-content: space-between;
     align-items: center;
     height: $navbar-height;
-    background-color: $navbar-backgroud-color;
+    background-color: $navbar-background-color;
     outline: 4px solid #f2e900;
     top: 0;
     margin: 0;
@@ -360,7 +309,7 @@ $background: linear-gradient(
   position: relative;
   display: block;
   text-decoration: none;
-  color: #ff00a0;
+  color: $glitch-color3;
   padding-left: 1rem;
   padding-right: 1rem;
   font-weight: lighter;
@@ -368,27 +317,24 @@ $background: linear-gradient(
   transition: color 0.75s;
   box-sizing: border-box;
 }
-#link-1 {
-  -webkit-animation: 1s fadeIn;
-  animation: 1s fadeIn;
+
+#link-1,
+#link-2,
+#link-3,
+#link-4 {
+  @include fadeIn(1s);
 }
 
 #link-2 {
-  -webkit-animation: 2s fadeIn;
-  animation: 2s fadeIn;
+  animation-duration: 2s;
 }
-
 #link-3 {
-  -webkit-animation: 3s fadeIn;
-  animation: 3s fadeIn;
+  animation-duration: 3s;
 }
-
 #link-4 {
-  -webkit-animation: 3.5s fadeIn;
-  animation: 3.5s fadeIn;
+  animation-duration: 3.5s;
 }
 
-/* fade in animation for links */
 @-webkit-keyframes fadeIn {
   0% {
     opacity: 0;
@@ -399,9 +345,10 @@ $background: linear-gradient(
   }
   100% {
     opacity: 1;
-    color: #ff00a0;
+    color: $glitch-color3;
   }
 }
+
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -412,7 +359,7 @@ $background: linear-gradient(
   }
   100% {
     opacity: 1;
-    color: #ff00a0;
+    color: $glitch-color3;
   }
 }
 
@@ -423,7 +370,7 @@ $background: linear-gradient(
 }
 
 .bar {
-  background-color: #ff00a0;
+  background-color: $glitch-color3;
   height: 3px;
   width: 35px;
   transition: all 1.5s;
@@ -446,7 +393,6 @@ $background: linear-gradient(
 @media (max-width: 840px) {
   .navbar {
     position: fixed;
-    // flex: 0 0 42%;
     top: 0;
     z-index: 1000;
     pointer-events: auto;
@@ -454,7 +400,7 @@ $background: linear-gradient(
     align-items: center;
     width: 100%;
     height: auto;
-    background-color: $navbar-backgroud-color;
+    background-color: $navbar-background-color;
     border-bottom: 2px solid #f2e900;
     padding: 0;
 
@@ -465,6 +411,7 @@ $background: linear-gradient(
       align-self: flex-start;
       margin-left: 15px;
     }
+
     .navbar-right {
       flex: 0 0 42%;
       border: none;
@@ -532,7 +479,7 @@ $background: linear-gradient(
   }
 }
 
-//Glitch
+// Glitch
 @mixin glitchCopy {
   content: attr(data-text);
   position: absolute;
@@ -548,7 +495,7 @@ $background: linear-gradient(
 
   &::before {
     @include glitchCopy;
-    text-shadow: -2px 0 #ff00c1;
+    text-shadow: -2px 0 $glitch-color1;
     clip: rect(44px, 450px, 56px, 0);
     animation: glitch-anim 3s infinite linear alternate-reverse;
   }
@@ -556,16 +503,15 @@ $background: linear-gradient(
   &::after {
     @include glitchCopy;
     text-shadow:
-      -2px 0 #00fff9,
-      2px 2px #ff00c1;
+      -2px 0 $glitch-color2,
+      2px 2px $glitch-color1;
     animation: glitch-anim2 0.5s infinite linear alternate-reverse;
   }
 }
 
 @-webkit-keyframes glitch-anim {
-  $steps: 20;
-  @for $i from 0 through $steps {
-    #{percentage($i*(1/$steps))} {
+  @for $i from 0 through $glitch-steps {
+    #{percentage($i*(1/$glitch-steps))} {
       clip: rect(random(100) + px, 9999px, random(100) + px, 0);
       transform: skew((random(100) / 100) + deg) translate(-50%, 0%);
     }
@@ -573,9 +519,8 @@ $background: linear-gradient(
 }
 
 @keyframes glitch-anim {
-  $steps: 20;
-  @for $i from 0 through $steps {
-    #{percentage($i*(1/$steps))} {
+  @for $i from 0 through $glitch-steps {
+    #{percentage($i*(1/$glitch-steps))} {
       clip: rect(random(100) + px, 9999px, random(100) + px, 0);
       transform: skew((random(100) / 100) + deg) translate(-50%, 0%);
     }
@@ -583,9 +528,8 @@ $background: linear-gradient(
 }
 
 @-webkit-keyframes glitch-anim2 {
-  $steps: 20;
-  @for $i from 0 through $steps {
-    #{percentage($i*(1/$steps))} {
+  @for $i from 0 through $glitch-steps {
+    #{percentage($i*(1/$glitch-steps))} {
       clip: rect(random(100) + px, 9999px, random(100) + px, 0);
       transform: skew((random(100) / 100) + deg) translate(-50%, 0%);
     }
@@ -593,9 +537,8 @@ $background: linear-gradient(
 }
 
 @keyframes glitch-anim2 {
-  $steps: 20;
-  @for $i from 0 through $steps {
-    #{percentage($i*(1/$steps))} {
+  @for $i from 0 through $glitch-steps {
+    #{percentage($i*(1/$glitch-steps))} {
       clip: rect(random(100) + px, 9999px, random(100) + px, 0);
       transform: skew((random(100) / 100) + deg) translate(-50%, 0%);
     }
@@ -603,22 +546,21 @@ $background: linear-gradient(
 }
 
 @-webkit-keyframes glitch-skew {
-  $steps: 10;
-  @for $i from 0 through $steps {
-    #{percentage($i*(1/$steps))} {
+  @for $i from 0 through 10 {
+    #{percentage($i*(1/10))} {
       transform: skew((random(10) - 5) + deg) translate(-50%, 0%);
     }
   }
 }
 
 @keyframes glitch-skew {
-  $steps: 10;
-  @for $i from 0 through $steps {
-    #{percentage($i*(1/$steps))} {
+  @for $i from 0 through 10 {
+    #{percentage($i*(1/10))} {
       transform: skew((random(10) - 5) + deg) translate(-50%, 0%);
     }
   }
 }
+
 .blackhole-container {
   width: 100vw;
   height: 100vh;

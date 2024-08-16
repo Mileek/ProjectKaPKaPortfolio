@@ -1,6 +1,52 @@
 html {
     scroll-behavior: smooth;
 }
+
+/* Poppins font */
+@font-face {
+    font-family: "Poppins";
+    src: url("/assets/fonts/Poppins-Regular.ttf") format("truetype");
+    font-weight: 400;
+}
+
+/* Wire One font */
+@font-face {
+    font-family: "Wire One";
+    src: url("/assets/fonts/WireOne-Regular.ttf") format("truetype");
+    font-weight: normal;
+}
+
+/* Dodaj inne wagi fontów Poppins, jeśli są dostępne */
+@font-face {
+    font-family: "Poppins";
+    src: url("/assets/fonts/Poppins-Thin.ttf") format("truetype");
+    font-weight: 100;
+}
+
+@font-face {
+    font-family: "Poppins";
+    src: url("/assets/fonts/Poppins-ExtraLight.ttf") format("truetype");
+    font-weight: 200;
+}
+
+@font-face {
+    font-family: "Poppins";
+    src: url("/assets/fonts/Poppins-Light.ttf") format("truetype");
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: "Poppins";
+    src: url("/assets/fonts/Poppins-Medium.ttf") format("truetype");
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: "Poppins";
+    src: url("/assets/fonts/Poppins-SemiBold.ttf") format("truetype");
+    font-weight: 600;
+}
+
 body {
     font-family: "Poppins", sans-serif;
     font-size: 16px;
