@@ -110,7 +110,7 @@ $background: linear-gradient(
 }
 
 #Blackhole {
-  fill: #000000ce;
+  fill: #0000002c;
 }
 
 #BlackholeBlurRing,
@@ -562,7 +562,16 @@ $background: linear-gradient(
 }
 
 .blackhole-container {
+  position: relative;
+  width: 100vw;
+  height: 75vh;
+  background-color: transparent;
+  top: 0;
+}
+.blackhole-section {
+  position: relative;
   width: 100vw;
   height: 100vh;
   background-color: transparent;
+  top: 0;
 }

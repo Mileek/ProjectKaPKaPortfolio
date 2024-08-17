@@ -26,7 +26,9 @@ export class SectionsComponent implements OnInit
   private componentCache: { [key: string]: ComponentRef<any> } = {};
   private increasing: boolean = true;
   private observer!: IntersectionObserver;
+  private previousWidth: number = window.innerWidth;
   private resizeTimeout: any;
+  private resizeWidthTimeout: any;
 
   BSInteraction!: BlackholeAndStarsInteraction;
   FallingLinesArray: Array<DrawLines> = [];
@@ -85,29 +87,8 @@ export class SectionsComponent implements OnInit
 
   DrawBlackhole(): void
   {
-    // var ctx = this.canvasBlackhole.getContext('2d');
-
-    // if (ctx)
-    // {
     this.blackhole = new DrawBlackhole(this.BlackHoleWidth, this.BlackHoleHeight,
       this.blackholeContainer.offsetWidth / 2, this.blackholeContainer.offsetHeight * 0.3, this.drawSatellite);
-    //}
-  }
-
-  DrawFPS()
-  {
-    // const now = performance.now();
-    // const delta = now - this.lastUpdateTime;
-
-    // if (delta > 1000)
-    // {
-    //   this.fps = this.frameCount;
-    //   this.frameCount = 0;
-    //   this.lastUpdateTime = now;
-    // }
-
-    // this.frameCount++;
-    // requestAnimationFrame(() => this.DrawFPS());
   }
 
   DrawFallingStars(numberOfFallingStars: number)
@@ -393,8 +374,6 @@ export class SectionsComponent implements OnInit
     this.canvasFloatingObjects = document.getElementById('FloatingObjects') as HTMLCanvasElement;
     //Dostosowanie do telefonów/tabletów
     this.applyMediaQueryBeforeDrawLogic();
-    //Draw FPS
-    this.DrawFPS();
     //Draw
     this.DrawBlackhole();
     this.DrawTwinklingStars(this.numberOfTwinklingStars);
@@ -450,18 +429,26 @@ export class SectionsComponent implements OnInit
   @HostListener('window:resize', ['$event'])
   onResize(event: any): void
   {
-    clearTimeout(this.resizeTimeout);
+    clearTimeout(this.resizeWidthTimeout);
 
     this.resizeTimeout = setTimeout(() =>
     {
-      this.applyMediaQueryBeforeDrawLogic();
-      this.DrawFloatingObjects();
-      this.DrawBlackhole();
-      this.DrawTwinklingStars(this.numberOfTwinklingStars);
-      this.DrawFallingStars(this.numberOfFallingStars);
-      this.BlackholeStarsInteraction();
-      this.DrawNebulas();
-      this.applyMediaQueryAfterDrawLogic();
+      const currentWidth = window.innerWidth;
+
+      // Sprawdzenie, czy zmiana rozmiaru dotyczy tylko szerokości
+      if (currentWidth !== this.previousWidth)
+      {
+        this.previousWidth = currentWidth;
+
+        this.applyMediaQueryBeforeDrawLogic();
+        this.DrawFloatingObjects();
+        this.DrawBlackhole();
+        this.DrawTwinklingStars(this.numberOfTwinklingStars);
+        this.DrawFallingStars(this.numberOfFallingStars);
+        this.BlackholeStarsInteraction();
+        this.DrawNebulas();
+        this.applyMediaQueryAfterDrawLogic();
+      }
     }, 250); // Czas debouncingu
   }
 
@@ -494,7 +481,7 @@ export class SectionsComponent implements OnInit
     const element = document.getElementById(sectionId);
     if (element)
     {
-      const position = element.offsetTop;// - 75;
+      const position = element.offsetTop;
       window.scrollTo({ top: position, behavior: 'smooth' });
     }
   }
@@ -536,16 +523,18 @@ export class SectionsComponent implements OnInit
     let lastFrameTime30 = 0;
 
     const targetFPS18 = 18;
-    const frameDuration20 = 1000 / targetFPS18;
+    const frameDuration18 = 1000 / targetFPS18;
     let lastFrameTime18 = 0;
 
+    const backgroundWidth = this.background.offsetWidth;
+    const backgroundHeight = this.background.offsetHeight;
+    const blackholeWidth = this.blackholeContainer.offsetWidth;
+    const blackholeHeight = this.blackholeContainer.offsetHeight;
+    
     const animate = (currentTime: number) =>
     {
       const deltaTime30 = currentTime - lastFrameTime30;
       const deltaTime18 = currentTime - lastFrameTime18;
-
-      const width = this.background.offsetWidth;
-      const height = this.background.offsetHeight;
 
       if (deltaTime30 >= frameDuration30)
       {
@@ -556,15 +545,15 @@ export class SectionsComponent implements OnInit
         const twinklingCtx = this.canvasTwinkling.getContext('2d');
 
         // Clear and redraw animations at 30 FPS
-        this.AnimateBlackhole(blackholeCtx, width, height);
-        this.AnimateBlackholeSatellite(blackholeSatelliteCtx, width, height);
-        this.AnimateBlackholeAndStarsInteraction(twinklingCtx, width, height);
-        this.AnimateFallingStars(fallingCtx, width, height);
-        this.AnimateTwinklingStars(twinklingCtx, width, height);
-        this.AnimateFloatingObjects(width, height);
+        this.AnimateBlackhole(blackholeCtx, blackholeWidth, blackholeHeight);
+        this.AnimateBlackholeSatellite(blackholeSatelliteCtx, blackholeWidth, blackholeHeight);
+        this.AnimateBlackholeAndStarsInteraction(twinklingCtx, blackholeWidth, blackholeHeight);
+        this.AnimateFallingStars(fallingCtx, backgroundWidth, backgroundHeight);
+        this.AnimateTwinklingStars(twinklingCtx, backgroundWidth, backgroundHeight);
+        this.AnimateFloatingObjects(backgroundWidth, backgroundHeight);
       }
 
-      if (deltaTime18 >= frameDuration20)
+      if (deltaTime18 >= frameDuration18)
       {
         lastFrameTime18 = currentTime;
         const blackholeBlurRingCtx = this.canvasBlackholeBlurRing.getContext('2d');
@@ -573,12 +562,12 @@ export class SectionsComponent implements OnInit
         const blackholeSmallerRingCtx = this.canvasBlackholeSmallerRing.getContext('2d');
 
         // Clear and redraw animations at 18 FPS
-        this.AnimateBlackholeBlurRing(blackholeBlurRingCtx, width, height);
-        this.AnimateBlackholeRing(blackholeRingCtx, width, height);
-        this.AnimateBlackholeBending(blackholeBendingCtx, width, height);
-        this.AnimateBlackholeSmallerRing(blackholeSmallerRingCtx, width, height);
+        this.AnimateBlackholeBlurRing(blackholeBlurRingCtx, blackholeWidth, blackholeHeight);
+        this.AnimateBlackholeRing(blackholeRingCtx, blackholeWidth, blackholeHeight);
+        this.AnimateBlackholeBending(blackholeBendingCtx, blackholeWidth, blackholeHeight);
+        this.AnimateBlackholeSmallerRing(blackholeSmallerRingCtx, blackholeWidth, blackholeHeight);
       }
-
+      console.log(blackholeWidth, blackholeHeight);
       requestAnimationFrame(animate);
     };
 
