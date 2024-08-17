@@ -27,7 +27,8 @@ const routes: Routes = [
       { path: 'about-me', component: AboutMeComponent },
       { path: 'projects', component: ProjectsComponent },
       { path: 'contact-me', component: ContactMeComponent },
-      { path: '', redirectTo: 'home', pathMatch: 'full' }
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: '**', redirectTo: 'home', pathMatch: 'full' }
     ]
   }
 ];

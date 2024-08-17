@@ -12,6 +12,7 @@ import { HomeComponent } from '../home/home.component';
 import { AboutMeComponent } from '../about-me/about-me.component';
 import { ProjectsComponent } from '../projects/projects.component';
 import { ContactMeComponent } from '../contact-me/contact-me.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sections',
@@ -69,6 +70,7 @@ export class SectionsComponent implements OnInit
   numberOfTwinklingStars: number = 400;
   photoBackground!: HTMLDivElement;
   @ViewChild('portfolio') portfolio!: ElementRef;
+  @ViewChild('projects') projects!: ElementRef;
   @ViewChild('projectsContainer', { read: ViewContainerRef }) projectsContainer!: ViewContainerRef;
   redEye!: HTMLDivElement;
   slideAnimation!: Animation;
@@ -76,7 +78,7 @@ export class SectionsComponent implements OnInit
   @ViewChild('toggleButton') toggleButton!: ElementRef;
 
   constructor(private appStatics: AppStatics, private renderer: Renderer2,
-    private el: ElementRef, private injector: EnvironmentInjector)
+    private el: ElementRef, private injector: EnvironmentInjector, private router: Router)
   {
   }
 
@@ -258,15 +260,15 @@ export class SectionsComponent implements OnInit
     {
       this.renderer.listen(this.home.nativeElement, 'click', () =>
       {
-        this.scrollToSection('home');
+        window.location.hash = '#home';
       });
     }
 
-    if (this.portfolio && this.portfolio.nativeElement)
+    if (this.projects && this.projects.nativeElement)
     {
-      this.renderer.listen(this.portfolio.nativeElement, 'click', () =>
+      this.renderer.listen(this.projects.nativeElement, 'click', () =>
       {
-        this.scrollToSection('portfolio');
+        window.location.hash = '#projects';
       });
     }
 
@@ -274,7 +276,7 @@ export class SectionsComponent implements OnInit
     {
       this.renderer.listen(this.about.nativeElement, 'click', () =>
       {
-        this.scrollToSection('about');
+        window.location.hash = '#about-me';
       });
     }
 
@@ -282,7 +284,7 @@ export class SectionsComponent implements OnInit
     {
       this.renderer.listen(this.contact.nativeElement, 'click', () =>
       {
-        this.scrollToSection('contact');
+        window.location.hash = '#contact-me';
       });
     }
   }
@@ -357,6 +359,7 @@ export class SectionsComponent implements OnInit
         {
           const sectionId = entry.target.id;
           this.loadComponent(sectionId);
+          history.replaceState(null, '', `#${sectionId}`);
         }
       });
     }, { threshold: 0.05 });
