@@ -19,7 +19,6 @@ import
   faCircleDot, faUpRightFromSquare, faPaperPlane, faEnvelope
 } from '@fortawesome/free-solid-svg-icons';
 import { faLinkedin, faGithub } from '@fortawesome/free-brands-svg-icons';
-import { environment } from 'src/enviroments/environment.prod';
 
 const routes: Routes = [
   {

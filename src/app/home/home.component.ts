@@ -63,6 +63,7 @@ export class HomeComponent implements OnInit
           this.SwapLetters('e', '3');
           this.SwapLetters('a', '@');
           this.SwapLetters('i', '1');
+          this.updateGlitchWidth();
           return; // Zatrzymanie animacji po zakończeniu
         }
       }
@@ -118,7 +119,7 @@ export class HomeComponent implements OnInit
   private updateGlitchWidth(): void
   {
     const quoteWidth = this.Quote.offsetWidth;
-    const buffer = 25; // Add a buffer to cover additional effects
+    const buffer = 30; // Add a buffer to cover additional effects
     this.QuoteDataText.style.width = `${quoteWidth + buffer}px`;
   }
 }

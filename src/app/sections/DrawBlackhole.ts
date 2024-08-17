@@ -275,9 +275,7 @@ export class DrawBlackhole
   {
     ctx.lineWidth = 1;
     ctx.strokeStyle = '#00000000';
-    // ctx.lineCap = "butt";
     ctx.fillStyle = '#00000000';
     ctx.globalAlpha = 1;
-    // ctx.globalCompositeOperation = "source-over";
   }
 }

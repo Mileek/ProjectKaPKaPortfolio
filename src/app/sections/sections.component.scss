@@ -118,7 +118,7 @@ $background: linear-gradient(
 #BlackholeSatellite,
 #BlackholeSmallerRing,
 #BlackholeBending {
-  @include blur(12px);
+  @include blur(10px);
 }
 
 #BlackholeSatellite {
@@ -140,7 +140,7 @@ $background: linear-gradient(
 #NebulaRed {
   position: absolute;
   z-index: 2;
-  @include blur(30px);
+  @include blur(20px);
 }
 
 #FloatingObjects {
