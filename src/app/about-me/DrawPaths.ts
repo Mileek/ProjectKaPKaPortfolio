@@ -43,28 +43,38 @@ export class DrawPaths
 
         // Animate line to startX, startY
         let t = 0;
+        const targetFps = 30;
+        const frameDuration = 1000 / targetFps;
+        let lastFrameTime = 0;
+
         return new Promise<void>(resolve =>
         {
-            const draw = () =>
+            const draw = (time: number) =>
             {
-                t += 0.005;
-                if (t > 1 || cancellationToken.isCancellationRequested)
+                if (time - lastFrameTime >= frameDuration)
                 {
-                    resolve();
-                    return;
-                }
-                this.controlX = this.startX + t * (this.endX - this.startX) / 2;
+                    t += 0.01;
+                    if (t > 1 || cancellationToken.isCancellationRequested)
+                    {
+                        resolve();
+                        return;
+                    }
+                    this.controlX = this.startX + t * (this.endX - this.startX) / 2;
 
-                const x = (1 - t) * (1 - t) * this.startX + 2 * (1 - t) * t * this.controlX + t * t * this.endX;
-                const y = (1 - t) * (1 - t) * this.startY + 2 * (1 - t) * t * this.controlY + t * t * this.endY;
-                this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-                this.ctx.beginPath();
-                this.ctx.moveTo(this.startX, this.startY);
-                this.ctx.quadraticCurveTo(this.controlX, this.controlY, x, y);
-                this.ctx.stroke();
+                    const x = (1 - t) * (1 - t) * this.startX + 2 * (1 - t) * t * this.controlX + t * t * this.endX;
+                    const y = (1 - t) * (1 - t) * this.startY + 2 * (1 - t) * t * this.controlY + t * t * this.endY;
+                    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(this.startX, this.startY);
+                    this.ctx.quadraticCurveTo(this.controlX, this.controlY, x, y);
+                    this.ctx.stroke();
+
+                    lastFrameTime = time;
+                }
+
                 requestAnimationFrame(draw);
             };
-            draw();
+            requestAnimationFrame(draw);
         });
     }
 
@@ -74,33 +84,43 @@ export class DrawPaths
         const amplitude = 22; // The amplitude of vertical movement
         const speed = 0.01; // The speed of the movement
 
-        const animate = () =>
+        const targetFPS = 30;
+        const frameDuration = 1000 / targetFPS;
+        let lastFrameTime = 0;
+
+        const animate = (currentTime: number) =>
         {
             if (cancellationToken.isCancellationRequested)
             {
                 return;
             }
 
-            // Move the control point up or down
-            this.controlY += direction * speed * amplitude;
-
-            // Reverse direction at the peaks of the movement
-            if (this.controlY > this.startY + amplitude || this.controlY < this.startY - amplitude)
+            if (currentTime - lastFrameTime >= frameDuration)
             {
-                direction = -direction;
-            }
+                // Move the control point up or down
+                this.controlY += direction * speed * amplitude;
 
-            // Redraw the path with the new control point
-            this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-            this.ctx.beginPath();
-            this.ctx.moveTo(this.startX, this.startY);
-            this.ctx.quadraticCurveTo(this.controlX, this.controlY, this.endX, this.endY);
-            this.ctx.stroke();
+                // Reverse direction at the peaks of the movement
+                if (this.controlY > this.startY + amplitude || this.controlY < this.startY - amplitude)
+                {
+                    direction = -direction;
+                }
+
+                // Redraw the path with the new control point
+                this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+                this.ctx.beginPath();
+                this.ctx.moveTo(this.startX, this.startY);
+                this.ctx.quadraticCurveTo(this.controlX, this.controlY, this.endX, this.endY);
+                this.ctx.stroke();
+
+                lastFrameTime = currentTime;
+            }
 
             requestAnimationFrame(animate);
         };
 
-        animate();
+        // Start the animation with the current timestamp
+        requestAnimationFrame(animate);
     }
 
     public animateWaypoint(waypoint: HTMLImageElement, cancellationToken: { isCancellationRequested: boolean })
@@ -113,44 +133,53 @@ export class DrawPaths
         const initialScale = 1.0;
         const maxScale = 1.25;
         const minScale = 0.85;
-        const speed = 0.002; // The speed of the scaling
+        const speed = 0.01; // The speed of the scaling
         const opacitySpeed = 0.1; // The speed of the opacity change
 
-        const animate = () =>
+        const targetFPS = 30;
+        const frameDuration = 1000 / targetFPS;
+        let lastFrameTime = 0;
+
+        const animate = (currentTime: number) =>
         {
             if (cancellationToken.isCancellationRequested)
             {
                 return;
             }
 
-            // Get current scale
-            let currentScale = parseFloat(waypoint.style.transform.replace('scale(', '').replace(')', ''));
-            let currentOpacity = parseFloat(waypoint.style.opacity);
-
-            // Increase or decrease scale
-            currentScale += direction * speed;
-
-            // Increase opacity until it reaches 1
-            if (currentOpacity < 1)
+            if (currentTime - lastFrameTime >= frameDuration)
             {
-                currentOpacity += opacitySpeed;
-                waypoint.style.opacity = `${currentOpacity}`;
-            }
+                // Get current scale
+                let currentScale = parseFloat(waypoint.style.transform.replace('scale(', '').replace(')', ''));
+                let currentOpacity = parseFloat(waypoint.style.opacity);
 
-            // Reverse direction at the peaks of the scaling
-            if (currentScale > maxScale || currentScale < minScale)
-            {
-                direction = -direction;
-            }
+                // Increase or decrease scale
+                currentScale += direction * speed;
 
-            // Apply new scale
-            waypoint.style.transform = `scale(${currentScale})`;
+                // Increase opacity until it reaches 1
+                if (currentOpacity < 1)
+                {
+                    currentOpacity += opacitySpeed;
+                    waypoint.style.opacity = `${currentOpacity}`;
+                }
+
+                // Reverse direction at the peaks of the scaling
+                if (currentScale > maxScale || currentScale < minScale)
+                {
+                    direction = -direction;
+                }
+
+                // Apply new scale
+                waypoint.style.transform = `scale(${currentScale})`;
+
+                lastFrameTime = currentTime;
+            }
 
             requestAnimationFrame(animate);
         };
 
         // Start the animation
-        animate();
+        requestAnimationFrame(animate);
     }
 
     public resetContext()

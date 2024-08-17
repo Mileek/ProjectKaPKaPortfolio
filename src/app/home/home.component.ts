@@ -1,6 +1,4 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { ViewportScroller } from '@angular/common';
-import * as smoothscroll from 'smoothscroll-polyfill';
 
 @Component({
   selector: 'app-home',
@@ -12,19 +10,13 @@ export class HomeComponent implements OnInit
   private readonly navbarHeight = 50;
 
   private currentLength = 0;
-  private intervalId: any;
-  //Its a stupid idea(but works). Spaces are used to make a pause in animation
+  private lastFrameTime = 0;
   private quote: string = "We were born to inherit the stars       -       our destiny is to reach for them.";
-  private resizeTimeout: any;
-  private swapIntervalId: any;
 
   Quote!: HTMLElement;
   QuoteDataText!: HTMLElement;
 
-  constructor(private viewportScroller: ViewportScroller)
-  {
-    smoothscroll.polyfill();
-  }
+  constructor() { }
 
   public ngOnInit(): void
   {
@@ -48,50 +40,86 @@ export class HomeComponent implements OnInit
   {
     this.updateGlitchWidth();
 
-    this.intervalId = setInterval(() =>
+    const animate = (currentTime: number) =>
     {
-      if (this.currentLength <= this.quote.length)
+      const deltaTime = currentTime - this.lastFrameTime;
+      const frameDuration = 1000 / 15; // Ograniczenie do 30 FPS
+
+      if (deltaTime >= frameDuration)
       {
-        const currentText = this.quote.substring(0, this.currentLength);
-        this.Quote.innerText = currentText;
-        this.QuoteDataText.setAttribute('data-text', currentText);
-        this.updateGlitchWidth();
-        this.currentLength++;
-      } else
-      {
-        clearInterval(this.intervalId);
-        this.SwapLetters('e', '3');
-        this.SwapLetters('a', '@');
-        this.SwapLetters('i', '1');
+        this.lastFrameTime = currentTime;
+
+        if (this.currentLength <= this.quote.length)
+        {
+          const currentText = this.quote.substring(0, this.currentLength);
+          if (this.Quote.innerText !== currentText)
+          {
+            this.Quote.innerText = currentText;
+            this.updateGlitchWidth();
+          }
+          this.currentLength++;
+        } else
+        {
+          this.SwapLetters('e', '3');
+          this.SwapLetters('a', '@');
+          this.SwapLetters('i', '1');
+          this.updateGlitchWidth();
+          return; // Zatrzymanie animacji po zakończeniu
+        }
       }
-    }, 75);
+
+      requestAnimationFrame(animate);
+    };
+
+    requestAnimationFrame(animate);
   }
 
   private SwapLetters(toReplace: string, replaceWith: string)
   {
-    this.swapIntervalId = setInterval(() =>
+    const swap = () =>
     {
       const swappedText = this.quote.replace(new RegExp(toReplace, 'g'), replaceWith);
-      this.Quote.innerText = swappedText;
-      this.QuoteDataText.setAttribute('data-text', swappedText);
-
-      setTimeout(() =>
+      if (this.Quote.innerText !== swappedText)
       {
-        this.Quote.innerText = this.quote;
-        this.QuoteDataText.setAttribute('data-text', this.quote);
-      }, this.randomIntFromInterval(100, 250));
-    }, this.randomIntFromInterval(800, 1200));
+        this.Quote.innerText = swappedText;
+        this.updateDataText(swappedText);
+        setTimeout(() =>
+        {
+          if (this.Quote.innerText !== this.quote)
+          {
+            this.Quote.innerText = this.quote;
+            this.updateDataText(this.quote);
+          }
+        }, this.randomIntFromInterval(100, 250));
+      }
+    };
+
+    const swapWithAnimationFrame = () =>
+    {
+      swap();
+      setTimeout(swapWithAnimationFrame, this.randomIntFromInterval(1500, 2500));
+    };
+
+    swapWithAnimationFrame();
   }
 
   private randomIntFromInterval(min: number, max: number): number
-  { // min and max included 
+  {
     return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  private updateDataText(text: string)
+  {
+    if (this.QuoteDataText.getAttribute('data-text') !== text)
+    {
+      this.QuoteDataText.setAttribute('data-text', text);
+    }
   }
 
   private updateGlitchWidth(): void
   {
     const quoteWidth = this.Quote.offsetWidth;
-    const buffer = 25; // Add a buffer to cover additional effects
+    const buffer = 30; // Add a buffer to cover additional effects
     this.QuoteDataText.style.width = `${quoteWidth + buffer}px`;
   }
 }

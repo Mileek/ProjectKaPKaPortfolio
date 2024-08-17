@@ -27,7 +27,9 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.webmanifest",
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -35,7 +37,8 @@
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-            ]
+            ],
+            "serviceWorker": false
           },
           "configurations": {
             "production": {
@@ -75,10 +78,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "KaPKaPortfolio:build:production"
+              "buildTarget": "KaPKaPortfolio:build:production"
             },
             "development": {
-              "browserTarget": "KaPKaPortfolio:build:development"
+              "buildTarget": "KaPKaPortfolio:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -86,7 +89,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "KaPKaPortfolio:build"
+            "buildTarget": "KaPKaPortfolio:build"
           }
         },
         "test": {
@@ -100,7 +103,9 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.webmanifest",
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "src/styles.scss"

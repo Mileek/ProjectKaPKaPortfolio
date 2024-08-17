@@ -14,23 +14,24 @@ import { ContactMeComponent } from './contact-me/contact-me.component';
 import { SectionsComponent } from './sections/sections.component';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import
-  {
-    faAngleDown, faAngleUp, faAnglesUp, faAngleLeft, faAngleRight,
-    faCircleDot, faUpRightFromSquare, faPaperPlane, faEnvelope
-  } from '@fortawesome/free-solid-svg-icons';
+{
+  faAngleDown, faAngleUp, faAnglesUp, faAngleLeft, faAngleRight,
+  faCircleDot, faUpRightFromSquare, faPaperPlane, faEnvelope
+} from '@fortawesome/free-solid-svg-icons';
 import { faLinkedin, faGithub } from '@fortawesome/free-brands-svg-icons';
 
 const routes: Routes = [
   {
     path: '', component: SectionsComponent, children: [
-      { path: '', redirectTo: 'all', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'about-me', component: AboutMeComponent },
       { path: 'projects', component: ProjectsComponent },
       { path: 'contact-me', component: ContactMeComponent },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: '**', redirectTo: 'home', pathMatch: 'full' }
     ]
-  },
-]
+  }
+];
 
 @NgModule({
   declarations: [
@@ -48,7 +49,7 @@ const routes: Routes = [
     HttpClientModule,
     AngularSvgIconModule.forRoot(),
     FontAwesomeModule,
-    FormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

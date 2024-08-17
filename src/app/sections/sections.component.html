@@ -1,6 +1,3 @@
-<!-- <div class="fps-counter" aria-live="polite">
-  FPS: {{fps}}
-</div> -->
 <!--Just some background elements, nothing special here-->
 <div id="Background" role="img" aria-label="Background with floating images and nebulas">
   <!--Floating images-->
@@ -13,7 +10,8 @@
   <canvas id="NebulaRed" aria-hidden="true"></canvas>
   <nav class="navbar" role="navigation" aria-label="Secondary Navigation">
     <div id="logo" class="navbar-left">
-      <a (click)="scrollToSection('home')" class="logo-link" aria-label="Scroll to Home"></a>
+      <a (click)="scrollToSection('home')" class="logo-link" aria-label="Scroll to Home"><img
+          src="/assets/logo/KaPKaLogoTrim.webp" alt="Logo" loading="lazy"></a>
     </div>
     <a class="toggle-button" #toggleButton title="Toggle Navigation">
       <span class="bar" id="bar-1" #bar1></span>
@@ -38,25 +36,30 @@
   <!--Animated canvas-->
   <canvas id="TwinklingStars" aria-hidden="true"></canvas>
   <canvas id="FallingStars" aria-hidden="true"></canvas>
-  <div id="BlackholeContainer" class="blackhole-container">
-    <div class="section" id="home" role="region" aria-label="Home Section">
-      <app-home></app-home>
+  <div class="blackhole-section">
+    <div id="BlackholeContainer" class="blackhole-container">
+      <div class="section" id="home" role="region" aria-label="Home Section">
+        <ng-container #homeContainer></ng-container>
+      </div>
+      <canvas id="Blackhole" aria-hidden="true"></canvas>
+      <canvas id="BlackholeBlurRing" aria-hidden="true"></canvas>
+      <canvas id="BlackholeRing" aria-hidden="true"></canvas>
+      <canvas id="BlackholeSatellite" aria-hidden="true"></canvas>
+      <canvas id="BlackholeSmallerRing" aria-hidden="true"></canvas>
+      <canvas id="BlackholeBending" aria-hidden="true"></canvas>
     </div>
-    <canvas id="Blackhole" aria-hidden="true"></canvas>
   </div>
   <div class="section" id="about-me" role="region" aria-label="About Me Section">
-    <app-about-me></app-about-me>
+    <ng-container #aboutMeContainer></ng-container>
   </div>
   <div class="section" id="projects" role="region" aria-label="Projects Section">
-    <app-projects></app-projects>
+    <ng-container #projectsContainer></ng-container>
   </div>
   <div class="section" id="contact-me" role="region" aria-label="Contact Me Section">
-    <app-contact-me></app-contact-me>
+    <ng-container #contactMeContainer></ng-container>
   </div>
   <div class="StickyUpNav">
-    <fa-icon (click)="scrollTop()" [icon]="['fas', 'angles-up']" id="navDoubleUp" class="AnglesUp"
-      aria-label="Scroll to Top"></fa-icon>
-    <fa-icon (click)="scrollUp()" [icon]="['fas', 'angle-up']" id="navUp" class="AngleUp"
-      aria-label="Scroll Up"></fa-icon>
+    <fa-icon (click)="scrollTop()" [icon]="['fas', 'angles-up']" id="navDoubleUp" class="AnglesUp"></fa-icon>
+    <fa-icon (click)="scrollUp()" [icon]="['fas', 'angle-up']" id="navUp" class="AngleUp"></fa-icon>
   </div>
 </div>
