@@ -110,8 +110,8 @@ export class SectionsComponent implements OnInit
       var x = Math.random() * (width - longWidth * 2) + longWidth;
       var y = Math.random() * (height - longWidth * 2) + longWidth;
       let alpha = Math.random() * 0.6;
-      let trailXSpeed = Math.random() * 6 + 1.4;
-      let trailYSpeed = Math.random() * 6 + 1.4;
+      let trailXSpeed = Math.random() * 6 + 3;
+      let trailYSpeed = Math.random() * 6 + 3;
       // Stwórz obiekt gwiazdy i dodaj go do tablicy, na której będą wykonywane "metody" akcji
       if (ctx)
       {
@@ -530,7 +530,7 @@ export class SectionsComponent implements OnInit
     const backgroundHeight = this.background.offsetHeight;
     const blackholeWidth = this.blackholeContainer.offsetWidth;
     const blackholeHeight = this.blackholeContainer.offsetHeight;
-    
+
     const animate = (currentTime: number) =>
     {
       const deltaTime30 = currentTime - lastFrameTime30;
@@ -547,7 +547,7 @@ export class SectionsComponent implements OnInit
         // Clear and redraw animations at 30 FPS
         this.AnimateBlackhole(blackholeCtx, blackholeWidth, blackholeHeight);
         this.AnimateBlackholeSatellite(blackholeSatelliteCtx, blackholeWidth, blackholeHeight);
-        this.AnimateBlackholeAndStarsInteraction(twinklingCtx, blackholeWidth, blackholeHeight);
+        this.AnimateBlackholeAndStarsInteraction(twinklingCtx, backgroundWidth, backgroundHeight);
         this.AnimateFallingStars(fallingCtx, backgroundWidth, backgroundHeight);
         this.AnimateTwinklingStars(twinklingCtx, backgroundWidth, backgroundHeight);
         this.AnimateFloatingObjects(backgroundWidth, backgroundHeight);
@@ -783,15 +783,15 @@ export class SectionsComponent implements OnInit
     if (viewportWidth <= 480)
     {
       this.updateBlackHoleDimensions(viewportWidth, 0.28);
-      this.numberOfTwinklingStars = 125;
+      this.numberOfTwinklingStars = 200;
       this.numberOfFallingStars = 2;
       this.numberOfMeteors = 2;
-      this.numberOfNebulas = 0;
+      this.numberOfNebulas = 1;
       this.drawSatellite = false;
     } else if (viewportWidth <= 768)
     {
       this.updateBlackHoleDimensions(viewportWidth, 0.26);
-      this.numberOfTwinklingStars = 150;
+      this.numberOfTwinklingStars = 200;
       this.numberOfFallingStars = 2;
       this.numberOfMeteors = 2;
       this.numberOfNebulas = 0;
@@ -799,7 +799,7 @@ export class SectionsComponent implements OnInit
     } else if (viewportWidth <= 1024)
     {
       this.updateBlackHoleDimensions(viewportWidth, 0.22);
-      this.numberOfTwinklingStars = 200;
+      this.numberOfTwinklingStars = 250;
       this.numberOfFallingStars = 3;
       this.numberOfMeteors = 2;
       this.numberOfNebulas = 1;
