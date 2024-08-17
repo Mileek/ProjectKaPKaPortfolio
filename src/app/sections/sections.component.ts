@@ -570,7 +570,6 @@ export class SectionsComponent implements OnInit
         this.AnimateBlackholeBending(blackholeBendingCtx, blackholeWidth, blackholeHeight);
         this.AnimateBlackholeSmallerRing(blackholeSmallerRingCtx, blackholeWidth, blackholeHeight);
       }
-      console.log(blackholeWidth, blackholeHeight);
       requestAnimationFrame(animate);
     };
 
