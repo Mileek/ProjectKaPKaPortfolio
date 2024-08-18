@@ -30,6 +30,7 @@ body {
     background-position: center;
     background-size: cover;
     box-shadow: 0 20px 30px rgba(255, 255, 255, 0.3) inset;
+    will-change: transform, opacity;
     transition:
         transform 0.1s,
         left 0.6s,
@@ -57,8 +58,6 @@ body {
         left: $cardsStart;
         opacity: 0.95;
         cursor: pointer;
-        -webkit-filter: blur(0.1px);
-        filter: blur(0.1px);
 
         & .caption {
             position: absolute;
@@ -72,8 +71,6 @@ body {
         }
 
         &:hover {
-            -webkit-filter: blur(0);
-            filter: blur(0);
             transform: translateY(-55%) scale(1.03) rotate(-3deg);
             transition:
                 transform 0.6s ease-in-out,
@@ -180,19 +177,20 @@ body {
 
 .box1::after,
 .box1::before {
+    will-change: transform;
     content: "";
     position: absolute;
     width: 100vw;
     height: 100vh;
     background-image: conic-gradient(transparent, transparent, transparent, #a200ff);
-    -webkit-animation: animate 8s linear infinite;
-    animation: animate 8s linear infinite;
+    -webkit-animation: animate 12s linear infinite;
+    animation: animate 12s linear infinite;
 }
 
 .box1::before {
     background-image: conic-gradient(#fff700, transparent, transparent, transparent);
-    -webkit-animation: animate-reverse 8s linear infinite;
-    animation: animate-reverse 8s linear infinite;
+    -webkit-animation: animate-reverse 12s linear infinite;
+    animation: animate-reverse 12s linear infinite;
 }
 
 @-webkit-keyframes animate {
@@ -247,27 +245,19 @@ body {
 
 @-webkit-keyframes show {
     0% {
-        -webkit-filter: blur(15px);
-        filter: blur(15px);
         transform: translateY(calc(-50% + 75px));
     }
     100% {
         opacity: 1;
-        -webkit-filter: blur(0);
-        filter: blur(0);
     }
 }
 
 @keyframes show {
     0% {
-        -webkit-filter: blur(15px);
-        filter: blur(15px);
         transform: translateY(calc(-50% + 75px));
     }
     100% {
         opacity: 1;
-        -webkit-filter: blur(0);
-        filter: blur(0);
     }
 }
 
@@ -573,10 +563,10 @@ body {
     @return random() * ($max - $min) + $min;
 }
 
-$animation-duration: 3s;
-$glitch-duration: 15%;
-$glitch-frequency: 1;
-$glitch-interval: $glitch-duration / $glitch-frequency;
+$animation-duration: 5s;
+$glitch-duration2: 10%;
+$glitch-frequency: 4;
+$glitch-interval: $glitch-duration2 / $glitch-frequency;
 
 @mixin rgb-shift($name) {
     @-webkit-keyframes rgb-shift-#{$name} {
@@ -586,7 +576,7 @@ $glitch-interval: $glitch-duration / $glitch-frequency;
             }
         }
 
-        #{$glitch-duration},
+        #{$glitch-duration2},
         100% {
             transform: none;
         }
@@ -598,7 +588,7 @@ $glitch-interval: $glitch-duration / $glitch-frequency;
             }
         }
 
-        #{$glitch-duration},
+        #{$glitch-duration2},
         100% {
             transform: none;
         }
@@ -624,7 +614,7 @@ $glitch-interval: $glitch-duration / $glitch-frequency;
             }
         }
 
-        #{$glitch-duration},
+        #{$glitch-duration2},
         100% {
             -webkit-clip-path: none;
             clip-path: none;
@@ -645,7 +635,7 @@ $glitch-interval: $glitch-duration / $glitch-frequency;
             }
         }
 
-        #{$glitch-duration},
+        #{$glitch-duration2},
         100% {
             -webkit-clip-path: none;
             clip-path: none;
@@ -763,6 +753,33 @@ $glitch-interval: $glitch-duration / $glitch-frequency;
 
 /* Media query for mobile devices */
 @media (max-width: 800px) {
+    .content .title::after {
+        box-shadow:
+            0 0 2px #fff,
+            0 0 3px #fff,
+            0 0 4px #ddd,
+            0 0 5px #bbb,
+            0 0 6px #bbb,
+            0 0 7px #999,
+            0 0 8px #999,
+            0 0 9px #777,
+            0 0 10px #777,
+            0 0 12px #555;
+        animation: none;
+    }
+
+    .content button {
+        box-shadow:
+            0 0 2px #fff,
+            0 0 3px #fff,
+            0 0 4px #ddd,
+            0 0 5px #bbb,
+            0 0 8px #999,
+            0 0 9px #777,
+            0 0 12px #555;
+        animation: none;
+    }
+
     #imageLast {
         background-image: url("/assets/images/projects/mobile/CyberpunkImage1.webp");
     }

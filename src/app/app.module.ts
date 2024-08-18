@@ -14,10 +14,10 @@ import { ContactMeComponent } from './contact-me/contact-me.component';
 import { SectionsComponent } from './sections/sections.component';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import
-{
-  faAngleDown, faAngleUp, faAnglesUp, faAngleLeft, faAngleRight,
-  faCircleDot, faUpRightFromSquare, faPaperPlane, faEnvelope
-} from '@fortawesome/free-solid-svg-icons';
+  {
+    faAngleDown, faAngleUp, faAnglesUp, faAngleLeft, faAngleRight,
+    faCircleDot, faUpRightFromSquare, faPaperPlane, faEnvelope, faSpinner
+  } from '@fortawesome/free-solid-svg-icons';
 import { faLinkedin, faGithub } from '@fortawesome/free-brands-svg-icons';
 
 const routes: Routes = [
@@ -59,6 +59,6 @@ export class AppModule
   constructor(private library: FaIconLibrary)
   {
     library.addIcons(faAngleDown, faAngleUp, faAnglesUp, faAngleLeft, faAngleRight, faCircleDot,
-      faUpRightFromSquare, faPaperPlane, faEnvelope, faLinkedin, faGithub);
+      faUpRightFromSquare, faPaperPlane, faEnvelope, faLinkedin, faGithub, faSpinner);
   }
 }

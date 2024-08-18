@@ -15,10 +15,10 @@ export class ContactMeComponent
     message: ''
   };
   emailSent: boolean = false;
+  isLoading: boolean = false;
   messageText = '';
   messageType: 'success' | 'error' | 'none' = 'none';
 
-  //test potem na false
   constructor(private contactMeService: ContactMeService) { }
 
   resetForm()
@@ -33,11 +33,13 @@ export class ContactMeComponent
 
   sendEmail()
   {
-    if (this.emailSent) {
+    if (this.emailSent || this.isLoading)
+    {
       return;
     }
 
     this.emailSent = true;
+    this.isLoading = true; // Ustawienie isLoading na true
 
     this.contactMeService.sendContactForm(this.contactForm).subscribe(
       response =>
@@ -58,10 +60,11 @@ export class ContactMeComponent
 
   showTempMessage()
   {
-    setTimeout(() => 
-      {
-        this.messageType = 'none';
-        this.emailSent = false;
-      }, 12000);
+    setTimeout(() =>
+    {
+      this.messageType = 'none';
+      this.emailSent = false;
+      this.isLoading = false; // Ustawienie isLoading na false
+    }, 10000);
   }
 }

@@ -4,6 +4,7 @@ import { MathHelper } from "../Helpers/MathHelper";
 
 export class ImagesDealer
 {
+    private imageCache: { [key: string]: HTMLImageElement } = {};
     private mouseX?: number;
     private mouseY?: number;
 
@@ -116,12 +117,11 @@ export class ImagesDealer
     {
         this.dynamicCustomUrlArray.forEach((url) =>
         {
-            let img = new Image();
-            img.src = url;
+            const img = this.loadImage(url);
             img.onload = () =>
             {
-                //Stwórz X i Y oraz ich wymiary, będą "kwadratowe"
-                const wh = this.mathHelper.RandomInRange(80, 140)
+                // Stwórz X i Y oraz ich wymiary, będą "kwadratowe"
+                const wh = this.mathHelper.RandomInRange(80, 140);
                 const radius = wh / 2;
                 const x = Math.random() * (this.width - wh);
                 const y = Math.random() * (this.height - wh);
@@ -147,11 +147,10 @@ export class ImagesDealer
         {
             for (let i = 0; i < this.meteorsNumber; i++)
             {
-                let img = new Image();
-                img.src = url;
+                const img = this.loadImage(url);
                 img.onload = () =>
                 {
-                    //Stwórz X i Y oraz ich wymiary, będą "kwadratowe"
+                    // Stwórz X i Y oraz ich wymiary, będą "kwadratowe"
                     const wh = this.mathHelper.RandomInRange(20, 50);
                     const radius = wh / 2;
                     const x = Math.random() * (this.width - wh);
@@ -218,17 +217,18 @@ export class ImagesDealer
             const other = this.meteorImages[j];
             const dx = other.centerX - image.centerX;
             const dy = other.centerY - image.centerY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
+            const distanceSquared = dx * dx + dy * dy;
+            const radiusSum = image.radius + other.radius;
 
-            if (distance < image.radius + other.radius)
+            if (distanceSquared < radiusSum * radiusSum)
             {
-                // Obrazy kolidują, odbij je od siebie
+                const distance = Math.sqrt(distanceSquared);
                 const angle = Math.atan2(dy, dx);
                 const sin = Math.sin(angle);
                 const cos = Math.cos(angle);
 
                 // Przesuń obrazy do punktu kolizji
-                const overlap = image.radius + other.radius - distance;
+                const overlap = radiusSum - distance;
                 image.x -= overlap * cos / 2;
                 image.y -= overlap * sin / 2;
                 other.x += overlap * cos / 2;
@@ -321,5 +321,16 @@ export class ImagesDealer
     private isMouseOverImageY(image: IMeteor, mouseY: number): boolean
     {
         return mouseY >= image.y && mouseY <= image.y + image.wh;
+    }
+
+    private loadImage(url: string): HTMLImageElement
+    {
+        if (!this.imageCache[url])
+        {
+            const img = new Image();
+            img.src = url;
+            this.imageCache[url] = img;
+        }
+        return this.imageCache[url];
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-projects',
@@ -17,30 +17,6 @@ export class ProjectsComponent implements OnInit
     this.sliderItems = [];
   }
 
-  hideAndShowDots(): void
-  {
-    const dots = document.querySelectorAll('.dots .dot');
-    dots.forEach((dot: Element) =>
-    {
-      if (dot instanceof HTMLElement)
-      {
-        dot.classList.remove('show');
-        dot.classList.add('hide');
-      }
-    });
-    setTimeout(() =>
-    {
-      dots.forEach((dot: Element) =>
-      {
-        if (dot instanceof HTMLElement)
-        {
-          dot.classList.remove('hide');
-          dot.classList.add('show');
-        }
-      });
-    }, 1000);
-  }
-
   next(): void
   {
     if (this.sliderItems.length > 0)
@@ -53,7 +29,6 @@ export class ProjectsComponent implements OnInit
         this.current_index = (this.current_index + 1) % 6; // Zakładam, że masz 6 obrazków
       }
     }
-    this.hideAndShowDots();
   }
 
   ngOnInit(): void
@@ -82,7 +57,6 @@ export class ProjectsComponent implements OnInit
         this.sliderItems.unshift(lastItem);
       }
     }
-    this.hideAndShowDots();
   }
 
   select(index: number): void

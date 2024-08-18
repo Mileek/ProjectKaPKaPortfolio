@@ -28,7 +28,6 @@ export class SectionsComponent implements OnInit
   private increasing: boolean = true;
   private observer!: IntersectionObserver;
   private previousWidth: number = window.innerWidth;
-  private resizeTimeout: any;
   private resizeWidthTimeout: any;
 
   BSInteraction!: BlackholeAndStarsInteraction;
@@ -68,13 +67,11 @@ export class SectionsComponent implements OnInit
   numberOfMeteors = 4;
   numberOfNebulas: number = 5;
   numberOfTwinklingStars: number = 400;
-  photoBackground!: HTMLDivElement;
   @ViewChild('portfolio') portfolio!: ElementRef;
   @ViewChild('projects') projects!: ElementRef;
   @ViewChild('projectsContainer', { read: ViewContainerRef }) projectsContainer!: ViewContainerRef;
   redEye!: HTMLDivElement;
   slideAnimation!: Animation;
-  slideAnimationPosition!: number;
   @ViewChild('toggleButton') toggleButton!: ElementRef;
 
   constructor(private appStatics: AppStatics, private renderer: Renderer2,
@@ -201,7 +198,7 @@ export class SectionsComponent implements OnInit
   {
     const ctx = this.canvasTwinkling.getContext('2d');
     const width = this.background.offsetWidth;
-    const height = this.background.offsetHeight + (window.innerHeight * 0.5);
+    const height = this.background.offsetHeight + (window.innerHeight * 0.3);
     this.canvasTwinkling.width = width;
     this.canvasTwinkling.height = height;
     this.TwinklingLinesArray = [];
@@ -289,6 +286,20 @@ export class SectionsComponent implements OnInit
     }
   }
 
+  destroyComponent(section: string)
+  {
+    if (section === 'projects')
+    {
+      return; // Nie niszcz komponentu 'projects' bo są tam same zdjęcia
+    }
+
+    if (this.componentCache[section])
+    {
+      this.componentCache[section].destroy();
+      delete this.componentCache[section];
+    }
+  }
+
   async loadComponent(section: string)
   {
     if (this.componentCache[section])
@@ -355,14 +366,18 @@ export class SectionsComponent implements OnInit
     {
       entries.forEach(entry =>
       {
+        const sectionId = entry.target.id;
         if (entry.isIntersecting)
         {
-          const sectionId = entry.target.id;
           this.loadComponent(sectionId);
           history.replaceState(null, '', `#${sectionId}`);
+        } else
+        {
+          this.destroyComponent(sectionId);
         }
       });
     }, { threshold: 0.05 });
+
     this.background = document.getElementById('Background') as HTMLDivElement;
     this.blackholeContainer = document.getElementById('BlackholeContainer') as HTMLDivElement;
     this.canvasBlackhole = document.getElementById('Blackhole') as HTMLCanvasElement;
@@ -434,7 +449,7 @@ export class SectionsComponent implements OnInit
   {
     clearTimeout(this.resizeWidthTimeout);
 
-    this.resizeTimeout = setTimeout(() =>
+    let resizeTimeout = setTimeout(() =>
     {
       const currentWidth = window.innerWidth;
 
@@ -529,6 +544,10 @@ export class SectionsComponent implements OnInit
     const frameDuration18 = 1000 / targetFPS18;
     let lastFrameTime18 = 0;
 
+    const targetFPS10 = 10;
+    const frameDuration10 = 1000 / targetFPS10;
+    let lastFrameTime10 = 0;
+
     const backgroundWidth = this.background.offsetWidth;
     const backgroundHeight = this.background.offsetHeight;
     const blackholeWidth = this.blackholeContainer.offsetWidth;
@@ -538,22 +557,17 @@ export class SectionsComponent implements OnInit
     {
       const deltaTime30 = currentTime - lastFrameTime30;
       const deltaTime18 = currentTime - lastFrameTime18;
+      const deltaTime10 = currentTime - lastFrameTime10;
 
       if (deltaTime30 >= frameDuration30)
       {
         lastFrameTime30 = currentTime;
         const blackholeCtx = this.canvasBlackhole.getContext('2d');
         const blackholeSatelliteCtx = this.canvasBlackholeSatellite.getContext('2d');
-        const fallingCtx = this.canvasFalling.getContext('2d');
-        const twinklingCtx = this.canvasTwinkling.getContext('2d');
 
         // Clear and redraw animations at 30 FPS
         this.AnimateBlackhole(blackholeCtx, blackholeWidth, blackholeHeight);
         this.AnimateBlackholeSatellite(blackholeSatelliteCtx, blackholeWidth, blackholeHeight);
-        this.AnimateBlackholeAndStarsInteraction(twinklingCtx, backgroundWidth, backgroundHeight);
-        this.AnimateFallingStars(fallingCtx, backgroundWidth, backgroundHeight);
-        this.AnimateTwinklingStars(twinklingCtx, backgroundWidth, backgroundHeight);
-        this.AnimateFloatingObjects(backgroundWidth, backgroundHeight);
       }
 
       if (deltaTime18 >= frameDuration18)
@@ -563,13 +577,30 @@ export class SectionsComponent implements OnInit
         const blackholeRingCtx = this.canvasBlackholeRing.getContext('2d');
         const blackholeBendingCtx = this.canvasBlackholeBending.getContext('2d');
         const blackholeSmallerRingCtx = this.canvasBlackholeSmallerRing.getContext('2d');
+        const twinklingCtx = this.canvasTwinkling.getContext('2d');
+        const fallingCtx = this.canvasFalling.getContext('2d');
+
+        this.AnimateFallingStars(fallingCtx, backgroundWidth, backgroundHeight);
+        this.AnimateFloatingObjects(backgroundWidth, backgroundHeight);
 
         // Clear and redraw animations at 18 FPS
+        this.AnimateBlackholeAndStarsInteraction(twinklingCtx, backgroundWidth, backgroundHeight);
+        this.AnimateTwinklingStars(twinklingCtx, backgroundWidth, backgroundHeight);
+
         this.AnimateBlackholeBlurRing(blackholeBlurRingCtx, blackholeWidth, blackholeHeight);
         this.AnimateBlackholeRing(blackholeRingCtx, blackholeWidth, blackholeHeight);
         this.AnimateBlackholeBending(blackholeBendingCtx, blackholeWidth, blackholeHeight);
         this.AnimateBlackholeSmallerRing(blackholeSmallerRingCtx, blackholeWidth, blackholeHeight);
       }
+
+      if (deltaTime10 >= frameDuration10)
+      {
+        lastFrameTime10 = currentTime;
+        const twinklingCtx = this.canvasTwinkling.getContext('2d');
+
+        // Clear and redraw animations at 10 FPS
+      }
+
       requestAnimationFrame(animate);
     };
 
@@ -785,10 +816,10 @@ export class SectionsComponent implements OnInit
     if (viewportWidth <= 480)
     {
       this.updateBlackHoleDimensions(viewportWidth, 0.28);
-      this.numberOfTwinklingStars = 200;
+      this.numberOfTwinklingStars = 160;
       this.numberOfFallingStars = 2;
       this.numberOfMeteors = 2;
-      this.numberOfNebulas = 1;
+      this.numberOfNebulas = 0;
       this.drawSatellite = false;
     } else if (viewportWidth <= 768)
     {

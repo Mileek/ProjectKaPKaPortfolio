@@ -26,8 +26,8 @@
                 <div class="form-field col-12 text-center">
                     <button class="submit-btn"
                         [ngClass]="{'submit-btn-active': contactForm.name && contactForm.email && contactForm.subject && contactForm.message}"
-                        type="submit" aria-label="Submit Form">
-                        Submit&nbsp;
+                        type="submit" aria-label="Submit Form" [disabled]="isLoading">
+                        {{ isLoading ? 'Sending . . .' : 'Submit' }}&nbsp;
                     </button>
                 </div>
             </form>
