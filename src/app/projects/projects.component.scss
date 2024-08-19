@@ -65,9 +65,9 @@ body {
             background: #0c1022;
             padding: 0.2rem;
             color: white;
+            width: 100%;
             top: 15%;
             font-size: 12px;
-            text-shadow: 0 3px 12px rgba(0, 0, 0, 0.7);
         }
 
         &:hover {
@@ -759,11 +759,8 @@ $glitch-interval: $glitch-duration2 / $glitch-frequency;
             0 0 3px #fff,
             0 0 4px #ddd,
             0 0 5px #bbb,
-            0 0 6px #bbb,
-            0 0 7px #999,
             0 0 8px #999,
             0 0 9px #777,
-            0 0 10px #777,
             0 0 12px #555;
         animation: none;
     }
@@ -777,6 +774,15 @@ $glitch-interval: $glitch-duration2 / $glitch-frequency;
             0 0 8px #999,
             0 0 9px #777,
             0 0 12px #555;
+        animation: none;
+    }
+    .btnLeft,
+    .btnRight {
+        box-shadow:
+            0 0 10px rgba(59, 126, 117, 0.6),
+            0 0 20px rgba(59, 126, 117, 0.6),
+            0 0 40px rgba(59, 126, 117, 0.6),
+            0 0 80px rgba(59, 126, 117, 0.6);
         animation: none;
     }
 

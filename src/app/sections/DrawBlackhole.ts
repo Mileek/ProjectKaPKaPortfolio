@@ -29,7 +29,7 @@ export class DrawBlackhole
   defaultHeight: number;
   defaultWidth: number;
   drawSatellite: boolean = true;
-  maxGravitationalPull: number = 0.25;
+  maxGravitationalPull: number = 0.21;
   public mouseOnSizeIncrement: number = 0;
 
   constructor(width: number, height: number, centerOffsetX: number, centerOffsetY: number,
