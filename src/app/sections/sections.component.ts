@@ -35,6 +35,8 @@ export class SectionsComponent implements OnInit
   TwinklingLinesArray: Array<DrawLines> = [];
   @ViewChild('about') about!: ElementRef;
   @ViewChild('aboutMeContainer', { read: ViewContainerRef }) aboutMeContainer!: ViewContainerRef;
+  angleUp!: HTMLElement;
+  anglesUp!: HTMLElement;
   background!: HTMLDivElement;
   @ViewChild('bar1') bar1!: ElementRef;
   @ViewChild('bar2') bar2!: ElementRef;
@@ -62,6 +64,7 @@ export class SectionsComponent implements OnInit
   imgGalaxies!: HTMLCanvasElement;
   isMouseOverBlackhole!: boolean;
   lastUpdateTime: number = 0;
+  logo!: HTMLElement;
   @ViewChild('navbarLinks') navbarLinks!: ElementRef;
   numberOfFallingStars: number = 6;
   numberOfMeteors = 4;
@@ -390,6 +393,11 @@ export class SectionsComponent implements OnInit
     this.canvasFalling = document.getElementById('FallingStars') as HTMLCanvasElement;
     this.imgGalaxies = document.getElementById('Galaxies') as HTMLCanvasElement;
     this.canvasFloatingObjects = document.getElementById('FloatingObjects') as HTMLCanvasElement;
+
+    this.angleUp = document.getElementById('navUp') as HTMLElement;
+    this.anglesUp = document.getElementById('navDoubleUp') as HTMLElement;
+    this.logo = document.getElementById('logo') as HTMLElement;
+
     //Dostosowanie do telefonów/tabletów
     this.applyMediaQueryBeforeDrawLogic();
     //Draw
@@ -473,24 +481,20 @@ export class SectionsComponent implements OnInit
   @HostListener('window:scroll', ['$event'])
   onWindowScroll()
   {
-    const angleUp = document.getElementById('navUp') as HTMLElement;
-    const anglesUp = document.getElementById('navDoubleUp') as HTMLElement;;
-    const logo = document.getElementById('logo') as HTMLElement;;
-
-    if (!angleUp || !anglesUp || !logo) return;
+    if (!this.angleUp || !this.anglesUp || !this.logo) return;
 
     if (window.scrollY > 0)
     {
-      angleUp.style.opacity = '1';
-      anglesUp.style.opacity = '1';
-      logo.classList.remove('scrolled-logo-up');
-      logo.classList.add('scrolled-logo-down');
+      this.angleUp.style.opacity = '1';
+      this.anglesUp.style.opacity = '1';
+      this.logo.classList.remove('scrolled-logo-up');
+      this.logo.classList.add('scrolled-logo-down');
     } else
     {
-      angleUp.style.opacity = '0';
-      anglesUp.style.opacity = '0';
-      logo.classList.remove('scrolled-logo-down');
-      logo.classList.add('scrolled-logo-up');
+      this.angleUp.style.opacity = '0';
+      this.anglesUp.style.opacity = '0';
+      this.logo.classList.remove('scrolled-logo-down');
+      this.logo.classList.add('scrolled-logo-up');
     }
   }
 
