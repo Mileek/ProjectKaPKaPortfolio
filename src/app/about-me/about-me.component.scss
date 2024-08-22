@@ -144,10 +144,10 @@
     width: 100vw;
     height: 100vh;
     background-image: conic-gradient(transparent, transparent, transparent, #ff00ff);
-    -webkit-animation: animate 6s linear infinite;
-    animation: animate 6s linear infinite;
-    -webkit-animation-delay: -3s;
-    animation-delay: -3s;
+    -webkit-animation: animate 8s linear infinite;
+    animation: animate 8s linear infinite;
+    -webkit-animation-delay: -4s;
+    animation-delay: -4s;
 }
 
 .box1::before,
@@ -157,8 +157,8 @@
     width: 100vw;
     height: 100vh;
     background-image: conic-gradient(transparent, transparent, transparent, #00c8ff);
-    -webkit-animation: animate 6s linear infinite;
-    animation: animate 6s linear infinite;
+    -webkit-animation: animate 8s linear infinite;
+    animation: animate 8s linear infinite;
 }
 
 .border-blur2::before,
@@ -175,10 +175,10 @@
     width: 100vw;
     height: 100vh;
     background-image: conic-gradient(transparent, transparent, transparent, #f6ff00);
-    -webkit-animation: animate 4s linear infinite;
-    animation: animate 4s linear infinite;
-    -webkit-animation-delay: -2s;
-    animation-delay: -2s;
+    -webkit-animation: animate 10s linear infinite;
+    animation: animate 10s linear infinite;
+    -webkit-animation-delay: -5s;
+    animation-delay: -5s;
 }
 
 .box2::before,
@@ -188,8 +188,8 @@
     width: 100vw;
     height: 100vh;
     background-image: conic-gradient(transparent, transparent, transparent, #ff0000);
-    -webkit-animation: animate 4s linear infinite;
-    animation: animate 4s linear infinite;
+    -webkit-animation: animate 10s linear infinite;
+    animation: animate 10s linear infinite;
 }
 
 .border-blur3::before,
@@ -237,8 +237,8 @@
     width: 100vw;
     height: 100vh;
     background-image: conic-gradient(transparent, transparent, transparent, #00ffbf);
-    -webkit-animation: animate 5s linear infinite;
-    animation: animate 5s linear infinite;
+    -webkit-animation: animate 6s linear infinite;
+    animation: animate 6s linear infinite;
     -webkit-animation-delay: -3s;
     animation-delay: -3s;
 }
@@ -250,8 +250,8 @@
     width: 100vw;
     height: 100vh;
     background-image: conic-gradient(transparent, transparent, transparent, #ff00e1);
-    -webkit-animation: animate 5s linear infinite;
-    animation: animate 5s linear infinite;
+    -webkit-animation: animate 6s linear infinite;
+    animation: animate 6s linear infinite;
 }
 
 .border-blur5::before,
