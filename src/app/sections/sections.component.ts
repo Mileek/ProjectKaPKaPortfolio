@@ -33,7 +33,6 @@ export class SectionsComponent implements OnInit
   BSInteraction!: BlackholeAndStarsInteraction;
   FallingLinesArray: Array<DrawLines> = [];
   TwinklingLinesArray: Array<DrawLines> = [];
-  @ViewChild('about') about!: ElementRef;
   @ViewChild('aboutMeContainer', { read: ViewContainerRef }) aboutMeContainer!: ViewContainerRef;
   angleUp!: HTMLElement;
   anglesUp!: HTMLElement;
@@ -52,14 +51,12 @@ export class SectionsComponent implements OnInit
   canvasFalling!: HTMLCanvasElement;
   canvasFloatingObjects!: HTMLCanvasElement;
   canvasTwinkling!: HTMLCanvasElement;
-  @ViewChild('contact') contact!: ElementRef;
   @ViewChild('contactMeContainer', { read: ViewContainerRef }) contactMeContainer!: ViewContainerRef;
   divBlackhole!: HTMLDivElement;
   drawSatellite: boolean = true;
   fps: number = 0;
   frameCount: number = 0;
   galaxiesDealer!: ImagesDealer;
-  @ViewChild('home') home!: ElementRef;
   @ViewChild('homeContainer', { read: ViewContainerRef }) homeContainer!: ViewContainerRef;
   imgGalaxies!: HTMLCanvasElement;
   isMouseOverBlackhole!: boolean;
@@ -70,8 +67,6 @@ export class SectionsComponent implements OnInit
   numberOfMeteors = 4;
   numberOfNebulas: number = 5;
   numberOfTwinklingStars: number = 400;
-  @ViewChild('portfolio') portfolio!: ElementRef;
-  @ViewChild('projects') projects!: ElementRef;
   @ViewChild('projectsContainer', { read: ViewContainerRef }) projectsContainer!: ViewContainerRef;
   redEye!: HTMLDivElement;
   slideAnimation!: Animation;
@@ -246,45 +241,13 @@ export class SectionsComponent implements OnInit
     requestAnimationFrame(drawStar);
   }
 
-  HandleNavbar(): void
+  HandleToggleButton(): void
   {
     if (this.toggleButton && this.toggleButton.nativeElement)
     {
       this.renderer.listen(this.toggleButton.nativeElement, 'click', () =>
       {
         this.switchToggleStatus();
-      });
-    }
-
-    if (this.home && this.home.nativeElement)
-    {
-      this.renderer.listen(this.home.nativeElement, 'click', () =>
-      {
-        window.location.hash = '#home';
-      });
-    }
-
-    if (this.projects && this.projects.nativeElement)
-    {
-      this.renderer.listen(this.projects.nativeElement, 'click', () =>
-      {
-        window.location.hash = '#projects';
-      });
-    }
-
-    if (this.about && this.about.nativeElement)
-    {
-      this.renderer.listen(this.about.nativeElement, 'click', () =>
-      {
-        window.location.hash = '#about-me';
-      });
-    }
-
-    if (this.contact && this.contact.nativeElement)
-    {
-      this.renderer.listen(this.contact.nativeElement, 'click', () =>
-      {
-        window.location.hash = '#contact-me';
       });
     }
   }
@@ -353,8 +316,13 @@ export class SectionsComponent implements OnInit
   {
     this.observeSections();
     this.loadComponent('home');
-    // Inicjalizacja, która wymaga dostępu do elementów ViewChild
-    this.HandleNavbar();
+    // Ustaw początkowy URL jeśli nie ma hasha
+    if (!window.location.hash)
+    {
+      history.replaceState(null, '', '/#home');
+    }
+    // Obsługa toggle button dla mobile menu
+    this.HandleToggleButton();
   }
 
   ngOnDestroy(): void
@@ -373,7 +341,8 @@ export class SectionsComponent implements OnInit
         if (entry.isIntersecting)
         {
           this.loadComponent(sectionId);
-          history.replaceState(null, '', `#${sectionId}`);
+          // Ustaw czysty URL z hashem dla One Page Application
+          history.replaceState(null, '', `/#${sectionId}`);
         } else
         {
           this.destroyComponent(sectionId);
@@ -503,6 +472,16 @@ export class SectionsComponent implements OnInit
     const element = document.getElementById(sectionId);
     if (element)
     {
+      // Zamknij mobile menu jeśli jest otwarty
+      if (this.navbarLinks && this.navbarLinks.nativeElement.classList.contains('active'))
+      {
+        this.switchToggleStatus();
+      }
+
+      // Ustaw hash w URL
+      history.replaceState(null, '', `/#${sectionId}`);
+
+      // Scroll do sekcji
       const position = element.offsetTop;
       window.scrollTo({ top: position, behavior: 'smooth' });
     }
