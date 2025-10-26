@@ -1,0 +1,23 @@
+// Bootstrap Minimal - tylko potrzebne komponenty
+// Oszczędność: z 200KB do ~15KB
+
+// 1. Funkcje i zmienne (wymagane)
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+
+// 2. Layout & Grid (używane w projects.component.html)
+@import "bootstrap/scss/root";
+@import "bootstrap/scss/reboot"; // reset CSS
+@import "bootstrap/scss/containers";
+@import "bootstrap/scss/grid";
+
+// 3. Forms (używane w contact-me.component.html)
+@import "bootstrap/scss/forms";
+
+// 4. Utilities (pomocnicze klasy jak d-flex, text-center)
+@import "bootstrap/scss/helpers";
+@import "bootstrap/scss/utilities/api";

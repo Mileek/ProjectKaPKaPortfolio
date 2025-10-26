@@ -30,13 +30,13 @@
     content="Kamil Kaszuba - .NET Developer seeking new challenges and opportunities. Explore my work and get in touch for collaboration.">
   <meta name="twitter:image" content="/assets/logo/KaPKaLogoTrim.webp">
 
-  <!-- Preload logo -->
-  <link rel="preload" href="/assets/logo/KaPKaLogoTrim.webp" as="image">
-
-  <!-- Load the local font styles -->
-  <link rel="stylesheet" href="styles.css">
+  <!-- Preload critical assets -->
+  <link rel="preload" href="/assets/logo/KaPKaLogoTrim.webp" as="image" fetchpriority="high">
   <link rel="preload" href="/assets/fonts/Poppins-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
   <link rel="preload" href="/assets/fonts/WireOne-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <!-- Critical CSS -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>

@@ -369,16 +369,63 @@ export class SectionsComponent implements OnInit
 
     //Dostosowanie do telefonów/tabletów
     this.applyMediaQueryBeforeDrawLogic();
-    //Draw
+
+    // 1. Czarna dziura (główny content) - renderuj natychmiast
     this.DrawBlackhole();
-    this.DrawTwinklingStars(this.numberOfTwinklingStars);
-    this.DrawFallingStars(this.numberOfFallingStars);
-    this.DrawNebulas();
-    this.DrawFloatingObjects();
+
+    // 2. Podstawowe gwiazdy - małe opóźnienie
+    setTimeout(() =>
+    {
+      // Początkowa liczba gwiazd
+      const initialStars = Math.floor(this.numberOfTwinklingStars * 0.4); // 40% od razu
+      this.DrawTwinklingStars(initialStars);
+      this.DrawFallingStars(this.numberOfFallingStars);
+
+      // Interakcje (gwiazdy są załadowane)
+      this.BlackholeStarsInteraction();
+
+      // Doładuj pozostałe gwiazdy w tle
+      setTimeout(() =>
+      {
+        const remainingStars = this.numberOfTwinklingStars - initialStars;
+        for (let i = 0; i < remainingStars; i++)
+        {
+          const color = this.appStatics.colorArray[Math.floor(Math.random() * this.appStatics.colorArray.length)];
+          const ctx = this.canvasTwinkling.getContext('2d');
+          if (ctx)
+          {
+            const width = this.background.offsetWidth;
+            const height = this.background.offsetHeight + (window.innerHeight * 0.3);
+            this.TwinklingLinesArray.push(this.DrawTwinklingStar(ctx, color, width, height));
+          }
+        }
+      }, 300);
+    }, 50);
+
+    // 3. Floating objects - średnie opóźnienie
+    setTimeout(() =>
+    {
+      this.DrawFloatingObjects();
+    }, 150);
+
+    // 4. Nebule (najcięższe) requestIdleCallback gdy przeglądarka jest bezczynna
+    if ('requestIdleCallback' in window)
+    {
+      requestIdleCallback(() =>
+      {
+        this.DrawNebulas();
+      }, { timeout: 500 });
+    } else
+    {
+      setTimeout(() =>
+      {
+        this.DrawNebulas();
+      }, 500);
+    }
+
     this.applyMediaQueryAfterDrawLogic();
-    //Create Interactions
-    this.BlackholeStarsInteraction();
-    //Animate
+
+    //Animate - startuj animacje natychmiast (ale będą animować tylko załadowane elementy)
     this.AnimateAll();
     //Intervals
     this.SizeInterval();
@@ -399,6 +446,7 @@ export class SectionsComponent implements OnInit
   @HostListener('mousedown', ['$event'])
   onMouseDown(event: MouseEvent): void
   {
+    if (!this.galaxiesDealer) return;
     var mouseX = event.clientX - this.blackholeContainer.getBoundingClientRect().left;
     var mouseY = event.clientY - this.blackholeContainer.getBoundingClientRect().top;
     this.galaxiesDealer.MeteorInteractionMouseDown(mouseX, mouseY);
@@ -407,6 +455,7 @@ export class SectionsComponent implements OnInit
   @HostListener('mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void
   {
+    if (!this.blackhole || !this.galaxiesDealer) return;
     var mouseX = event.clientX - this.blackholeContainer.getBoundingClientRect().left;
     var mouseY = event.clientY - this.blackholeContainer.getBoundingClientRect().top;
     this.isMouseOverBlackhole = this.blackhole.IsPointInEllipse(mouseX, mouseY);
@@ -416,6 +465,7 @@ export class SectionsComponent implements OnInit
   @HostListener('mouseup', ['$event'])
   onMouseUp(event: MouseEvent): void
   {
+    if (!this.galaxiesDealer) return;
     var mouseX = event.clientX - this.blackholeContainer.getBoundingClientRect().left;
     var mouseY = event.clientY - this.blackholeContainer.getBoundingClientRect().top;
     this.galaxiesDealer.MeteorInteractionMouseUp(mouseX, mouseY);
@@ -531,10 +581,22 @@ export class SectionsComponent implements OnInit
     const frameDuration10 = 1000 / targetFPS10;
     let lastFrameTime10 = 0;
 
-    const backgroundWidth = this.background.offsetWidth;
-    const backgroundHeight = this.background.offsetHeight;
-    const blackholeWidth = this.blackholeContainer.offsetWidth;
-    const blackholeHeight = this.blackholeContainer.offsetHeight;
+    const blackholeCtx = this.canvasBlackhole.getContext('2d');
+    const blackholeSatelliteCtx = this.canvasBlackholeSatellite.getContext('2d');
+    const blackholeBlurRingCtx = this.canvasBlackholeBlurRing.getContext('2d');
+    const blackholeRingCtx = this.canvasBlackholeRing.getContext('2d');
+    const blackholeBendingCtx = this.canvasBlackholeBending.getContext('2d');
+    const blackholeSmallerRingCtx = this.canvasBlackholeSmallerRing.getContext('2d');
+    const twinklingCtx = this.canvasTwinkling.getContext('2d');
+    const fallingCtx = this.canvasFalling.getContext('2d');
+
+    let backgroundWidth = this.background.offsetWidth;
+    let backgroundHeight = this.background.offsetHeight;
+    let blackholeWidth = this.blackholeContainer.offsetWidth;
+    let blackholeHeight = this.blackholeContainer.offsetHeight;
+
+    // Flaga do sprawdzania, czy trzeba zaktualizować wymiary
+    let needsResize = false;
 
     const animate = (currentTime: number) =>
     {
@@ -542,26 +604,36 @@ export class SectionsComponent implements OnInit
       const deltaTime18 = currentTime - lastFrameTime18;
       const deltaTime10 = currentTime - lastFrameTime10;
 
+      if (currentTime % 1000 < 16)
+      {
+        const newBgWidth = this.background.offsetWidth;
+        const newBgHeight = this.background.offsetHeight;
+        const newBhWidth = this.blackholeContainer.offsetWidth;
+        const newBhHeight = this.blackholeContainer.offsetHeight;
+
+        if (backgroundWidth !== newBgWidth || backgroundHeight !== newBgHeight ||
+          blackholeWidth !== newBhWidth || blackholeHeight !== newBhHeight)
+        {
+          backgroundWidth = newBgWidth;
+          backgroundHeight = newBgHeight;
+          blackholeWidth = newBhWidth;
+          blackholeHeight = newBhHeight;
+          needsResize = true;
+        }
+      }
+
       if (deltaTime30 >= frameDuration30)
       {
         lastFrameTime30 = currentTime;
-        const blackholeCtx = this.canvasBlackhole.getContext('2d');
-        const blackholeSatelliteCtx = this.canvasBlackholeSatellite.getContext('2d');
 
         // Clear and redraw animations at 30 FPS
-        this.AnimateBlackhole(blackholeCtx, blackholeWidth, blackholeHeight);
-        this.AnimateBlackholeSatellite(blackholeSatelliteCtx, blackholeWidth, blackholeHeight);
+        this.AnimateBlackhole(blackholeCtx, blackholeWidth, blackholeHeight, needsResize);
+        this.AnimateBlackholeSatellite(blackholeSatelliteCtx, blackholeWidth, blackholeHeight, needsResize);
       }
 
       if (deltaTime18 >= frameDuration18)
       {
         lastFrameTime18 = currentTime;
-        const blackholeBlurRingCtx = this.canvasBlackholeBlurRing.getContext('2d');
-        const blackholeRingCtx = this.canvasBlackholeRing.getContext('2d');
-        const blackholeBendingCtx = this.canvasBlackholeBending.getContext('2d');
-        const blackholeSmallerRingCtx = this.canvasBlackholeSmallerRing.getContext('2d');
-        const twinklingCtx = this.canvasTwinkling.getContext('2d');
-        const fallingCtx = this.canvasFalling.getContext('2d');
 
         this.AnimateFallingStars(fallingCtx, backgroundWidth, backgroundHeight);
         this.AnimateFloatingObjects(backgroundWidth, backgroundHeight);
@@ -570,16 +642,17 @@ export class SectionsComponent implements OnInit
         this.AnimateBlackholeAndStarsInteraction(twinklingCtx, backgroundWidth, backgroundHeight);
         this.AnimateTwinklingStars(twinklingCtx, backgroundWidth, backgroundHeight);
 
-        this.AnimateBlackholeBlurRing(blackholeBlurRingCtx, blackholeWidth, blackholeHeight);
-        this.AnimateBlackholeRing(blackholeRingCtx, blackholeWidth, blackholeHeight);
-        this.AnimateBlackholeBending(blackholeBendingCtx, blackholeWidth, blackholeHeight);
-        this.AnimateBlackholeSmallerRing(blackholeSmallerRingCtx, blackholeWidth, blackholeHeight);
+        this.AnimateBlackholeBlurRing(blackholeBlurRingCtx, blackholeWidth, blackholeHeight, needsResize);
+        this.AnimateBlackholeRing(blackholeRingCtx, blackholeWidth, blackholeHeight, needsResize);
+        this.AnimateBlackholeBending(blackholeBendingCtx, blackholeWidth, blackholeHeight, needsResize);
+        this.AnimateBlackholeSmallerRing(blackholeSmallerRingCtx, blackholeWidth, blackholeHeight, needsResize);
+
+        needsResize = false; // Reset flagi po aktualizacji
       }
 
       if (deltaTime10 >= frameDuration10)
       {
         lastFrameTime10 = currentTime;
-        const twinklingCtx = this.canvasTwinkling.getContext('2d');
 
         // Clear and redraw animations at 10 FPS
       }
@@ -590,9 +663,10 @@ export class SectionsComponent implements OnInit
     requestAnimationFrame(animate);
   }
 
-  private AnimateBlackhole(ctx: CanvasRenderingContext2D | null, width: number, height: number)
+  private AnimateBlackhole(ctx: CanvasRenderingContext2D | null, width: number, height: number, needsResize: boolean = false)
   {
-    if (this.canvasBlackhole.width !== width || this.canvasBlackhole.height !== height)
+    // Sprawdź rozmiar przy pierwszym uruchomieniu lub gdy needsResize jest true
+    if (needsResize || this.canvasBlackhole.width === 0 || this.canvasBlackhole.width !== width || this.canvasBlackhole.height !== height)
     {
       this.canvasBlackhole.width = width;
       this.canvasBlackhole.height = height;
@@ -607,6 +681,7 @@ export class SectionsComponent implements OnInit
 
   private AnimateBlackholeAndStarsInteraction(ctx: CanvasRenderingContext2D | null, width: number, height: number)
   {
+    if (!this.BSInteraction) return;
     this.BSInteraction.MoveStarsToBlackhole();
     if (this.BSInteraction.ReGenerateStar > 0)
     {
@@ -620,9 +695,10 @@ export class SectionsComponent implements OnInit
     }
   }
 
-  private AnimateBlackholeBending(ctx: CanvasRenderingContext2D | null, width: number, height: number)
+  private AnimateBlackholeBending(ctx: CanvasRenderingContext2D | null, width: number, height: number, needsResize: boolean = false)
   {
-    if (this.canvasBlackholeBending.width !== width || this.canvasBlackholeBending.height !== height)
+    // Sprawdź rozmiar przy pierwszym uruchomieniu lub gdy needsResize jest true
+    if (needsResize || this.canvasBlackholeBending.width === 0 || this.canvasBlackholeBending.width !== width || this.canvasBlackholeBending.height !== height)
     {
       this.canvasBlackholeBending.width = width;
       this.canvasBlackholeBending.height = height;
@@ -635,9 +711,10 @@ export class SectionsComponent implements OnInit
     }
   }
 
-  private AnimateBlackholeBlurRing(ctx: CanvasRenderingContext2D | null, width: number, height: number)
+  private AnimateBlackholeBlurRing(ctx: CanvasRenderingContext2D | null, width: number, height: number, needsResize: boolean = false)
   {
-    if (this.canvasBlackholeBlurRing.width !== width || this.canvasBlackholeBlurRing.height !== height)
+    // Sprawdź rozmiar przy pierwszym uruchomieniu lub gdy needsResize jest true
+    if (needsResize || this.canvasBlackholeBlurRing.width === 0 || this.canvasBlackholeBlurRing.width !== width || this.canvasBlackholeBlurRing.height !== height)
     {
       this.canvasBlackholeBlurRing.width = width;
       this.canvasBlackholeBlurRing.height = height;
@@ -650,9 +727,10 @@ export class SectionsComponent implements OnInit
     }
   }
 
-  private AnimateBlackholeRing(ctx: CanvasRenderingContext2D | null, width: number, height: number)
+  private AnimateBlackholeRing(ctx: CanvasRenderingContext2D | null, width: number, height: number, needsResize: boolean = false)
   {
-    if (this.canvasBlackholeRing.width !== width || this.canvasBlackholeRing.height !== height)
+    // Sprawdź rozmiar przy pierwszym uruchomieniu lub gdy needsResize jest true
+    if (needsResize || this.canvasBlackholeRing.width === 0 || this.canvasBlackholeRing.width !== width || this.canvasBlackholeRing.height !== height)
     {
       this.canvasBlackholeRing.width = width;
       this.canvasBlackholeRing.height = height;
@@ -665,9 +743,10 @@ export class SectionsComponent implements OnInit
     }
   }
 
-  private AnimateBlackholeSatellite(ctx: CanvasRenderingContext2D | null, width: number, height: number)
+  private AnimateBlackholeSatellite(ctx: CanvasRenderingContext2D | null, width: number, height: number, needsResize: boolean = false)
   {
-    if (this.canvasBlackholeSatellite.width !== width || this.canvasBlackholeSatellite.height !== height)
+    // Sprawdź rozmiar przy pierwszym uruchomieniu lub gdy needsResize jest true
+    if (needsResize || this.canvasBlackholeSatellite.width === 0 || this.canvasBlackholeSatellite.width !== width || this.canvasBlackholeSatellite.height !== height)
     {
       this.canvasBlackholeSatellite.width = width;
       this.canvasBlackholeSatellite.height = height;
@@ -680,9 +759,10 @@ export class SectionsComponent implements OnInit
     }
   }
 
-  private AnimateBlackholeSmallerRing(ctx: CanvasRenderingContext2D | null, width: number, height: number)
+  private AnimateBlackholeSmallerRing(ctx: CanvasRenderingContext2D | null, width: number, height: number, needsResize: boolean = false)
   {
-    if (this.canvasBlackholeSmallerRing.width !== width || this.canvasBlackholeSmallerRing.height !== height)
+    // Sprawdź rozmiar przy pierwszym uruchomieniu lub gdy needsResize jest true
+    if (needsResize || this.canvasBlackholeSmallerRing.width === 0 || this.canvasBlackholeSmallerRing.width !== width || this.canvasBlackholeSmallerRing.height !== height)
     {
       this.canvasBlackholeSmallerRing.width = width;
       this.canvasBlackholeSmallerRing.height = height;
@@ -708,6 +788,7 @@ export class SectionsComponent implements OnInit
 
   private AnimateFloatingObjects(width: number, height: number)
   {
+    if (!this.galaxiesDealer) return;
     this.galaxiesDealer.Update(width, height);
   }
 
@@ -727,6 +808,7 @@ export class SectionsComponent implements OnInit
   {
     setInterval(() =>
     {
+      if (!this.blackhole) return;
       if (this.isMouseOverBlackhole)
       {
         if (this.increasing)
